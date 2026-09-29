@@ -1,0 +1,349 @@
+<title>뼛가루 공장</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Noto+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: engineering drawing set — title block, then numbered sheets (flow, site, pod, hall, calc, checks) in one column, drawings in scrollable frames */
+:root{
+  --paper:#edf2f0; --panel:#f8fbfa; --ink:#1c2a2c; --muted:#5a6c6e; --line:#c3d1cf;
+  --skyris:#2f8378; --bloom:#c9507f; --gold:#b8860b; --diamond:#1f8fb0;
+  --c-dirt:#8a6a47; --c-stone:#a9b1b0; --c-walk:#d9cfb8; --c-glass:#9fd3d8;
+  --c-dep:#d08a2e; --c-saw:#7b8794; --c-piston:#6f5a3a; --c-hopper:#4b5357;
+  --c-belt:#3b4245; --c-bin:#7a5230; --c-crafter:#b0763a; --c-vault:#6d7f86;
+  --c-log:#6e8f5a; --c-leaf:#8fc07a; --grid:#d5dfdd;
+  --f-display:"Do Hyeon","Noto Sans KR",system-ui,sans-serif;
+  --f-body:"Noto Sans KR",system-ui,-apple-system,"Malgun Gothic",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#11191b; --panel:#172225; --ink:#e2ebe9; --muted:#8fa2a2; --line:#2b3b3e;
+  --skyris:#5bb7aa; --bloom:#ea86b1; --gold:#e0b040; --diamond:#58c6e0;
+  --c-dirt:#9b7852; --c-stone:#5f6969; --c-walk:#5d5646; --c-glass:#3f7f86;
+  --c-dep:#e09a3e; --c-saw:#9aa6b3; --c-piston:#9a7f55; --c-hopper:#8a959a;
+  --c-belt:#6b7477; --c-bin:#a8744a; --c-crafter:#c98b4c; --c-vault:#8fa3ab;
+  --c-log:#86ab70; --c-leaf:#5f8f52; --grid:#243235; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#11191b; --panel:#172225; --ink:#e2ebe9; --muted:#8fa2a2; --line:#2b3b3e;
+  --skyris:#5bb7aa; --bloom:#ea86b1; --gold:#e0b040; --diamond:#58c6e0;
+  --c-dirt:#9b7852; --c-stone:#5f6969; --c-walk:#5d5646; --c-glass:#3f7f86;
+  --c-dep:#e09a3e; --c-saw:#9aa6b3; --c-piston:#9a7f55; --c-hopper:#8a959a;
+  --c-belt:#6b7477; --c-bin:#a8744a; --c-crafter:#c98b4c; --c-vault:#8fa3ab;
+  --c-log:#86ab70; --c-leaf:#5f8f52; --grid:#243235; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.65;margin:0}
+.wrap{max-width:1080px;margin:0 auto;padding-inline:20px;padding-block:28px 64px;display:flex;flex-direction:column;gap:44px}
+h1,h2,h3{font-family:var(--f-display);font-weight:400;line-height:1.2;text-wrap:balance;margin:0}
+h1{font-size:clamp(34px,6vw,54px);letter-spacing:.5px}
+h2{font-size:28px}
+h3{font-size:19px}
+p{margin:0;max-width:68ch}
+.mono,code{font-family:var(--f-mono);font-size:.88em}
+code{background:var(--panel);border:1px solid var(--line);padding:0 5px;border-radius:3px}
+.muted{color:var(--muted)}
+/* title block */
+.titleblock{display:grid;grid-template-columns:1.6fr 1fr;border:2px solid var(--ink);background:var(--panel)}
+.tb-main{padding:22px 24px;display:flex;flex-direction:column;gap:12px;border-right:2px solid var(--ink);min-width:0}
+.tb-main .kicker{font-family:var(--f-mono);font-size:12px;letter-spacing:.12em;color:var(--skyris);text-transform:uppercase}
+.tb-meta{display:grid;grid-template-columns:auto 1fr;font-size:13px}
+.tb-meta div{padding:8px 12px;border-bottom:1px solid var(--line)}
+.tb-meta div:nth-child(odd){font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;color:var(--muted);text-transform:uppercase;border-right:1px solid var(--line)}
+.tb-meta div:nth-last-child(-n+2){border-bottom:0}
+@media (max-width:720px){.titleblock{grid-template-columns:1fr}.tb-main{border-right:0;border-bottom:2px solid var(--ink)}}
+/* ratios */
+.ratios{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--line);background:var(--panel)}
+.ratio{padding:14px 16px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:4px;min-width:0}
+.ratio:last-child{border-right:0}
+.ratio b{font-family:var(--f-display);font-weight:400;font-size:26px;font-variant-numeric:tabular-nums;line-height:1.1}
+.ratio span{font-size:12.5px;color:var(--muted)}
+.ratio .g{color:var(--gold)} .ratio .d{color:var(--diamond)} .ratio .s{color:var(--skyris)}
+@media (max-width:760px){.ratios{grid-template-columns:repeat(2,1fr)}.ratio:nth-child(2){border-right:0}.ratio:nth-child(-n+2){border-bottom:1px solid var(--line)}}
+/* sheet */
+.sheet{display:flex;flex-direction:column;gap:18px}
+.sheet-head{display:flex;align-items:baseline;gap:14px;border-bottom:2px solid var(--ink);padding-bottom:8px;flex-wrap:wrap}
+.sheet-no{font-family:var(--f-mono);font-size:12px;font-weight:600;letter-spacing:.08em;border:1.5px solid var(--ink);padding:2px 8px}
+.sheet-head .sub{font-size:13px;color:var(--muted);margin-left:auto}
+.frame{border:1px solid var(--line);background:var(--panel);overflow-x:auto;padding:14px}
+.frame svg{display:block;margin:0 auto}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.two>*{min-width:0}
+@media (max-width:860px){.two{grid-template-columns:1fr}}
+/* flow */
+.flow{display:flex;flex-wrap:wrap;gap:10px;align-items:stretch;list-style:none;padding:0;margin:0;counter-reset:st}
+.flow li{flex:1 1 150px;min-width:0;background:var(--panel);border:1px solid var(--line);padding:12px 12px 12px;position:relative;display:flex;flex-direction:column;gap:4px;counter-increment:st}
+.flow li::before{content:counter(st);font-family:var(--f-mono);font-size:11px;color:var(--muted)}
+.flow li b{font-weight:700;font-size:14.5px}
+.flow li span{font-size:12.5px;color:var(--muted);line-height:1.5}
+.flow li .io{font-family:var(--f-mono);font-size:11.5px;color:var(--skyris)}
+.flow li.money{border-color:var(--gold)} .flow li.money .io{color:var(--gold)}
+.flow li.dia{border-color:var(--diamond)} .flow li.dia .io{color:var(--diamond)}
+/* controls */
+.seg{display:inline-flex;border:1px solid var(--ink);flex-wrap:wrap}
+.seg button{font:inherit;font-size:13px;background:transparent;color:var(--ink);border:0;border-right:1px solid var(--ink);padding:6px 12px;cursor:pointer}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.seg button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--skyris);outline-offset:2px}
+.ctrl-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+/* legend */
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--muted)}
+.legend i{display:inline-block;width:12px;height:12px;vertical-align:-1px;margin-right:5px;border:1px solid var(--line)}
+/* table */
+.tbl{overflow-x:auto;border:1px solid var(--line);background:var(--panel)}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th,td{text-align:left;padding:8px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;background:var(--paper)}
+tr:last-child td{border-bottom:0}
+td.mono{white-space:nowrap}
+/* steps */
+.steps{margin:0;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:0;counter-reset:s;border:1px solid var(--line);background:var(--panel)}
+.steps li{counter-increment:s;display:grid;grid-template-columns:44px 1fr;border-bottom:1px solid var(--line)}
+.steps li:last-child{border-bottom:0}
+.steps li::before{content:counter(s);font-family:var(--f-mono);font-weight:600;display:flex;align-items:flex-start;justify-content:center;padding-top:10px;border-right:1px solid var(--line);color:var(--skyris)}
+.steps li>div{padding:10px 14px;min-width:0}
+.steps li b{display:block}
+.steps li span{font-size:13.5px;color:var(--muted)}
+/* notes */
+.note{border-left:3px solid var(--bloom);background:var(--panel);padding:12px 16px;font-size:14px;display:flex;flex-direction:column;gap:6px}
+.note.gold{border-left-color:var(--gold)}
+.note b{font-weight:700}
+/* calc */
+.calc{display:grid;grid-template-columns:300px 1fr;border:2px solid var(--ink);background:var(--panel)}
+.calc-in{padding:18px;border-right:2px solid var(--ink);display:flex;flex-direction:column;gap:14px;min-width:0}
+.calc-in label{display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:500}
+.calc-in input[type=range]{width:100%;accent-color:var(--skyris)}
+.calc-in select,.calc-in input[type=number]{font:inherit;font-size:14px;padding:6px 8px;background:var(--paper);color:var(--ink);border:1px solid var(--line)}
+.calc-out{padding:18px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--line)}
+.kpi{padding:10px 12px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);min-width:0}
+.kpi:nth-child(3n){border-right:0}
+.kpi:nth-last-child(-n+3){border-bottom:0}
+.kpi small{display:block;font-size:11.5px;color:var(--muted)}
+.kpi b{font-family:var(--f-display);font-weight:400;font-size:24px;font-variant-numeric:tabular-nums}
+.kpi.g b{color:var(--gold)} .kpi.d b{color:var(--diamond)}
+.bar{height:10px;background:var(--paper);border:1px solid var(--line);position:relative}
+.bar>i{position:absolute;inset:0 auto 0 0;background:var(--skyris)}
+.bar.over>i{background:var(--bloom)}
+.status{font-size:13.5px}
+.status.warn{color:var(--bloom)}
+@media (max-width:760px){.calc{grid-template-columns:1fr}.calc-in{border-right:0;border-bottom:2px solid var(--ink)}.kpis{grid-template-columns:repeat(2,1fr)}.kpi{border-right:1px solid var(--line)!important;border-bottom:1px solid var(--line)!important}.kpi:nth-child(2n){border-right:0!important}}
+/* phases */
+.phases{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--line);background:var(--panel)}
+.phase{padding:16px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:8px;min-width:0}
+.phase:last-child{border-right:0}
+.phase .tag{font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;color:var(--skyris)}
+.phase ul{margin:0;padding-left:18px;font-size:13.5px;display:flex;flex-direction:column;gap:3px}
+@media (max-width:760px){.phases{grid-template-columns:1fr}.phase{border-right:0;border-bottom:1px solid var(--line)}}
+.checks{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;border:1px solid var(--line);background:var(--panel)}
+.checks li{display:grid;grid-template-columns:28px 1fr;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line);font-size:14px}
+.checks li:last-child{border-bottom:0}
+.checks input{width:16px;height:16px;margin-top:4px;accent-color:var(--skyris)}
+.checks span small{display:block;color:var(--muted);font-size:12.5px}
+svg text{font-family:var(--f-body)}
+svg .mono{font-family:var(--f-mono)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+.flowdash{stroke-dasharray:6 5;animation:dash 1.2s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-22}}
+footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:14px;display:flex;flex-direction:column;gap:4px}
+</style>
+
+<div class="wrap">
+
+<header class="titleblock">
+  <div class="tb-main">
+    <div class="kicker">Mayview · Bone Meal Works</div>
+    <h1>뼛가루 공장</h1>
+    <p>스켈레톤 스포너를 옮겨 와 분쇄 휠로 잡고, 뼈를 그 자리에서 뼛가루로 갈아 대형 금고에 쌓습니다. 스카이리스 계단 공장의 비료 디플로이어와 규토리 과수원에 보내는 공급 설비입니다.</p>
+  </div>
+  <div class="tb-meta">
+    <div>도면</div><div>설계도 세트 A–E (5장)</div>
+    <div>축척</div><div>1칸 = 1블록</div>
+    <div>기준면</div><div><span class="mono">K</span> = 분쇄 휠 높이</div>
+    <div>모드</div><div>Create 6.0.9 · Recon Silk Spawners</div>
+    <div>판</div><div>v1 · 2026-09-29</div>
+  </div>
+</header>
+
+<section class="ratios" aria-label="핵심 환산비">
+  <div class="ratio"><b class="s">3.75</b><span>뼈 1개를 분쇄 휠·맷돌로 갈면 나오는 평균 뼛가루 (3개 + 25% 확률로 3개 더). 조합대로는 3개</span></div>
+  <div class="ratio"><b>4.4</b><span>스카이리스 나무 1그루에 드는 평균 뼛가루 (2단계 × 성공률 45%, 추정)</span></div>
+  <div class="ratio"><b class="g">≈3.2 금화</b><span>뼈 1개를 뼛가루로 써서 얻는 계단 판매액 (나무 1그루 ≈ 3.75 금화)</span></div>
+  <div class="ratio"><b>68배</b><span>뼈를 그대로 팔 때(16개 = 철화 6, 개당 금화 0.047)와 비교</span></div>
+</section>
+
+<section class="sheet">
+  <div class="sheet-head"><span class="sheet-no">A-0</span><h2>먼저 알아둘 제약</h2><span class="sub">설계 방향을 정하는 사실 두 가지</span></div>
+  <div class="two">
+    <div class="note"><b>스포너는 플레이어가 16칸 안에 있어야 돕니다</b><span>그리고 이 팩의 Does It Tick 설정은 플레이어에게서 수평 64칸·수직 32칸 밖의 생물 엔티티를 멈춥니다. 청크를 강제 로드해도 자리를 비우면 스켈레톤이 나오지 않습니다.</span></div>
+    <div class="note gold"><b>그래서 "있을 때 모으고, 없을 때 쓴다"</b><span>뼛가루는 내가 기지에 있을 때(잠수·작업 중) 만들어 큰 금고에 쌓고, 나무 공장은 기계라 자리를 비워도 금고에서 꺼내 씁니다. 공장을 기지 AFK 자리 바로 아래에 둡니다.</span></div>
+  </div>
+</section>
+
+<section class="sheet" id="flow">
+  <div class="sheet-head"><span class="sheet-no">B-0</span><h2>공정 흐름</h2><span class="sub">위에서 아래로, 중력으로 흐름</span></div>
+  <ol class="flow">
+    <li><b>스폰</b><span>스켈레톤 스포너 여러 개를 한 방에 모읍니다(실크 터치로 캐서 옮기기 가능).</span><span class="io">스포너 → 스켈레톤</span></li>
+    <li><b>이동</b><span>바닥의 물길이 스켈레톤을 가운데 2×1 구멍으로 밀어 넣습니다.</span><span class="io">물길 → 낙하 구멍</span></li>
+    <li><b>처치·분쇄</b><span>분쇄 휠 한 쌍이 스켈레톤을 잡고, 떨어진 뼈를 곧바로 갈아 뼛가루로 만듭니다.</span><span class="io">뼈 1 → 뼛가루 3.75</span></li>
+    <li><b>선별</b><span>슈트 아래 황동 깔때기 필터로 뼛가루, 화살, 나머지를 나눕니다.</span><span class="io">뼛가루 / 화살 / 기타</span></li>
+    <li class="money"><b>부산물</b><span>화살은 판매함으로(16개 = 철화 4), 활·갑옷은 쓰레기통으로.</span><span class="io">화살 16 → 철화 4</span></li>
+    <li class="dia"><b>보관·배송</b><span>뼛가루 금고에 쌓고, 나무 공장·과수원으로 벨트나 패키지로 보냅니다.</span><span class="io">금고 → 포드 B 디플로이어</span></li>
+  </ol>
+</section>
+
+<section class="sheet" id="section">
+  <div class="sheet-head"><span class="sheet-no">C-1</span><h2>단면도</h2><span class="sub">스포너실 · 분쇄층 · 선별층 · AFK 방</span></div>
+  <p>스포너는 서로 붙여 놓아도 되고, 모두 AFK 자리에서 16칸 안에 있어야 합니다. AFK 방은 스포너실 바로 위에 두면 거리 조건을 맞추기 쉽고, 나무 타워나 가공동과도 가깝게 둘 수 있습니다.</p>
+  <div class="frame"><svg id="secSvg" role="img" aria-label="뼛가루 공장 단면도"></svg></div>
+  <div class="legend">
+    <span><i style="background:var(--c-stone)"></i>벽·바닥</span>
+    <span><i style="background:var(--c-glass)"></i>물길</span>
+    <span><i style="background:var(--c-hopper)"></i>스포너</span>
+    <span><i style="background:var(--c-saw)"></i>분쇄 휠</span>
+    <span><i style="background:var(--c-belt)"></i>슈트·벨트</span>
+    <span><i style="background:var(--c-vault)"></i>금고</span>
+    <span><i style="background:var(--bloom)"></i>AFK 자리 (반경 16)</span>
+  </div>
+  <div class="tbl"><table>
+    <thead><tr><th>부품</th><th>위치</th><th>설정·메모</th></tr></thead>
+    <tbody>
+      <tr><td>스켈레톤 스포너 ×2~4</td><td class="mono">스포너실 K+3</td><td>Recon Silk Spawners로 실크 터치 채굴·설치가 허용되어 있습니다(네더·엔드 제외). 방은 완전히 어둡게 하고 스포너 주변 4칸은 비워 둡니다.</td></tr>
+      <tr><td>물길</td><td class="mono">스포너실 바닥</td><td>양쪽 벽에서 가운데로 흐르게. 가운데에 2×1 낙하 구멍.</td></tr>
+      <tr><td>분쇄 휠 ×2</td><td class="mono">K, 구멍 바로 아래</td><td>서로 반대로 회전. 128 RPM 이상이면 스켈레톤이 바로 죽습니다. 분쇄 레시피가 없는 뼈는 맷돌(milling) 레시피로 처리되어 뼛가루가 됩니다.</td></tr>
+      <tr><td>슈트</td><td class="mono">K−1 → K−3</td><td>분쇄 결과물을 아래 선별층으로 떨어뜨립니다.</td></tr>
+      <tr><td>황동 깔때기 ×2 + 벨트</td><td class="mono">K−4</td><td>필터 1: 뼛가루 → 금고. 필터 2: 화살 → 판매 라인. 나머지는 벨트 끝 쓰레기통(Trash Cans 모드).</td></tr>
+      <tr><td>뼛가루 금고</td><td class="mono">K−5, 3×3×N</td><td>아이템 저장고. 칸 수만큼 버퍼가 늘어납니다. 디스플레이 링크로 남은 양을 보드에 띄웁니다.</td></tr>
+      <tr><td>AFK 방</td><td class="mono">스포너실 위</td><td>모든 스포너에서 16칸 안. 침대·작업대·웨이스톤을 두면 거점으로 쓰기 좋습니다.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="sheet" id="calc">
+  <div class="sheet-head"><span class="sheet-no">D-1</span><h2>공급 계산기</h2><span class="sub">하루 단위 · 추정치</span></div>
+  <div class="calc">
+    <div class="calc-in">
+      <label for="sp">스포너 수 <span class="mono" id="spOut">3</span>
+        <input type="range" id="sp" min="1" max="6" value="3"></label>
+      <label for="afk">하루 중 기지에 있는 시간 <span class="mono" id="afkOut">3시간</span>
+        <input type="range" id="afk" min="1" max="12" value="3"></label>
+      <label for="rate">스포너 1개 시간당 뼈
+        <select id="rate">
+          <option value="300">보수적 · 300</option>
+          <option value="400" selected>보통 · 400</option>
+          <option value="500">잘 뽑힐 때 · 500</option>
+        </select></label>
+      <label for="fert">나무당 비료
+        <select id="fert">
+          <option value="4.4" selected>뼛가루 · 평균 4.4개</option>
+          <option value="0.5">나무 비료 · 뼛가루 0.5개분 (검증 필요)</option>
+        </select></label>
+      <p class="muted" style="font-size:12px">가정: 스켈레톤 1마리당 뼈 평균 1개, 뼈 1 → 뼛가루 3.75, 나무 1그루 ≈ 원목 60 → 금화 3.75.</p>
+    </div>
+    <div class="calc-out" aria-live="polite">
+      <div class="kpis">
+        <div class="kpi"><small>뼈/일</small><b id="kBone">–</b></div>
+        <div class="kpi"><small>뼛가루/일</small><b id="kMeal">–</b></div>
+        <div class="kpi"><small>나무/일</small><b id="kTree">–</b></div>
+        <div class="kpi g"><small>금화/일</small><b id="kGold">–</b></div>
+        <div class="kpi d"><small>다이아 코인/일</small><b id="kDia">–</b></div>
+        <div class="kpi"><small>포드 환산 (24시간 가동)</small><b id="kPod">–</b></div>
+      </div>
+      <p class="status" id="status">–</p>
+    </div>
+  </div>
+</section>
+
+<section class="sheet">
+  <div class="sheet-head"><span class="sheet-no">D-2</span><h2>보조 공급원</h2><span class="sub">스포너만으로 모자랄 때</span></div>
+  <div class="tbl"><table>
+    <thead><tr><th>공급원</th><th>방법</th><th>평가</th></tr></thead>
+    <tbody>
+      <tr><td>남는 스카이리스 묘목</td><td>퇴비통 줄(호퍼로 넣고 아래 호퍼로 뺌). 묘목은 층당 30%</td><td>나무 1그루당 뼛가루 약 0.3개. 버리는 것보다 낫지만 주 공급원은 못 됩니다.</td></tr>
+      <tr><td>규토리 씨앗·사과</td><td>같은 퇴비통 줄로</td><td>과수원 부산물 처리용.</td></tr>
+      <tr><td>나무 비료 (Create)</td><td>작은 꽃 2 + 산호 1 + 뼛가루 1 → 나무 비료 2. 기계식 조합기 4대 무형 조합</td><td>한 번에 나무를 키우므로 나무당 뼛가루가 4.4 → 0.5로 줄어듭니다. 대신 꽃과 산호(따뜻한 바다)가 계속 필요하고, BYG 묘목에 통하는지 먼저 확인해야 합니다.</td></tr>
+      <tr><td>뼈 판매 중단</td><td>뼈를 판매함에 넣지 않기</td><td>뼈 16개 = 철화 6은 뼛가루로 쓰는 가치의 약 1/68입니다.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="sheet">
+  <div class="sheet-head"><span class="sheet-no">E-1</span><h2>배송</h2><span class="sub">금고에서 쓰는 곳까지</span></div>
+  <div class="tbl"><table>
+    <thead><tr><th>받는 곳</th><th>방식</th><th>포드 쪽 변경</th></tr></thead>
+    <tbody>
+      <tr><td>스카이리스 포드 (수평 배치)</td><td>척추 지하에 본선 벨트와 나란히, 반대 방향으로 가는 비료 벨트 1줄</td><td>포드마다 기계식 팔 1개 추가(필터: 뼛가루). 비료 벨트에서 집어 디플로이어 B에 넣습니다. 그러면 B 위 호퍼·상자는 빼도 됩니다.</td></tr>
+      <tr><td>스카이리스 타워 (수직 배치)</td><td>Create 6 패키저 + 체인 컨베이어(연결당 최대 32칸) + 층마다 프로그포트</td><td>층 금고에 팩토리 게이지를 달아 "뼛가루 5세트 유지"처럼 재고를 자동 요청. 층 안에서는 위 방식과 같이 팔로 분배.</td></tr>
+      <tr><td>규토리 과수원</td><td>근처라면 벨트, 아니면 패키지</td><td>과수원은 사람이 있을 때 도는 설비라 수동 보충도 무방합니다.</td></tr>
+    </tbody>
+  </table></div>
+  <ul class="checks" id="checkList">
+    <li><input type="checkbox" id="b1"><label for="b1"><span>분쇄 휠이 스켈레톤을 죽이고 뼈를 바로 뼛가루로 가는가<small>뼈가 그대로 나오면 슈트 뒤에 맷돌을 하나 더 둡니다.</small></span></label></li>
+    <li><input type="checkbox" id="b2"><label for="b2"><span>AFK 자리에서 모든 스포너가 도는가<small>스포너 불꽃 파티클이 보이면 작동 중입니다.</small></span></label></li>
+    <li><input type="checkbox" id="b3"><label for="b3"><span>나무 비료가 스카이리스 묘목을 키우는가<small>안 되면 계산기의 비료 옵션을 뼛가루로 두세요.</small></span></label></li>
+  </ul>
+</section>
+
+<footer>
+  <span>근거: <code>create-1.21.1-6.0.9.jar</code>(맷돌: 뼈 → 뼛가루 3 + 25% 3, 나무 비료 조합법), <code>mayview_sellables.js</code>(뼈 16 → 철화 6, 화살 16 → 철화 4), <code>reconsilkspawners-common.toml</code>, <code>does_it_tick-common.toml</code>(생물 엔티티 64/32칸), <code>create-server.toml</code>(체인 컨베이어 32칸).</span>
+  <span>추정값: 스포너 시간당 뼈, 나무당 뼛가루. 같이 보기: <a href="https://claude.ai/artifact/7NnSn9Rz3iteEFe66Csdih" style="color:var(--skyris)">스카이리스 계단 공장</a> · <a href="https://claude.ai/artifact/HLTQoq81DLmw1MqY1utSA1" style="color:var(--skyris)">규토리 과수원</a> · <a href="https://claude.ai/artifact/BdMTau4Y3XCDjFRi2CFEz8" style="color:var(--skyris)">음식 공장</a> · <a href="https://claude.ai/artifact/KUcT63ePdJpbHaQ7iDMRiM" style="color:var(--skyris)">생활 주방</a> · <a href="https://claude.ai/artifact/6CPYkb3D9FMjZRRTjNQR6e" style="color:var(--skyris)">메이뷰 공장 단지</a></span>
+</footer>
+</div>
+
+<script>
+(function(){
+const NS='http://www.w3.org/2000/svg';
+const el=(t,a={},txt)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(txt!=null)e.textContent=txt;return e};
+const V=n=>`var(--${n})`;
+/* section */
+(function(){
+  const s=document.getElementById('secSvg');
+  const C=18, cols=22, rows=26, ox=46, oy=18, W=ox+cols*C+190, H=oy+rows*C+20;
+  s.setAttribute('viewBox',`0 0 ${W} ${H}`);s.setAttribute('width',W);s.setAttribute('height',H);
+  const Y=r=>oy+r*C, X=c=>ox+c*C;
+  const R=(c,r,w,h,f,lab,tc,dash)=>{s.append(el('rect',{x:X(c),y:Y(r),width:w*C,height:h*C,fill:f,stroke:V('ink'),'stroke-width':.8,'stroke-dasharray':dash||''}));if(lab)s.append(el('text',{x:X(c)+w*C/2,y:Y(r)+h*C/2+4,'text-anchor':'middle','font-size':10,'font-weight':700,fill:tc||V('panel')},lab))};
+  // AFK room rows 0-4
+  R(0,0,22,1,V('c-stone'));R(0,5,22,1,V('c-stone'));
+  s.append(el('circle',{cx:X(11),cy:Y(3.5),r:6,fill:V('bloom')}));
+  s.append(el('text',{x:X(11)+10,y:Y(3.5)+4,'font-size':11,fill:V('ink')},'AFK 자리'));
+  // spawner room rows 6-13
+  R(0,6,1,8,V('c-stone'));R(21,6,1,8,V('c-stone'));
+  [5,11,16].forEach(c=>R(c,8,1,1,V('c-hopper'),'S'));
+  for(let c=1;c<21;c++) if(c!==10&&c!==11) R(c,13,1,1,V('c-glass'));
+  R(0,14,10,1,V('c-stone'));R(12,14,10,1,V('c-stone'));
+  s.append(el('text',{x:X(1),y:Y(12)-4,'font-size':10,fill:V('ink')},'물길 → 가운데'));
+  s.append(el('text',{x:X(13),y:Y(12)-4,'font-size':10,fill:V('ink')},'← 물길'));
+  // drop shaft rows 14-17
+  R(9,14,1,4,V('c-stone'));R(12,14,1,4,V('c-stone'));
+  // crushing wheels row 18-20
+  s.append(el('circle',{cx:X(9),cy:Y(19.5),r:C*1.5,fill:V('c-saw'),stroke:V('ink')}));
+  s.append(el('circle',{cx:X(13),cy:Y(19.5),r:C*1.5,fill:V('c-saw'),stroke:V('ink')}));
+  s.append(el('text',{x:X(11),y:Y(22.3),'text-anchor':'middle','font-size':10,fill:V('ink')},'분쇄 휠 K'));
+  // chute
+  R(10.5,21,1,3,V('c-belt'));
+  // belt + vault row 24
+  R(4,24,14,1,V('c-belt'));
+  R(1,22,3,3,V('c-vault'),'금고');
+  R(18,23,2,2,V('c-bin'),'판매');
+  R(20,24,1,1,V('c-hopper'),'휴');
+  // radius arc 16
+  s.append(el('circle',{cx:X(11),cy:Y(3.5),r:16*C,fill:'none',stroke:V('bloom'),'stroke-dasharray':'5 4'}));
+  // labels right
+  const lx=X(22)+14;
+  [['AFK 방 · 거점',2.5],['스포너실 (완전 암흑)',9.5],['낙하 구멍 2×1',15.8],['분쇄층 K',19.5],['슈트 K−1…K−3',22.5],['선별층 K−4 · 금고 K−5',24.6]].forEach(([t,r])=>s.append(el('text',{x:lx,y:Y(r)+4,'font-size':11,fill:V('ink')},t)));
+  s.append(el('text',{x:lx,y:Y(5.8)+30,'font-size':10,fill:V('bloom')},'점선: AFK 자리 반경 16'));
+})();
+/* calc */
+const $=id=>document.getElementById(id);
+const fmt=n=>n>=100?Math.round(n).toLocaleString('ko-KR'):(Math.round(n*10)/10).toLocaleString('ko-KR');
+function calc(){
+  const sp=+$('sp').value, afk=+$('afk').value, rate=+$('rate').value, per=+$('fert').value;
+  $('spOut').textContent=sp; $('afkOut').textContent=afk+'시간';
+  const bones=sp*rate*afk, meal=bones*3.75, trees=meal/per, gold=trees*3.75;
+  $('kBone').textContent=fmt(bones);$('kMeal').textContent=fmt(meal);$('kTree').textContent=fmt(trees);
+  $('kGold').textContent=fmt(gold);$('kDia').textContent=fmt(gold/8);
+  const podDay=80*24; const pods=trees/podDay;
+  $('kPod').textContent=fmt(pods)+'개';
+  $('status').textContent=`하루 ${afk}시간 모으면, 뼛가루 모드 포드(시간당 약 80그루)를 24시간 쉬지 않고 돌릴 때 ${fmt(pods)}개분입니다. 포드가 더 많으면 톱 주기를 늘려 속도를 맞추거나 금고가 비는 시간을 감수하세요.`;
+}
+['sp','afk','rate','fert'].forEach(id=>$(id).addEventListener('input',calc));calc();
+document.querySelectorAll('#checkList input').forEach(cb=>{try{cb.checked=localStorage.getItem('bm-'+cb.id)==='1'}catch(e){}cb.addEventListener('change',()=>{try{localStorage.setItem('bm-'+cb.id,cb.checked?'1':'0')}catch(e){}})});
+})();
+</script>

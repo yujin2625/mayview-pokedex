@@ -1,0 +1,421 @@
+<title>음식 공장</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Noto+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: engineering drawing set — title block, then numbered sheets (flow, site, pod, hall, calc, checks) in one column, drawings in scrollable frames */
+:root{
+  --paper:#edf2f0; --panel:#f8fbfa; --ink:#1c2a2c; --muted:#5a6c6e; --line:#c3d1cf;
+  --skyris:#2f8378; --bloom:#c9507f; --gold:#b8860b; --diamond:#1f8fb0;
+  --c-dirt:#8a6a47; --c-stone:#a9b1b0; --c-walk:#d9cfb8; --c-glass:#9fd3d8;
+  --c-dep:#d08a2e; --c-saw:#7b8794; --c-piston:#6f5a3a; --c-hopper:#4b5357;
+  --c-belt:#3b4245; --c-bin:#7a5230; --c-crafter:#b0763a; --c-vault:#6d7f86;
+  --c-log:#6e8f5a; --c-leaf:#8fc07a; --grid:#d5dfdd;
+  --f-display:"Do Hyeon","Noto Sans KR",system-ui,sans-serif;
+  --f-body:"Noto Sans KR",system-ui,-apple-system,"Malgun Gothic",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#11191b; --panel:#172225; --ink:#e2ebe9; --muted:#8fa2a2; --line:#2b3b3e;
+  --skyris:#5bb7aa; --bloom:#ea86b1; --gold:#e0b040; --diamond:#58c6e0;
+  --c-dirt:#9b7852; --c-stone:#5f6969; --c-walk:#5d5646; --c-glass:#3f7f86;
+  --c-dep:#e09a3e; --c-saw:#9aa6b3; --c-piston:#9a7f55; --c-hopper:#8a959a;
+  --c-belt:#6b7477; --c-bin:#a8744a; --c-crafter:#c98b4c; --c-vault:#8fa3ab;
+  --c-log:#86ab70; --c-leaf:#5f8f52; --grid:#243235; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#11191b; --panel:#172225; --ink:#e2ebe9; --muted:#8fa2a2; --line:#2b3b3e;
+  --skyris:#5bb7aa; --bloom:#ea86b1; --gold:#e0b040; --diamond:#58c6e0;
+  --c-dirt:#9b7852; --c-stone:#5f6969; --c-walk:#5d5646; --c-glass:#3f7f86;
+  --c-dep:#e09a3e; --c-saw:#9aa6b3; --c-piston:#9a7f55; --c-hopper:#8a959a;
+  --c-belt:#6b7477; --c-bin:#a8744a; --c-crafter:#c98b4c; --c-vault:#8fa3ab;
+  --c-log:#86ab70; --c-leaf:#5f8f52; --grid:#243235; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.65;margin:0}
+.wrap{max-width:1080px;margin:0 auto;padding-inline:20px;padding-block:28px 64px;display:flex;flex-direction:column;gap:44px}
+h1,h2,h3{font-family:var(--f-display);font-weight:400;line-height:1.2;text-wrap:balance;margin:0}
+h1{font-size:clamp(34px,6vw,54px);letter-spacing:.5px}
+h2{font-size:28px}
+h3{font-size:19px}
+p{margin:0;max-width:68ch}
+.mono,code{font-family:var(--f-mono);font-size:.88em}
+code{background:var(--panel);border:1px solid var(--line);padding:0 5px;border-radius:3px}
+.muted{color:var(--muted)}
+/* title block */
+.titleblock{display:grid;grid-template-columns:1.6fr 1fr;border:2px solid var(--ink);background:var(--panel)}
+.tb-main{padding:22px 24px;display:flex;flex-direction:column;gap:12px;border-right:2px solid var(--ink);min-width:0}
+.tb-main .kicker{font-family:var(--f-mono);font-size:12px;letter-spacing:.12em;color:var(--skyris);text-transform:uppercase}
+.tb-meta{display:grid;grid-template-columns:auto 1fr;font-size:13px}
+.tb-meta div{padding:8px 12px;border-bottom:1px solid var(--line)}
+.tb-meta div:nth-child(odd){font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;color:var(--muted);text-transform:uppercase;border-right:1px solid var(--line)}
+.tb-meta div:nth-last-child(-n+2){border-bottom:0}
+@media (max-width:720px){.titleblock{grid-template-columns:1fr}.tb-main{border-right:0;border-bottom:2px solid var(--ink)}}
+/* ratios */
+.ratios{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--line);background:var(--panel)}
+.ratio{padding:14px 16px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:4px;min-width:0}
+.ratio:last-child{border-right:0}
+.ratio b{font-family:var(--f-display);font-weight:400;font-size:26px;font-variant-numeric:tabular-nums;line-height:1.1}
+.ratio span{font-size:12.5px;color:var(--muted)}
+.ratio .g{color:var(--gold)} .ratio .d{color:var(--diamond)} .ratio .s{color:var(--skyris)}
+@media (max-width:760px){.ratios{grid-template-columns:repeat(2,1fr)}.ratio:nth-child(2){border-right:0}.ratio:nth-child(-n+2){border-bottom:1px solid var(--line)}}
+/* sheet */
+.sheet{display:flex;flex-direction:column;gap:18px}
+.sheet-head{display:flex;align-items:baseline;gap:14px;border-bottom:2px solid var(--ink);padding-bottom:8px;flex-wrap:wrap}
+.sheet-no{font-family:var(--f-mono);font-size:12px;font-weight:600;letter-spacing:.08em;border:1.5px solid var(--ink);padding:2px 8px}
+.sheet-head .sub{font-size:13px;color:var(--muted);margin-left:auto}
+.frame{border:1px solid var(--line);background:var(--panel);overflow-x:auto;padding:14px}
+.frame svg{display:block;margin:0 auto}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.two>*{min-width:0}
+@media (max-width:860px){.two{grid-template-columns:1fr}}
+/* flow */
+.flow{display:flex;flex-wrap:wrap;gap:10px;align-items:stretch;list-style:none;padding:0;margin:0;counter-reset:st}
+.flow li{flex:1 1 150px;min-width:0;background:var(--panel);border:1px solid var(--line);padding:12px 12px 12px;position:relative;display:flex;flex-direction:column;gap:4px;counter-increment:st}
+.flow li::before{content:counter(st);font-family:var(--f-mono);font-size:11px;color:var(--muted)}
+.flow li b{font-weight:700;font-size:14.5px}
+.flow li span{font-size:12.5px;color:var(--muted);line-height:1.5}
+.flow li .io{font-family:var(--f-mono);font-size:11.5px;color:var(--skyris)}
+.flow li.money{border-color:var(--gold)} .flow li.money .io{color:var(--gold)}
+.flow li.dia{border-color:var(--diamond)} .flow li.dia .io{color:var(--diamond)}
+/* controls */
+.seg{display:inline-flex;border:1px solid var(--ink);flex-wrap:wrap}
+.seg button{font:inherit;font-size:13px;background:transparent;color:var(--ink);border:0;border-right:1px solid var(--ink);padding:6px 12px;cursor:pointer}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.seg button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--skyris);outline-offset:2px}
+.ctrl-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+/* legend */
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--muted)}
+.legend i{display:inline-block;width:12px;height:12px;vertical-align:-1px;margin-right:5px;border:1px solid var(--line)}
+/* table */
+.tbl{overflow-x:auto;border:1px solid var(--line);background:var(--panel)}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th,td{text-align:left;padding:8px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;background:var(--paper)}
+tr:last-child td{border-bottom:0}
+td.mono{white-space:nowrap}
+/* steps */
+.steps{margin:0;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:0;counter-reset:s;border:1px solid var(--line);background:var(--panel)}
+.steps li{counter-increment:s;display:grid;grid-template-columns:44px 1fr;border-bottom:1px solid var(--line)}
+.steps li:last-child{border-bottom:0}
+.steps li::before{content:counter(s);font-family:var(--f-mono);font-weight:600;display:flex;align-items:flex-start;justify-content:center;padding-top:10px;border-right:1px solid var(--line);color:var(--skyris)}
+.steps li>div{padding:10px 14px;min-width:0}
+.steps li b{display:block}
+.steps li span{font-size:13.5px;color:var(--muted)}
+/* notes */
+.note{border-left:3px solid var(--bloom);background:var(--panel);padding:12px 16px;font-size:14px;display:flex;flex-direction:column;gap:6px}
+.note.gold{border-left-color:var(--gold)}
+.note b{font-weight:700}
+/* calc */
+.calc{display:grid;grid-template-columns:300px 1fr;border:2px solid var(--ink);background:var(--panel)}
+.calc-in{padding:18px;border-right:2px solid var(--ink);display:flex;flex-direction:column;gap:14px;min-width:0}
+.calc-in label{display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:500}
+.calc-in input[type=range]{width:100%;accent-color:var(--skyris)}
+.calc-in select,.calc-in input[type=number]{font:inherit;font-size:14px;padding:6px 8px;background:var(--paper);color:var(--ink);border:1px solid var(--line)}
+.calc-out{padding:18px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--line)}
+.kpi{padding:10px 12px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);min-width:0}
+.kpi:nth-child(3n){border-right:0}
+.kpi:nth-last-child(-n+3){border-bottom:0}
+.kpi small{display:block;font-size:11.5px;color:var(--muted)}
+.kpi b{font-family:var(--f-display);font-weight:400;font-size:24px;font-variant-numeric:tabular-nums}
+.kpi.g b{color:var(--gold)} .kpi.d b{color:var(--diamond)}
+.bar{height:10px;background:var(--paper);border:1px solid var(--line);position:relative}
+.bar>i{position:absolute;inset:0 auto 0 0;background:var(--skyris)}
+.bar.over>i{background:var(--bloom)}
+.status{font-size:13.5px}
+.status.warn{color:var(--bloom)}
+@media (max-width:760px){.calc{grid-template-columns:1fr}.calc-in{border-right:0;border-bottom:2px solid var(--ink)}.kpis{grid-template-columns:repeat(2,1fr)}.kpi{border-right:1px solid var(--line)!important;border-bottom:1px solid var(--line)!important}.kpi:nth-child(2n){border-right:0!important}}
+/* phases */
+.phases{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--line);background:var(--panel)}
+.phase{padding:16px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:8px;min-width:0}
+.phase:last-child{border-right:0}
+.phase .tag{font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;color:var(--skyris)}
+.phase ul{margin:0;padding-left:18px;font-size:13.5px;display:flex;flex-direction:column;gap:3px}
+@media (max-width:760px){.phases{grid-template-columns:1fr}.phase{border-right:0;border-bottom:1px solid var(--line)}}
+.checks{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;border:1px solid var(--line);background:var(--panel)}
+.checks li{display:grid;grid-template-columns:28px 1fr;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line);font-size:14px}
+.checks li:last-child{border-bottom:0}
+.checks input{width:16px;height:16px;margin-top:4px;accent-color:var(--skyris)}
+.checks span small{display:block;color:var(--muted);font-size:12.5px}
+svg text{font-family:var(--f-body)}
+svg .mono{font-family:var(--f-mono)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+.flowdash{stroke-dasharray:6 5;animation:dash 1.2s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-22}}
+footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:14px;display:flex;flex-direction:column;gap:4px}
+.pill{display:inline-block;font-family:var(--f-mono);font-size:11px;padding:1px 7px;border:1px solid var(--line);border-radius:10px;white-space:nowrap}
+.pill.ok{border-color:var(--skyris);color:var(--skyris)}
+.pill.warn{border-color:var(--gold);color:var(--gold)}
+.pill.no{border-color:var(--bloom);color:var(--bloom)}
+tr.hl td{background:var(--paper)}
+</style>
+
+<div class="wrap">
+
+<header class="titleblock">
+  <div class="tb-main">
+    <div class="kicker">Mayview · Food Works</div>
+    <h1>음식 공장</h1>
+    <p>작물을 층층이 키워 음식으로 가공하고 판매함에 넣는 수직 농장입니다. 팩의 판매가표 422개 전부와 요리 모드 레시피를 원재료까지 거슬러 계산해서, 금화 1개를 가장 적은 원재료로 채우는 음식을 골랐습니다.</p>
+  </div>
+  <div class="tb-meta">
+    <div>도면</div><div>설계도 세트 A–E (7장)</div>
+    <div>축척</div><div>1칸 = 1블록</div>
+    <div>기준면</div><div><span class="mono">F</span> = 각 층 바닥</div>
+    <div>모드</div><div>Create 6 · Central Kitchen · Brewin' and Chewin'</div>
+    <div>판</div><div>v1 · 2026-09-29</div>
+  </div>
+</header>
+
+<section class="ratios" aria-label="핵심 수치">
+  <div class="ratio"><b class="g">금화 1</b><span>판매함 1회 판매의 상한. 422개 품목 중 한 번에 64동화(금화 1)를 넘는 것은 없습니다</span></div>
+  <div class="ratio"><b class="s">밀 1 + 버섯 1</b><span>맥주 4잔 = 금화 1. 씨앗 1과 물 1000mB 추가. 원재료가 가장 적게 드는 자동화 음식</span></div>
+  <div class="ratio"><b>밀 8 + 코코아 4</b><span>쿠키 32개 = 금화 1. 조합기만으로 만들 수 있는 가장 단순한 라인</span></div>
+  <div class="ratio"><b>밀 170개</b><span>밀을 그대로 팔 때 금화 1에 드는 양 (16개 = 동화 6)</span></div>
+</section>
+
+<section class="sheet">
+  <div class="sheet-head"><span class="sheet-no">A-0</span><h2>수입은 판매함 대수로 정해집니다</h2><span class="sub">품목보다 판매함이 먼저</span></div>
+  <div class="two">
+    <div class="note gold"><b>판매 1회 = 최대 금화 1</b><span>어떤 음식이든 판매함이 한 번에 받는 묶음 가치는 64동화 이하입니다. 그래서 판매함 1대의 수입 상한은 품목과 상관없이 정해져 있습니다. 구리 시간당 금화 120, 미스릴 180, 비리디움 360.</span></div>
+    <div class="note"><b>그래서 고르는 기준</b><span>① 묶음 가치가 딱 64동화인 음식(40·48동화짜리는 판매함 한 번을 덜 채움), ② 그 64동화를 가장 적은 원재료로 채우는 음식, ③ Create로 사람 손 없이 돌아가는 음식. 스카이리스 계단도 같은 64동화 묶음이라 판매함을 서로 나눠 씁니다.</span></div>
+  </div>
+</section>
+
+<section class="sheet" id="rank">
+  <div class="sheet-head"><span class="sheet-no">A-1</span><h2>효율 순위</h2><span class="sub">자동화 가능한 것만 · 금화 1개 기준</span></div>
+  <div class="tbl"><table>
+    <thead><tr><th>음식</th><th>한 번 판매</th><th>금화 1에 드는 원재료</th><th>원재료 수</th><th>가공 설비</th><th>자동화</th></tr></thead>
+    <tbody>
+      <tr class="hl"><td><b>맥주</b></td><td class="mono">4잔 = 64</td><td>밀 1 · 밀 씨앗 1 · 갈색 버섯 1 · 물 1000mB</td><td class="mono">2</td><td>통(Keg) 발효 → 따르기</td><td><span class="pill warn">검증 필요</span></td></tr>
+      <tr class="hl"><td><b>쿠키</b></td><td class="mono">32개 = 64</td><td>밀 8 · 코코아 콩 4</td><td class="mono">12</td><td>조합기 (밀·코코아·밀 → 8개)</td><td><span class="pill ok">가능</span></td></tr>
+      <tr><td>생강 쿠키</td><td class="mono">32개 = 64</td><td>밀 8 · 생강 2</td><td class="mono">10</td><td>도마(생강 다지기) + 조합기</td><td><span class="pill ok">가능</span></td></tr>
+      <tr><td>시럽 쿠키</td><td class="mono">32개 = 64</td><td>밀 8 · 사과 6</td><td class="mono">14</td><td>요리 냄비(시럽) + 조합기</td><td><span class="pill ok">가능</span></td></tr>
+      <tr><td>비건 피자</td><td class="mono">1판 = 64</td><td>밀 2 · 토마토 2 · 피망 1 · 양파 1 · 감자 0.5</td><td class="mono">6.5</td><td>맷돌·믹서(반죽), 요리 냄비(소스), 도마, 조합기</td><td><span class="pill ok">가능</span></td></tr>
+      <tr><td>양배추 롤</td><td class="mono">4개 = 40</td><td>양배추 3.2 · 감자 3.2</td><td class="mono">6.4</td><td>도마 + 요리 냄비</td><td><span class="pill ok">가능</span></td></tr>
+      <tr><td>마늘빵</td><td class="mono">4개 = 40</td><td>마늘 2.1 · 밀 1.4</td><td class="mono">3.6</td><td>사워도우 반복 + 도마 + 조합기</td><td><span class="pill ok">가능</span></td></tr>
+      <tr><td>치킨 수프</td><td class="mono">4개 = 48</td><td>당근 5.3 · 닭고기 2.7 · 양배추 2.7</td><td class="mono">10.7</td><td>도마 + 요리 냄비</td><td><span class="pill warn">닭 필요</span></td></tr>
+      <tr><td class="muted">비교: 스카이리스 계단</td><td class="mono">64개 = 64</td><td>원목 16 (뼛가루 약 1.2)</td><td class="mono">16</td><td>조합기 + 톱</td><td><span class="pill ok">가능</span></td></tr>
+    </tbody>
+  </table></div>
+  <p class="muted" style="font-size:13px">40·48동화 묶음은 판매함 한 번에 금화 0.63·0.75개밖에 못 채우므로, 판매함이 병목이면 64동화 묶음보다 불리합니다. 요리 냄비·도마·통은 Create Central Kitchen과 Slice and Dice로 자동화합니다.</p>
+
+  <div class="two">
+    <div class="note"><b>수동 전용이지만 비싼 것</b><span>Let's Do 계열 조리대(Candlelight 스토브의 로스트비프, 치킨 알프레도, HerbalBrews 커피 등)와 Ube's Delight 제빵 매트 요리는 원재료당 가치가 높지만 Create로 자동화할 방법이 없습니다. 치즈가 들어가는 요리도 치즈 덩어리를 월드에 놓아 숙성시켜야 해서 막힙니다.</span></div>
+    <div class="note gold"><b>가공하면 손해인 것</b><span>빵(원재료의 0.67배), 밀가루(0.67배), 토마토 소스(0.75배), 구운 고기(1배), 구운 대구·연어(1.04배). 물고기는 날것이 가장 비싼 원재료(개당 4.8동화)지만 낚시는 사람이 해야 합니다.</span></div>
+  </div>
+  <div class="note"><b>분석 중 발견: 할로할로 복제 반복</b><span>Ube's Delight의 할로할로 3개 + 우유 1병으로 할로할로 대접을 만들고, 도마로 자르면 할로할로 4개가 나옵니다. 우유 1병마다 1개(16동화)가 늘어나는 구조라 의도치 않은 복제로 보입니다. 이 설계에는 넣지 않았습니다.</span></div>
+</section>
+
+
+<section class="sheet" id="eff">
+  <div class="sheet-head"><span class="sheet-no">A-2</span><h2>시간·공간 효율</h2><span class="sub">층 = 1청크 × 높이 4 · 플레이어가 근처에 있을 때</span></div>
+  <p>원재료가 적게 드는 것과 층당 많이 버는 것은 다릅니다. 작물은 종류마다 수확량이 다르고, 서로 다른 작물을 한 줄씩 번갈아 심으면 성장이 2배 빨라지는 바닐라 규칙이 있어서 여러 작물이 들어가는 요리가 층당 효율에서 유리합니다. 아래는 작물 층 1개(경작지 210칸)가 시간당 버는 금화와, 비리디움 판매함 1대(시간당 금화 360)를 채우는 데 드는 전체 층 수입니다.</p>
+  <div class="frame"><svg id="effSvg" role="img" aria-label="층당 시간당 금화 막대그래프"></svg></div>
+  <div class="tbl"><table>
+    <thead><tr><th>음식</th><th>작물 층 1개 금화/시간</th><th>판매함 1대(360) 채우는 층</th><th>전체 층당 금화/시간</th><th>근거·가정</th></tr></thead>
+    <tbody>
+      <tr class="hl"><td><b>맥주</b></td><td class="mono">264</td><td class="mono">밀 1.4 + 버섯 1 + 통 1 ≈ 4</td><td class="mono">≈ 90</td><td>밀 한 가지만 심어 성장 느림(시간당 1.26회). 버섯 층·발효 시간은 추정(10분, 통 60개)</td></tr>
+      <tr class="hl"><td><b>양배추 롤</b></td><td class="mono">104</td><td class="mono">작물 3.5 + 가공 0.5 ≈ 4</td><td class="mono">≈ 90</td><td>양배추·감자 번갈아 심기(2.51회). 묶음이 40동화라 판매함은 1.6대 필요</td></tr>
+      <tr><td>비건 피자</td><td class="mono">97</td><td class="mono">작물 3.7 + 가공 1 ≈ 5</td><td class="mono">≈ 72</td><td>밀·토마토·피망·양파·감자 번갈아 심기. 토마토는 밀과 같은 속도로 가정</td></tr>
+      <tr><td>쿠키</td><td class="mono">33</td><td class="mono">밀 11 + 코코아 0.4 ≈ 12</td><td class="mono">≈ 30</td><td>판매 1회에 밀 8개. 코코아 층은 시간당 약 4,000개라 남음</td></tr>
+      <tr><td class="muted">비교: 스카이리스 포드</td><td class="mono">300 (포드 1개)</td><td class="mono">포드 1.2 (높이 45)</td><td class="mono">≈ 27 (높이 4 환산)</td><td>뼛가루 모드. 24시간 돌지만 뼛가루(시간당 약 350)가 듭니다</td></tr>
+    </tbody>
+  </table></div>
+  <div class="two">
+    <div class="note gold"><b>결론</b><span>시간·공간 효율은 <b>맥주와 양배추 롤이 공동 1위</b>(전체 층당 시간당 금화 약 90), 비건 피자가 그다음이고, 쿠키는 원재료가 단순한 대신 층당 효율이 3분의 1입니다. 맥주는 통 자동화와 발효 시간 확인이 남아 있어서, 확실한 쪽은 양배추 롤입니다(요리 냄비·도마는 Central Kitchen·Slice and Dice로 자동화).</span></div>
+    <div class="note"><b>하루 단위로 보면</b><span>작물은 기지에 있는 시간에만 자랍니다. 하루 4시간이면 양배추 롤 4층 ≈ 금화 1,440입니다. 스카이리스는 24시간 돌지만 결국 뼛가루(기지에 있을 때 만드는)에 묶이므로, 둘 다 "기지에 있는 시간"이 공통 한계입니다. 스포너 1개·1시간의 뼛가루로 금화 약 1,280(스카이리스 포드 4.3시간분)이라, 기지에 있는 시간당으로는 뼛가루 공장 + 스카이리스가 가장 셉니다. 음식 타워는 그 옆에 쌓아 같은 시간에 함께 돌리는 용도입니다.</span></div>
+  </div>
+  <p class="muted" style="font-size:12.5px">계산: 무작위 틱은 블록당 시간당 52.7회. 작물(7단계)은 물 젖은 경작지에서 틱당 성장 확률 1/3(다른 작물과 번갈아 심을 때) 또는 1/6(같은 작물만 빽빽할 때) → 시간당 수확 2.51회 / 1.26회. 순수확(다시 심는 1개 제외): 밀·양배추·토마토 1, 감자·당근·양파·피망 1.71. 코코아는 2단계 × 확률 1/5, 수확당 3개.</p>
+</section>
+
+<section class="sheet" id="tower">
+  <div class="sheet-head"><span class="sheet-no">B-1</span><h2>수직 음식 타워</h2><span class="sub">1청크 발판 · 층 높이 4</span></div>
+  <p>작물은 무작위 틱으로 자라고, 무작위 틱은 플레이어가 수평 128칸 안에 있는 청크에서만 돕니다. 이 거리는 청크 기준(가로)이라 <b>높이는 상관없습니다</b>. 그래서 기지 AFK 자리 위아래로 작물 층을 쌓으면 층 수만큼 생산이 늘어납니다. 동물이 없으니 Does It Tick의 수직 32칸 제한도 걸리지 않습니다. 기지에 있을 때만 도는 설비라 강제 로드는 필요 없습니다.</p>
+  <div class="two">
+    <figure class="frame" style="margin:0"><svg id="towerSvg" role="img" aria-label="음식 타워 입면도"></svg>
+      <figcaption class="muted mono" style="font-size:11.5px;text-align:center;margin-top:6px">B-1 입면도 · 쿠키 + 맥주 구성 예시</figcaption></figure>
+    <figure class="frame" style="margin:0"><svg id="wheatSvg" role="img" aria-label="밀 층 평면도"></svg>
+      <figcaption class="muted mono" style="font-size:11.5px;text-align:center;margin-top:6px">B-2 밀 층 평면도 · 16×16</figcaption></figure>
+  </div>
+  <div class="tbl"><table>
+    <thead><tr><th>층</th><th>구성</th><th>수확·회수</th></tr></thead>
+    <tbody>
+      <tr><td>밀 층 ×N</td><td>경작지 15×14 = 210칸, 가운데 물길 1줄(물은 4칸까지 적심). 천장에 조명.</td><td>갠트리에 기계식 수확기를 한 줄로 달아 왕복. 수확기는 다 자란 작물만 베고 다시 심습니다. 바닥 밑 고급 아이템 수집기(반경 7)가 층 전체를 흡수.</td></tr>
+      <tr><td>코코아 층</td><td>정글 원목 벽 3줄(높이 3) 양면에 코코아. 규토리 과수원과 같은 벽 구조로 252자리.</td><td>통로를 따라 가는 갠트리에 수확기 3단. 코코아는 한 층이면 쿠키 라인에 충분합니다.</td></tr>
+      <tr><td>버섯 층</td><td>어둡게. 방식은 B-3 참고.</td><td>맥주를 만들 때만 필요.</td></tr>
+      <tr><td>가공 층</td><td>쿠키 조합기, 통(Keg)과 따르는 줄, 탱커드 조합기</td><td>위층 작물은 슈트로 떨어져 들어옵니다.</td></tr>
+      <tr><td>판매 층 (지면)</td><td>판매함 뱅크, 코인 압축, 금고</td><td>스카이리스 가공동과 같은 방식. 두 공장이 판매함을 나눠 쓰면 대수만 늘리면 됩니다.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="sheet" id="lines">
+  <div class="sheet-head"><span class="sheet-no">C-1</span><h2>가공 라인</h2><span class="sub">양배추 롤·쿠키는 확실, 맥주는 검증 후</span></div>
+  <ol class="flow">
+    <li><b>양배추 롤 · 손질</b><span>디플로이어 도마(Slice and Dice)로 양배추 → 잎 2장, 감자 → 조각 2개.</span><span class="io">양배추 1 → 잎 2</span></li>
+    <li><b>양배추 롤 · 요리</b><span>요리 냄비(Central Kitchen)에 잎 1 + 감자 조각 1. 한 번에 약 10초.</span><span class="io">→ 양배추 롤 1</span></li>
+    <li class="money"><b>양배추 롤 · 판매</b><span>4개가 판매 1회(40동화).</span><span class="io">롤 4 → 동화 40</span></li>
+    <li><b>쿠키 · 조합</b><span>기계식 조합기 3대를 가로로. 밀·코코아·밀을 넣으면 쿠키 8개.</span><span class="io">밀 2 + 코코아 1 → 8</span></li>
+    <li class="money"><b>쿠키 · 판매</b><span>32개가 모이면 판매함으로. 4번 조합 = 판매 1회.</span><span class="io">쿠키 32 → 금화 1</span></li>
+    <li><b>맥주 · 발효</b><span>통에 물 1000mB(펌프), 밀·씨앗·갈색 버섯을 깔때기로. 발효 시간은 측정 필요.</span><span class="io">→ 맥주 1000mB</span></li>
+    <li><b>맥주 · 따르기</b><span>Central Kitchen의 통 연동으로 펌프가 맥주를 빼고, 스파우트가 벨트 위 탱커드에 250mB씩 채웁니다.</span><span class="io">250mB → 맥주 1잔</span></li>
+    <li class="money"><b>맥주 · 판매</b><span>4잔이 판매 1회.</span><span class="io">맥주 4 → 금화 1</span></li>
+  </ol>
+  <div class="two">
+    <div class="note"><b>탱커드</b><span>맥주를 담는 잔이 필요하면 판자 5 + 철 조각 2 → 탱커드 4개(판매 1회분)입니다. 판자는 스카이리스 판자를 쓰면 됩니다(판자 1개 = 계단 1개 = 금화 1/64). 통 자체는 철 주괴 4 + 벌집 1 + 판자 4.</span></div>
+    <div class="note"><b>통 온도</b><span>통은 바이옴과 주변 블록으로 온도가 정해지고, 레시피마다 맞는 온도가 있을 수 있습니다. 맥주 레시피에는 온도 지정이 없어 기본값으로 보이지만 게임에서 확인하세요.</span></div>
+  </div>
+  <h3>B-3 갈색 버섯 공급 방식</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>방식</th><th>내용</th><th>평가</th></tr></thead>
+    <tbody>
+      <tr><td>거대 버섯 + 뼛가루</td><td>균사체·회백토 위 갈색 버섯에 디플로이어로 뼛가루(성공 40%) → 거대 갈색 버섯. 드릴 캐리지로 부숴 버섯 회수</td><td>뼛가루 1개당 버섯 여러 개. 가장 빠르지만 거대 버섯을 캐는 장치가 필요</td></tr>
+      <tr><td>Farmer's Delight 버섯 군락</td><td>비옥한 토양 위 군락이 자라면 가위 든 디플로이어로 수확</td><td>뼛가루 없이 돌지만 속도 확인 필요</td></tr>
+      <tr><td>어두운 방 번식</td><td>균사체 위에 퍼지게 두고 수확</td><td>느림. 보조용</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="sheet" id="calc">
+  <div class="sheet-head"><span class="sheet-no">D-1</span><h2>생산량 계산기</h2><span class="sub">시간당 · 플레이어가 근처에 있을 때</span></div>
+  <div class="calc">
+    <div class="calc-in">
+      <label for="prod">만들 음식
+        <select id="prod"><option value="cabbage" selected>양배추 롤</option><option value="beer">맥주</option><option value="pizza">비건 피자</option><option value="cookie">쿠키</option></select></label>
+      <label for="wf">작물 층 수 <span class="mono" id="wfOut">4</span><input type="range" id="wf" min="1" max="20" value="4"></label>
+      <label for="h">성장 속도 가정
+        <select id="h"><option value="0.5">계산값의 절반 (보수적)</option><option value="1" selected>바닐라 계산값</option></select></label>
+      <label for="mush" id="mushL">갈색 버섯/시간<input type="number" id="mush" min="0" value="300"></label>
+      <label for="kegs" id="kegL">통 수<input type="number" id="kegs" min="1" value="20"></label>
+      <label for="ft" id="ftL">발효 시간(분, 측정해서 입력)<input type="number" id="ft" min="1" value="10"></label>
+      <label for="tier">판매함 등급
+        <select id="tier"><option value="30">구리 · 30초</option><option value="20">미스릴 · 20초</option><option value="10" selected>비리디움 · 10초</option></select></label>
+      <label for="bins">판매함 수<input type="number" id="bins" min="1" value="2"></label>
+      <p class="muted" style="font-size:12px">가정: 작물 층 210칸. 층당 금화/시간 = 양배추 롤 104 · 맥주 264(밀 기준) · 비건 피자 97 · 쿠키 33 (A-2 계산). 코코아·가공 층은 따로 셉니다.</p>
+    </div>
+    <div class="calc-out" aria-live="polite">
+      <div class="kpis">
+        <div class="kpi"><small>작물 층이 만드는 금화/시간</small><b id="kWheat">–</b></div>
+        <div class="kpi"><small>판매 횟수/시간</small><b id="kLots">–</b></div>
+        <div class="kpi"><small>판매함 상한</small><b id="kCap">–</b></div>
+        <div class="kpi g"><small>금화/시간</small><b id="kGold">–</b></div>
+        <div class="kpi d"><small>다이아 코인/시간</small><b id="kDia">–</b></div>
+        <div class="kpi"><small>병목</small><b id="kNeck" style="font-size:19px">–</b></div>
+      </div>
+      <p class="status" id="status">–</p>
+    </div>
+  </div>
+</section>
+
+<section class="sheet">
+  <div class="sheet-head"><span class="sheet-no">E-1</span><h2>확장과 검증</h2><span class="sub">위아래로 층 추가</span></div>
+  <div class="phases">
+    <div class="phase"><span class="tag">1단계</span><h3>쿠키 라인</h3><ul><li>밀 층 2 + 코코아 층 1</li><li>조합기 3대 1세트</li><li>구리 판매함 1</li></ul></div>
+    <div class="phase"><span class="tag">2단계</span><h3>밀 층 늘리기</h3><ul><li>밀 층 6~10 (쿠키는 밀이 병목)</li><li>판매함 비리디움으로 교체</li></ul></div>
+    <div class="phase"><span class="tag">3단계</span><h3>맥주로 전환</h3><ul><li>버섯 층 + 통 여러 개</li><li>같은 밀 층으로 금화가 8배(쿠키 밀 8 → 맥주 밀 1)</li><li>병목이 판매함으로 옮겨 감</li></ul></div>
+  </div>
+  <ul class="checks" id="checkList">
+    <li><input type="checkbox" id="f1"><label for="f1"><span>통에 깔때기로 재료를, 펌프로 물을 넣어 발효가 시작되는가<small>안 되면 맥주는 수동으로 두고 쿠키 라인으로 갑니다.</small></span></label></li>
+    <li><input type="checkbox" id="f2"><label for="f2"><span>맥주 발효 시간 측정<small>계산기에 넣으세요. 통 수를 정하는 값입니다.</small></span></label></li>
+    <li><input type="checkbox" id="f3"><label for="f3"><span>스파우트로 탱커드에 맥주를 담을 수 있는가 (Central Kitchen)<small>안 되면 통의 따르는 칸에 탱커드를 넣고 깔때기로 빼는 방식으로.</small></span></label></li>
+    <li><input type="checkbox" id="f4"><label for="f4"><span>수확기가 코코아와 밀을 다시 심는가</span></label></li>
+    <li><input type="checkbox" id="f5"><label for="f5"><span>AFK 자리에서 가장 먼 층까지 작물이 자라는가<small>수평 128칸 안이면 높이와 상관없이 자라야 합니다.</small></span></label></li>
+  </ul>
+</section>
+
+<footer>
+  <span>근거: <code>mayview_sellables.js</code> 판매가 422개 전부, 모드 jar 370개 + 바닐라의 레시피 20,086개와 태그를 원재료까지 전개. KubeJS 레시피 변경 반영. 맥주: <code>brewinandchewin:fermenting/beer_from_water</code>, <code>pouring/beer</code>(250mB), 통 용량 1000mB(<code>brewinandchewin-common.toml</code>). 쿠키: <code>minecraft:cookie</code>(밀·코코아·밀 → 8).</span>
+  <span>추정값: 작물 수확 횟수, 버섯 공급량, 발효 시간. 판매할 수 없는 원재료(달걀·우유·꿀·버섯)는 가정값으로 계산했습니다. 같이 보기: <a href="https://claude.ai/artifact/7NnSn9Rz3iteEFe66Csdih" style="color:var(--skyris)">스카이리스 계단 공장</a> · <a href="https://claude.ai/artifact/Ng3aJGZY9Wta7rwcCrcfNJ" style="color:var(--skyris)">뼛가루 공장</a> · <a href="https://claude.ai/artifact/HLTQoq81DLmw1MqY1utSA1" style="color:var(--skyris)">규토리 과수원</a> · <a href="https://claude.ai/artifact/KUcT63ePdJpbHaQ7iDMRiM" style="color:var(--skyris)">생활 주방</a> · <a href="https://claude.ai/artifact/6CPYkb3D9FMjZRRTjNQR6e" style="color:var(--skyris)">메이뷰 공장 단지</a></span>
+</footer>
+</div>
+
+<script>
+(function(){
+const NS='http://www.w3.org/2000/svg';
+const el=(t,a={},txt)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(txt!=null)e.textContent=txt;return e};
+const V=n=>`var(--${n})`;
+/* eff chart */
+(function(){
+  const s=document.getElementById('effSvg');
+  const rows=[['맥주',264,90],['양배추 롤',104,90],['비건 피자',97,72],['쿠키',33,30],['스카이리스 (참고)',null,27]];
+  const W=640, lx=130, bw=420, rh=34, H=rows.length*rh+50, max=280;
+  s.setAttribute('viewBox',`0 0 ${W} ${H}`);s.setAttribute('width',W);s.setAttribute('height',H);
+  const X=v=>lx+v/max*bw;
+  [0,70,140,210,280].forEach(v=>{s.append(el('line',{x1:X(v),y1:14,x2:X(v),y2:H-30,stroke:V('grid')}));s.append(el('text',{x:X(v),y:H-14,'text-anchor':'middle','font-size':10,class:'mono',fill:V('muted')},v))});
+  rows.forEach(([n,a,b],i)=>{
+    const y=20+i*rh;
+    s.append(el('text',{x:lx-8,y:y+15,'text-anchor':'end','font-size':12,fill:V('ink')},n));
+    if(a!=null){s.append(el('rect',{x:lx,y:y,width:X(a)-lx,height:10,fill:V('c-leaf')}));s.append(el('text',{x:X(a)+5,y:y+9,'font-size':10,class:'mono',fill:V('muted')},a));}
+    s.append(el('rect',{x:lx,y:y+12,width:X(b)-lx,height:10,fill:V('gold')}));
+    s.append(el('text',{x:X(b)+5,y:y+21,'font-size':10,class:'mono',fill:V('ink')},b));
+  });
+  s.append(el('rect',{x:W-190,y:H-44,width:10,height:8,fill:V('c-leaf')}));s.append(el('text',{x:W-175,y:H-37,'font-size':10,fill:V('muted')},'작물 층 1개'));
+  s.append(el('rect',{x:W-110,y:H-44,width:10,height:8,fill:V('gold')}));s.append(el('text',{x:W-95,y:H-37,'font-size':10,fill:V('muted')},'전체 층당'));
+})();
+/* tower */
+(function(){
+  const s=document.getElementById('towerSvg');
+  const k=7, W=380, x0=90, w=16*9;
+  const floors=[['판매 층','c-bin'],['가공 층','c-crafter'],['AFK 방','bloom'],['밀 층 1','c-leaf'],['밀 층 2','c-leaf'],['밀 층 3','c-leaf'],['코코아 층','c-log'],['버섯 층','c-hopper'],['밀 층 4','c-leaf'],['밀 층 5','c-leaf'],['밀 층 6','c-leaf']];
+  const H=floors.length*4*k+60;
+  s.setAttribute('viewBox',`0 0 ${W} ${H}`);s.setAttribute('width',W);s.setAttribute('height',H);
+  floors.forEach(([t,c],i)=>{
+    const y=H-30-(i+1)*4*k;
+    s.append(el('rect',{x:x0,y:y+3*k,width:w,height:k,fill:V('c-stone'),stroke:V('ink'),'stroke-width':.6}));
+    s.append(el('rect',{x:x0,y:y,width:w,height:3*k,fill:V(c),'fill-opacity':c==='bloom'?.35:.55,stroke:V('ink'),'stroke-width':.6}));
+    s.append(el('text',{x:x0+w+8,y:y+2*k+3,'font-size':10.5,fill:V('ink')},t));
+    s.append(el('text',{x:x0-8,y:y+2*k+3,'text-anchor':'end','font-size':9,class:'mono',fill:V('muted')},'F+'+(i*4)));
+  });
+  s.append(el('rect',{x:x0+w-10,y:30,width:6,height:H-60-4*k,fill:V('c-belt'),opacity:.8}));
+  s.append(el('text',{x:x0+w+8,y:22,'font-size':10,fill:V('skyris')},'↓ 작물 슈트 (오른쪽 모서리)'));
+  s.append(el('rect',{x:x0-2,y:H-30,width:w+4,height:8,fill:V('c-dirt'),opacity:.6}));
+})();
+/* wheat floor */
+(function(){
+  const s=document.getElementById('wheatSvg');
+  const C=19, N=16, ox=18, oy=18, W=ox+N*C+14, H=oy+N*C+30;
+  s.setAttribute('viewBox',`0 0 ${W} ${H}`);s.setAttribute('width',W);s.setAttribute('height',H);
+  for(let x=0;x<N;x++)for(let z=0;z<N;z++){
+    let f=V('c-dirt'),op=.75;
+    if(x===15||z===15){f=V('c-walk');op=1}
+    else if(x===7){f=V('c-glass');op=1}
+    s.append(el('rect',{x:ox+x*C,y:oy+z*C,width:C,height:C,fill:f,'fill-opacity':op,stroke:V('grid'),'stroke-width':.6}));
+    if(f===V('c-dirt')) s.append(el('line',{x1:ox+x*C+C/2,y1:oy+z*C+4,x2:ox+x*C+C/2,y2:oy+z*C+C-4,stroke:V('gold'),'stroke-width':2}));
+  }
+  s.append(el('rect',{x:ox,y:oy+3*C,width:15*C,height:C*.5,fill:V('c-piston'),opacity:.85}));
+  s.append(el('text',{x:ox+2,y:oy+3*C-4,'font-size':10,fill:V('ink')},'갠트리 + 수확기 한 줄 (남북 왕복)'));
+  s.append(el('circle',{cx:ox+7.5*C,cy:oy+7.5*C,r:7.5*C,fill:'none',stroke:V('diamond'),'stroke-dasharray':'5 4'}));
+  s.append(el('text',{x:ox,y:oy+N*C+20,'font-size':10.5,fill:V('muted')},'밀 210칸 · 가운데 물길 · 점선 = 수집기 반경 7'));
+})();
+/* calc */
+const $=id=>document.getElementById(id);
+const fmt=n=>n>=100?Math.round(n).toLocaleString('ko-KR'):(Math.round(n*10)/10).toLocaleString('ko-KR');
+function calc(){
+  const prod=$('prod').value, wf=+$('wf').value, h=+$('h').value, t=+$('tier').value, bins=Math.max(1,+$('bins').value||1);
+  $('wfOut').textContent=wf;
+  const beer=prod==='beer';
+  ['mushL','kegL','ftL'].forEach(id=>$(id).hidden=!beer);
+  const per={cabbage:104,beer:264,pizza:97,cookie:33}[prod]*h;
+  const lotV=prod==='cabbage'?40/64:1;
+  const crop=wf*per, cap=bins*3600/t*lotV;
+  const opts=[[crop,'작물'],[cap,'판매함']];
+  let extra='';
+  if(beer){
+    const mush=+$('mush').value||0, kegs=Math.max(1,+$('kegs').value||1), ft=Math.max(1,+$('ft').value||10);
+    opts.push([mush,'버섯'],[kegs*60/ft,'통']);
+    extra=` 탱커드가 필요하면 판매 1회에 판자 5 + 철 조각 2(약 5.5동화, 수입의 9%).`;
+  }
+  if(prod==='cabbage') extra=' 묶음이 40동화라 판매함 1회가 금화 0.63개입니다.';
+  if(prod==='cookie') extra=' 코코아 층 1개면 작물 층 30개분까지 충분합니다.';
+  opts.sort((a,b)=>a[0]-b[0]);
+  const gold=opts[0][0], neck=opts[0][1];
+  $('kWheat').textContent=fmt(crop);$('kLots').textContent=fmt(gold/lotV);$('kCap').textContent=fmt(cap);
+  $('kGold').textContent=fmt(gold);$('kDia').textContent=fmt(gold/8);$('kNeck').textContent=neck;
+  $('status').className='status'+(neck==='판매함'?' warn':'');
+  $('status').textContent=(neck==='판매함'?'판매함이 병목입니다. 판매함을 늘리면 금화가 더 나옵니다.':`${neck}이(가) 병목입니다.`)+extra;
+}
+['prod','wf','h','mush','kegs','ft','tier','bins'].forEach(id=>$(id).addEventListener('input',calc));calc();
+document.querySelectorAll('#checkList input').forEach(cb=>{try{cb.checked=localStorage.getItem('fd-'+cb.id)==='1'}catch(e){}cb.addEventListener('change',()=>{try{localStorage.setItem('fd-'+cb.id,cb.checked?'1':'0')}catch(e){}})});
+})();
+</script>

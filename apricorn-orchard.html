@@ -1,0 +1,387 @@
+<title>규토리 과수원</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Noto+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: engineering drawing set — title block, then numbered sheets (flow, site, pod, hall, calc, checks) in one column, drawings in scrollable frames */
+:root{
+  --paper:#edf2f0; --panel:#f8fbfa; --ink:#1c2a2c; --muted:#5a6c6e; --line:#c3d1cf;
+  --skyris:#2f8378; --bloom:#c9507f; --gold:#b8860b; --diamond:#1f8fb0;
+  --c-dirt:#8a6a47; --c-stone:#a9b1b0; --c-walk:#d9cfb8; --c-glass:#9fd3d8;
+  --c-dep:#d08a2e; --c-saw:#7b8794; --c-piston:#6f5a3a; --c-hopper:#4b5357;
+  --c-belt:#3b4245; --c-bin:#7a5230; --c-crafter:#b0763a; --c-vault:#6d7f86;
+  --c-log:#6e8f5a; --c-leaf:#8fc07a; --grid:#d5dfdd;
+  --f-display:"Do Hyeon","Noto Sans KR",system-ui,sans-serif;
+  --f-body:"Noto Sans KR",system-ui,-apple-system,"Malgun Gothic",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#11191b; --panel:#172225; --ink:#e2ebe9; --muted:#8fa2a2; --line:#2b3b3e;
+  --skyris:#5bb7aa; --bloom:#ea86b1; --gold:#e0b040; --diamond:#58c6e0;
+  --c-dirt:#9b7852; --c-stone:#5f6969; --c-walk:#5d5646; --c-glass:#3f7f86;
+  --c-dep:#e09a3e; --c-saw:#9aa6b3; --c-piston:#9a7f55; --c-hopper:#8a959a;
+  --c-belt:#6b7477; --c-bin:#a8744a; --c-crafter:#c98b4c; --c-vault:#8fa3ab;
+  --c-log:#86ab70; --c-leaf:#5f8f52; --grid:#243235; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#11191b; --panel:#172225; --ink:#e2ebe9; --muted:#8fa2a2; --line:#2b3b3e;
+  --skyris:#5bb7aa; --bloom:#ea86b1; --gold:#e0b040; --diamond:#58c6e0;
+  --c-dirt:#9b7852; --c-stone:#5f6969; --c-walk:#5d5646; --c-glass:#3f7f86;
+  --c-dep:#e09a3e; --c-saw:#9aa6b3; --c-piston:#9a7f55; --c-hopper:#8a959a;
+  --c-belt:#6b7477; --c-bin:#a8744a; --c-crafter:#c98b4c; --c-vault:#8fa3ab;
+  --c-log:#86ab70; --c-leaf:#5f8f52; --grid:#243235; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.65;margin:0}
+.wrap{max-width:1080px;margin:0 auto;padding-inline:20px;padding-block:28px 64px;display:flex;flex-direction:column;gap:44px}
+h1,h2,h3{font-family:var(--f-display);font-weight:400;line-height:1.2;text-wrap:balance;margin:0}
+h1{font-size:clamp(34px,6vw,54px);letter-spacing:.5px}
+h2{font-size:28px}
+h3{font-size:19px}
+p{margin:0;max-width:68ch}
+.mono,code{font-family:var(--f-mono);font-size:.88em}
+code{background:var(--panel);border:1px solid var(--line);padding:0 5px;border-radius:3px}
+.muted{color:var(--muted)}
+/* title block */
+.titleblock{display:grid;grid-template-columns:1.6fr 1fr;border:2px solid var(--ink);background:var(--panel)}
+.tb-main{padding:22px 24px;display:flex;flex-direction:column;gap:12px;border-right:2px solid var(--ink);min-width:0}
+.tb-main .kicker{font-family:var(--f-mono);font-size:12px;letter-spacing:.12em;color:var(--skyris);text-transform:uppercase}
+.tb-meta{display:grid;grid-template-columns:auto 1fr;font-size:13px}
+.tb-meta div{padding:8px 12px;border-bottom:1px solid var(--line)}
+.tb-meta div:nth-child(odd){font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;color:var(--muted);text-transform:uppercase;border-right:1px solid var(--line)}
+.tb-meta div:nth-last-child(-n+2){border-bottom:0}
+@media (max-width:720px){.titleblock{grid-template-columns:1fr}.tb-main{border-right:0;border-bottom:2px solid var(--ink)}}
+/* ratios */
+.ratios{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--line);background:var(--panel)}
+.ratio{padding:14px 16px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:4px;min-width:0}
+.ratio:last-child{border-right:0}
+.ratio b{font-family:var(--f-display);font-weight:400;font-size:26px;font-variant-numeric:tabular-nums;line-height:1.1}
+.ratio span{font-size:12.5px;color:var(--muted)}
+.ratio .g{color:var(--gold)} .ratio .d{color:var(--diamond)} .ratio .s{color:var(--skyris)}
+@media (max-width:760px){.ratios{grid-template-columns:repeat(2,1fr)}.ratio:nth-child(2){border-right:0}.ratio:nth-child(-n+2){border-bottom:1px solid var(--line)}}
+/* sheet */
+.sheet{display:flex;flex-direction:column;gap:18px}
+.sheet-head{display:flex;align-items:baseline;gap:14px;border-bottom:2px solid var(--ink);padding-bottom:8px;flex-wrap:wrap}
+.sheet-no{font-family:var(--f-mono);font-size:12px;font-weight:600;letter-spacing:.08em;border:1.5px solid var(--ink);padding:2px 8px}
+.sheet-head .sub{font-size:13px;color:var(--muted);margin-left:auto}
+.frame{border:1px solid var(--line);background:var(--panel);overflow-x:auto;padding:14px}
+.frame svg{display:block;margin:0 auto}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.two>*{min-width:0}
+@media (max-width:860px){.two{grid-template-columns:1fr}}
+/* flow */
+.flow{display:flex;flex-wrap:wrap;gap:10px;align-items:stretch;list-style:none;padding:0;margin:0;counter-reset:st}
+.flow li{flex:1 1 150px;min-width:0;background:var(--panel);border:1px solid var(--line);padding:12px 12px 12px;position:relative;display:flex;flex-direction:column;gap:4px;counter-increment:st}
+.flow li::before{content:counter(st);font-family:var(--f-mono);font-size:11px;color:var(--muted)}
+.flow li b{font-weight:700;font-size:14.5px}
+.flow li span{font-size:12.5px;color:var(--muted);line-height:1.5}
+.flow li .io{font-family:var(--f-mono);font-size:11.5px;color:var(--skyris)}
+.flow li.money{border-color:var(--gold)} .flow li.money .io{color:var(--gold)}
+.flow li.dia{border-color:var(--diamond)} .flow li.dia .io{color:var(--diamond)}
+/* controls */
+.seg{display:inline-flex;border:1px solid var(--ink);flex-wrap:wrap}
+.seg button{font:inherit;font-size:13px;background:transparent;color:var(--ink);border:0;border-right:1px solid var(--ink);padding:6px 12px;cursor:pointer}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.seg button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--skyris);outline-offset:2px}
+.ctrl-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+/* legend */
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--muted)}
+.legend i{display:inline-block;width:12px;height:12px;vertical-align:-1px;margin-right:5px;border:1px solid var(--line)}
+/* table */
+.tbl{overflow-x:auto;border:1px solid var(--line);background:var(--panel)}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th,td{text-align:left;padding:8px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;background:var(--paper)}
+tr:last-child td{border-bottom:0}
+td.mono{white-space:nowrap}
+/* steps */
+.steps{margin:0;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:0;counter-reset:s;border:1px solid var(--line);background:var(--panel)}
+.steps li{counter-increment:s;display:grid;grid-template-columns:44px 1fr;border-bottom:1px solid var(--line)}
+.steps li:last-child{border-bottom:0}
+.steps li::before{content:counter(s);font-family:var(--f-mono);font-weight:600;display:flex;align-items:flex-start;justify-content:center;padding-top:10px;border-right:1px solid var(--line);color:var(--skyris)}
+.steps li>div{padding:10px 14px;min-width:0}
+.steps li b{display:block}
+.steps li span{font-size:13.5px;color:var(--muted)}
+/* notes */
+.note{border-left:3px solid var(--bloom);background:var(--panel);padding:12px 16px;font-size:14px;display:flex;flex-direction:column;gap:6px}
+.note.gold{border-left-color:var(--gold)}
+.note b{font-weight:700}
+/* calc */
+.calc{display:grid;grid-template-columns:300px 1fr;border:2px solid var(--ink);background:var(--panel)}
+.calc-in{padding:18px;border-right:2px solid var(--ink);display:flex;flex-direction:column;gap:14px;min-width:0}
+.calc-in label{display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:500}
+.calc-in input[type=range]{width:100%;accent-color:var(--skyris)}
+.calc-in select,.calc-in input[type=number]{font:inherit;font-size:14px;padding:6px 8px;background:var(--paper);color:var(--ink);border:1px solid var(--line)}
+.calc-out{padding:18px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--line)}
+.kpi{padding:10px 12px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);min-width:0}
+.kpi:nth-child(3n){border-right:0}
+.kpi:nth-last-child(-n+3){border-bottom:0}
+.kpi small{display:block;font-size:11.5px;color:var(--muted)}
+.kpi b{font-family:var(--f-display);font-weight:400;font-size:24px;font-variant-numeric:tabular-nums}
+.kpi.g b{color:var(--gold)} .kpi.d b{color:var(--diamond)}
+.bar{height:10px;background:var(--paper);border:1px solid var(--line);position:relative}
+.bar>i{position:absolute;inset:0 auto 0 0;background:var(--skyris)}
+.bar.over>i{background:var(--bloom)}
+.status{font-size:13.5px}
+.status.warn{color:var(--bloom)}
+@media (max-width:760px){.calc{grid-template-columns:1fr}.calc-in{border-right:0;border-bottom:2px solid var(--ink)}.kpis{grid-template-columns:repeat(2,1fr)}.kpi{border-right:1px solid var(--line)!important;border-bottom:1px solid var(--line)!important}.kpi:nth-child(2n){border-right:0!important}}
+/* phases */
+.phases{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--line);background:var(--panel)}
+.phase{padding:16px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:8px;min-width:0}
+.phase:last-child{border-right:0}
+.phase .tag{font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;color:var(--skyris)}
+.phase ul{margin:0;padding-left:18px;font-size:13.5px;display:flex;flex-direction:column;gap:3px}
+@media (max-width:760px){.phases{grid-template-columns:1fr}.phase{border-right:0;border-bottom:1px solid var(--line)}}
+.checks{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;border:1px solid var(--line);background:var(--panel)}
+.checks li{display:grid;grid-template-columns:28px 1fr;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line);font-size:14px}
+.checks li:last-child{border-bottom:0}
+.checks input{width:16px;height:16px;margin-top:4px;accent-color:var(--skyris)}
+.checks span small{display:block;color:var(--muted);font-size:12.5px}
+svg text{font-family:var(--f-body)}
+svg .mono{font-family:var(--f-mono)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+.flowdash{stroke-dasharray:6 5;animation:dash 1.2s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-22}}
+footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:14px;display:flex;flex-direction:column;gap:4px}
+.apr{display:inline-block;width:11px;height:11px;border-radius:50%;border:1px solid var(--ink);vertical-align:-1px;margin-right:4px}
+</style>
+
+<div class="wrap">
+
+<header class="titleblock">
+  <div class="tb-main">
+    <div class="kicker">Mayview · Apricorn Orchard</div>
+    <h1>규토리 과수원</h1>
+    <p>나무를 키우지 않고, 가위로 얻은 규토리 잎을 벽처럼 쌓아 양쪽 면에 씨앗을 우클릭해 열매를 답니다. 목장(파스처)에 둔 벌레 타입 포켓몬이 익은 열매를 따서 상자에 넣습니다. 색깔별 창고에 모아 하이퍼볼·루어볼·타이머볼·퀵볼을 3:2:2:1로 만들고, 정해 둔 재고를 넘는 양만 판매함으로 보냅니다.</p>
+  </div>
+  <div class="tb-meta">
+    <div>도면</div><div>설계도 세트 A–E (6장)</div>
+    <div>축척</div><div>1칸 = 1블록</div>
+    <div>기준면</div><div><span class="mono">G</span> = 과수원 지면</div>
+    <div>모드</div><div>Cobblemon 1.7.3 · Cobbleworkers 2.0.2 · Create 6</div>
+    <div>판</div><div>v1 · 2026-09-29</div>
+  </div>
+</header>
+
+<section class="ratios" aria-label="핵심 수치">
+  <div class="ratio"><b class="s">잎 1 = 열매 2</b><span>열매는 잎 옆면(동서남북)에 붙습니다. 1칸 두께 잎 벽이면 잎마다 양쪽 2개. 따면 0단계로 돌아가 다시 자람</span></div>
+  <div class="ratio"><b>1 + 10%</b><span>익은 열매 1개 수확 = 규토리 1 + 10% 확률로 씨앗 1</span></div>
+  <div class="ratio"><b class="g">규토리 1 = 볼 1</b><span>규토리 4개 + 주괴 1 → 볼 4개. 하이퍼·루어·타이머·퀵 = 3:2:2:1</span></div>
+  <div class="ratio"><b>128개 = 금화 1</b><span>판매가 12개 = 동화 6. 팔기보다 쓰는 쪽이 이득인 작물</span></div>
+</section>
+
+<section class="sheet">
+  <div class="sheet-head"><span class="sheet-no">A-0</span><h2>먼저 알아둘 제약</h2><span class="sub">위치를 정하는 조건</span></div>
+  <div class="two">
+    <div class="note"><b>사람이 있을 때만 도는 설비</b><span>이 팩의 Does It Tick 설정은 플레이어에게서 수평 64칸·수직 32칸 밖의 생물 엔티티를 멈춥니다. 수확하는 포켓몬도 여기에 걸리고, 열매가 익는 무작위 틱도 플레이어 근처에서만 돕니다. 그래서 강제 로드 대신 <b>기지 바로 옆</b>에 짓습니다.</span></div>
+    <div class="note gold"><b>뼛가루 공장과 이웃하게</b><span>뼛가루 공장의 AFK 방 반경 안에 과수원을 두면, 기지에 있는 동안 뼛가루와 규토리를 동시에 모읍니다. 청크당 목장은 2개까지라 모듈 1개 = 1청크 = 목장 1개로 잡았습니다.</span></div>
+  </div>
+</section>
+
+<section class="sheet" id="flow">
+  <div class="sheet-head"><span class="sheet-no">B-0</span><h2>공정 흐름</h2><span class="sub">수확 → 분류 → 자급 → 잉여 판매</span></div>
+  <ol class="flow">
+    <li><b>심기</b><span>잎 벽 양쪽 면에 씨앗을 우클릭. 색은 씨앗 색으로 정해지므로 필요한 비율대로 심습니다.</span><span class="io">씨앗 → 잎 옆 열매</span></li>
+    <li><b>수확</b><span>목장의 벌레 타입(또는 메타몽·슬리퍼) 포켓몬이 반경 8·높이 5 안의 익은 열매를 땁니다.</span><span class="io">열매 → 상자</span></li>
+    <li><b>수거</b><span>목장 옆 통에서 깔때기로 벨트에 올려 창고로.</span><span class="io">통 → 벨트</span></li>
+    <li><b>분류</b><span>황동 깔때기 필터로 7색과 씨앗을 나눕니다.</span><span class="io">7색 · 씨앗</span></li>
+    <li class="dia"><b>자급</b><span>색깔별 창고. 볼 4종을 3:2:2:1로 조합합니다.</span><span class="io">규토리 4 + 주괴 → 볼 4</span></li>
+    <li class="money"><b>잉여 판매</b><span>창고가 목표 재고를 넘으면 문턱 스위치가 판매 깔때기를 엽니다.</span><span class="io">12개 → 동화 6</span></li>
+  </ol>
+</section>
+
+<section class="sheet" id="plan">
+  <div class="sheet-head"><span class="sheet-no">C-1 · C-2</span><h2>잎 벽 모듈</h2><span class="sub">1청크(16×16) · 목장 1 · 열매 자리 252</span></div>
+  <p>잎 벽(두께 1, 높이 3, 길이 14) 3줄을 5칸 간격으로 세웁니다. 벽 양쪽에 열매가 붙고, 열매 사이에는 포켓몬이 다닐 2칸 통로가 남습니다. 목장은 가운데 통로에 두어 모든 벽이 수확 반경 8 안에 들어오게 합니다. 벽 양 끝(z=0, z=15)은 통로를 서로 잇는 길로 비워 둡니다.</p>
+  <div class="two">
+    <figure class="frame" style="margin:0"><svg id="planSvg" role="img" aria-label="잎 벽 모듈 평면도"></svg>
+      <figcaption class="muted mono" style="font-size:11.5px;text-align:center;margin-top:6px">C-1 평면도 · 16×16</figcaption></figure>
+    <figure class="frame" style="margin:0"><svg id="secSvg" role="img" aria-label="잎 벽 모듈 단면도"></svg>
+      <figcaption class="muted mono" style="font-size:11.5px;text-align:center;margin-top:6px">C-2 단면도 · 벽을 가로로 자른 면 · 2층 적층</figcaption></figure>
+  </div>
+  <div class="legend" id="aprLegend"></div>
+  <div class="tbl"><table>
+    <thead><tr><th>부품</th><th>위치</th><th>설정·메모</th></tr></thead>
+    <tbody>
+      <tr><td>규토리 잎 벽 ×3</td><td class="mono">x = 1, 6, 11 · z 1–14 · G+1–G+3</td><td>규토리 나무 잎을 가위나 섬세한 손길로 캐서 쌓습니다. 직접 놓은 잎은 사라지지 않습니다. 벽 하나 42칸 × 양면 = 열매 84.</td></tr>
+      <tr><td>열매 자리</td><td class="mono">x = 0, 2, 5, 7, 10, 12</td><td>씨앗 우클릭. 모듈 합계 252. 색 배분은 D-1 표 참고.</td></tr>
+      <tr><td>목장(파스처)</td><td class="mono">8, G+1, 8</td><td>가운데 통로. 포켓몬 최대 16마리, 청크당 2개까지.</td></tr>
+      <tr><td>통 ×2</td><td class="mono">(8,7), (8,9)</td><td>목장 바로 옆. 수확물이 들어오면 아래 깔때기로 지하 벨트에.</td></tr>
+      <tr><td>지하 벨트</td><td class="mono">G−1</td><td>통 → 창고. 층을 쌓으면 슈트로 아래층 벨트에 떨어뜨립니다.</td></tr>
+      <tr><td>천장 조명</td><td class="mono">G+4</td><td>층을 쌓으면 윗층 바닥이 천장. 조명은 통로 위에만 달아 열매 자리를 막지 않게.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="sheet" id="store">
+  <div class="sheet-head"><span class="sheet-no">D-1</span><h2>창고와 볼 공방</h2><span class="sub">자급 우선, 잉여만 판매</span></div>
+  <div class="frame"><svg id="storeSvg" role="img" aria-label="규토리 창고 배치도"></svg></div>
+  <div class="tbl"><table>
+    <thead><tr><th>볼</th><th>비율</th><th>배율</th><th>조건</th><th>규토리 (조합 1회)</th><th>주괴</th></tr></thead>
+    <tbody>
+      <tr><td>하이퍼볼</td><td class="mono">3</td><td class="mono">2배</td><td>항상</td><td><span class="apr" style="background:#2a2a2a"></span>검2 <span class="apr" style="background:#e6c229"></span>노2</td><td>금</td></tr>
+      <tr><td>루어볼</td><td class="mono">2</td><td class="mono">4배</td><td>낚싯대로 낚은 포켓몬</td><td><span class="apr" style="background:#d9463b"></span>빨1 <span class="apr" style="background:#3d6fd1"></span>파2 <span class="apr" style="background:#4c9a4a"></span>초1</td><td>철</td></tr>
+      <tr><td>타이머볼</td><td class="mono">2</td><td class="mono">최대 4배</td><td>턴마다 약 0.3배씩 누적</td><td><span class="apr" style="background:#d9463b"></span>빨1 <span class="apr" style="background:#f2f2ee"></span>하2 <span class="apr" style="background:#2a2a2a"></span>검1</td><td>금</td></tr>
+      <tr><td>퀵볼</td><td class="mono">1</td><td class="mono">5배</td><td>배틀 첫 턴</td><td><span class="apr" style="background:#3d6fd1"></span>파2 <span class="apr" style="background:#e6c229"></span>노2</td><td>금</td></tr>
+      <tr><td colspan="6" class="muted">한 바퀴(조합 8회) = 하이퍼 12 · 루어 8 · 타이머 8 · 퀵 4 = 볼 32개. 규토리 32개, 금 주괴 6개, 철 주괴 2개. 다른 2배 이상 볼(다크볼, 네트볼, 다이브볼 등)은 필요할 때 손으로 만드세요.</td></tr>
+    </tbody>
+  </table></div>
+  <h3>D-2 색 배분 (모듈 1개 = 252자리)</h3>
+  <p>3:2:2:1 한 바퀴에 검정 8, 노랑 8, 파랑 6, 빨강 4, 하양 4, 초록 2개가 들어갑니다(분홍은 안 씀). 이 비율로 252자리를 나누면 아래와 같습니다. 벽 한 면이 42자리라, 검정·노랑은 한 면 반씩 차지합니다.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>색</th><th>한 바퀴</th><th>자리</th><th>쓰는 볼</th></tr></thead>
+    <tbody>
+      <tr><td><span class="apr" style="background:#2a2a2a"></span>검정</td><td class="mono">8</td><td class="mono">63</td><td>하이퍼볼, 타이머볼</td></tr>
+      <tr><td><span class="apr" style="background:#e6c229"></span>노랑</td><td class="mono">8</td><td class="mono">63</td><td>하이퍼볼, 퀵볼</td></tr>
+      <tr><td><span class="apr" style="background:#3d6fd1"></span>파랑</td><td class="mono">6</td><td class="mono">47</td><td>루어볼, 퀵볼</td></tr>
+      <tr><td><span class="apr" style="background:#d9463b"></span>빨강</td><td class="mono">4</td><td class="mono">32</td><td>루어볼, 타이머볼</td></tr>
+      <tr><td><span class="apr" style="background:#f2f2ee"></span>하양</td><td class="mono">4</td><td class="mono">31</td><td>타이머볼</td></tr>
+      <tr><td><span class="apr" style="background:#4c9a4a"></span>초록</td><td class="mono">2</td><td class="mono">16</td><td>루어볼</td></tr>
+    </tbody>
+  </table></div>
+  <div class="calc">
+    <div class="calc-in">
+      <label for="mods">모듈(층) 수 <span class="mono" id="modsOut">2</span><input type="range" id="mods" min="1" max="6" value="2"></label>
+      <label for="ripe">열매 1개가 익는 평균 시간(분)<input type="number" id="ripe" min="5" max="120" value="30"></label>
+      <p class="muted" style="font-size:12px">익는 시간은 모드 파일로 확인하지 못한 추정값입니다. 한 번 심고 시계로 재서 넣으세요. 플레이어가 근처에 있는 시간 기준입니다.</p>
+    </div>
+    <div class="calc-out" aria-live="polite">
+      <div class="kpis">
+        <div class="kpi"><small>열매 자리</small><b id="kSlots">–</b></div>
+        <div class="kpi"><small>규토리/시간</small><b id="kApr">–</b></div>
+        <div class="kpi"><small>씨앗/시간</small><b id="kSeed">–</b></div>
+        <div class="kpi"><small>볼 환산/시간</small><b id="kBall">–</b></div>
+        <div class="kpi g"><small>전부 팔 때 금화/시간</small><b id="kGold">–</b></div>
+        <div class="kpi"><small>권장 포켓몬 (층당 3–4)</small><b id="kMon">–</b></div>
+      </div>
+      <p class="status" id="aStatus">–</p>
+    </div>
+  </div>
+  <div class="note"><b>자동 볼 조합</b><span>볼 조합법은 모두 3×3 가운데 십자 모양(위·왼쪽·오른쪽·아래가 규토리나 텀블스톤, 가운데가 주괴)입니다. 기계식 조합기 5대를 십자로 붙이면 되지만, 볼마다 칸별 재료 위치가 달라서 한 세트가 한 종류만 만듭니다. 하이퍼볼·루어볼·타이머볼·퀵볼 4세트를 둡니다. 세트끼리 같은 색(검정·노랑·파랑·빨강)을 나눠 쓰므로, 비율은 볼 상자마다 문턱 스위치로 맞춥니다. 예를 들어 하이퍼볼 3세트분, 루어·타이머 2세트분, 퀵볼 1세트분이 차면 그 조합기의 팔을 멈추게 하면 됩니다.</span></div>
+  <div class="note gold"><b>잉여 판매 기준</b><span>색깔 창고마다 문턱 스위치를 달아 예를 들어 80% 이상 차면 판매 깔때기를 켭니다. 판매는 12개 단위라 구리 판매함 1대로 충분합니다. 스카이리스 가공동의 판매함 뱅크에 한 칸을 빌려도 됩니다.</span></div>
+  <div class="note"><b>씨앗</b><span>수확할 때 10% 확률로 나옵니다. 몇 세트 모아 모듈을 늘리는 데 쓰고, 넘치면 뼛가루 공장의 퇴비통 줄로 보냅니다.</span></div>
+</section>
+
+<section class="sheet">
+  <div class="sheet-head"><span class="sheet-no">E-1</span><h2>확장과 검증</h2><span class="sub">층 쌓기 → 옆 청크</span></div>
+  <div class="phases">
+    <div class="phase"><span class="tag">1단계</span><h3>잎 벽 1줄</h3><ul><li>잎 42칸, 씨앗 84개</li><li>목장 1, 통 2</li><li>포켓몬 수확 확인</li></ul></div>
+    <div class="phase"><span class="tag">2단계</span><h3>모듈 완성 + 창고</h3><ul><li>벽 3줄, 252자리</li><li>지하 벨트, 6색 분류, 볼 4종 자동 조합기</li><li>잉여 판매 라인</li></ul></div>
+    <div class="phase"><span class="tag">3단계</span><h3>위로 한 층</h3><ul><li>층 높이 5 (바닥 1 + 벽 3 + 조명 1)</li><li>청크당 목장 2개 제한 → 한 청크에 2층까지</li><li>더 늘릴 땐 옆 청크에 같은 2층 모듈</li></ul></div>
+  </div>
+  <div class="note"><b>위아래 확장의 한계</b><span>수확 높이가 목장에서 위아래 5칸이라 층마다 목장이 하나씩 필요합니다. 그런데 이 팩은 목장을 청크당 2개까지만 허용하므로 한 청크 기둥에는 2층까지만 쌓입니다. 포켓몬이 움직이는 범위(플레이어에게서 수직 32칸)보다 이 제한이 먼저 걸립니다.</span></div>
+  <ul class="checks" id="checkList">
+    <li><input type="checkbox" id="a1"><label for="a1"><span>Cobbleworkers 포켓몬이 수확물을 목장 옆 통에 넣는가<small>다른 상자로 가면 그 상자 아래에 깔때기를 답니다.</small></span></label></li>
+    <li><input type="checkbox" id="a2"><label for="a2"><span>2칸 통로에서 포켓몬이 벽 끝까지 가서 따는가<small>큰 포켓몬이 끼면 작은 벌레 타입으로 바꾸거나 통로를 3칸으로 넓힙니다(벽 2줄로 줄어듦).</small></span></label></li>
+    <li><input type="checkbox" id="a3"><label for="a3"><span>벽 맨 위 칸(G+3) 열매도 수확되는가<small>안 되면 벽 높이를 2로 줄이고 층 높이도 4로.</small></span></label></li>
+    <li><input type="checkbox" id="a4"><label for="a4"><span>수확할 때 씨앗도 나오는가<small>안 나오면 씨앗 줄은 빼세요.</small></span></label></li>
+    <li><input type="checkbox" id="a5"><label for="a5"><span>열매 1개가 익는 시간 측정<small>재서 계산기에 넣으세요.</small></span></label></li>
+  </ul>
+</section>
+
+<footer>
+  <span>근거: <code>Cobblemon-neoforge-1.7.3</code>(볼 조합법 전체, 열매 블록: 가로 방향 4면, 3단계에서 규토리 1 + 씨앗 10%, 뼛가루 적용 가능 · 잎: 가위·섬세한 손길로 획득 · 볼 조합법), 포획 배율: Cobblemon 위키 · <code>config/cobbleworkers.json</code>(규토리 수확: 벌레 타입·메타몽·슬리퍼, 반경 8·높이 5), <code>config/cobblemon/main.json</code>(목장 16마리, 청크당 2개), <code>mayview_sellables.js</code>(규토리 12 → 동화 6), <code>does_it_tick-common.toml</code>.</span>
+  <span>같이 보기: <a href="https://claude.ai/artifact/7NnSn9Rz3iteEFe66Csdih" style="color:var(--skyris)">스카이리스 계단 공장</a> · <a href="https://claude.ai/artifact/Ng3aJGZY9Wta7rwcCrcfNJ" style="color:var(--skyris)">뼛가루 공장</a> · <a href="https://claude.ai/artifact/BdMTau4Y3XCDjFRi2CFEz8" style="color:var(--skyris)">음식 공장</a> · <a href="https://claude.ai/artifact/KUcT63ePdJpbHaQ7iDMRiM" style="color:var(--skyris)">생활 주방</a> · <a href="https://claude.ai/artifact/6CPYkb3D9FMjZRRTjNQR6e" style="color:var(--skyris)">메이뷰 공장 단지</a></span>
+</footer>
+</div>
+
+<script>
+(function(){
+const NS='http://www.w3.org/2000/svg';
+const el=(t,a={},txt)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(txt!=null)e.textContent=txt;return e};
+const V=n=>`var(--${n})`;
+const COL={red:['#d9463b','빨강'],blue:['#3d6fd1','파랑'],black:['#2a2a2a','검정'],yellow:['#e6c229','노랑'],pink:['#e58bb6','분홍'],green:['#4c9a4a','초록'],white:['#f2f2ee','하양']};
+const lg=document.getElementById('aprLegend');
+Object.values(COL).forEach(([c,n])=>{const s=document.createElement('span');s.innerHTML=`<i style="background:${c};border-radius:50%"></i>${n}`;lg.append(s)});
+/* plan */
+const WALLS=[1,6,11], APR={0:'black',2:'yellow',5:'black',7:'yellow',10:'blue',12:'mix'};
+(function(){
+  const s=document.getElementById('planSvg');
+  const C=20, N=16, ox=26, oy=18, W=ox+N*C+14, H=oy+N*C+28;
+  s.setAttribute('viewBox',`0 0 ${W} ${H}`);s.setAttribute('width',W);s.setAttribute('height',H);
+  const mix=['red','white','green'];
+  for(let x=0;x<N;x++)for(let z=0;z<N;z++){
+    let f=V('c-stone'), op=1;
+    if(WALLS.includes(x)&&z>=1&&z<=14) f=V('c-leaf');
+    s.append(el('rect',{x:ox+x*C,y:oy+z*C,width:C,height:C,fill:f,stroke:V('grid'),'stroke-width':.6}));
+    if(APR[x]!==undefined&&z>=1&&z<=14){
+      const c=APR[x]==='mix'?mix[(z-1)%3]:APR[x];
+      s.append(el('circle',{cx:ox+x*C+C/2,cy:oy+z*C+C/2,r:6,fill:COL[c][0],stroke:V('ink'),'stroke-width':.8}));
+    }
+  }
+  s.append(el('rect',{x:ox+8*C,y:oy+8*C,width:C,height:C,fill:V('c-dep'),stroke:V('ink')}));
+  s.append(el('text',{x:ox+8*C+C/2,y:oy+8*C+C/2+4,'text-anchor':'middle','font-size':10,'font-weight':700,fill:V('panel')},'목'));
+  [7,9].forEach(z=>{s.append(el('rect',{x:ox+8*C,y:oy+z*C,width:C,height:C,fill:V('c-hopper'),stroke:V('ink')}));s.append(el('text',{x:ox+8*C+C/2,y:oy+z*C+C/2+4,'text-anchor':'middle','font-size':10,'font-weight':700,fill:V('panel')},'통'))});
+  s.append(el('rect',{x:ox,y:oy,width:16*C,height:16*C,fill:'none',stroke:V('diamond'),'stroke-width':1.5,'stroke-dasharray':'6 4'}));
+  [[3.5,'통로'],[8.5,'통로'],[13.5,'통로']].forEach(([x,t])=>s.append(el('text',{x:ox+x*C+C/2,y:oy+15*C+14,'text-anchor':'middle','font-size':9.5,fill:V('muted')},t)));
+  s.append(el('text',{x:ox,y:oy+N*C+22,'font-size':10.5,fill:V('muted')},'초록 칸 = 잎 벽(높이 3) · 원 = 열매 자리(색 배치는 예시) · 점선 = 수확 반경 8'));
+})();
+(function(){
+  const s=document.getElementById('secSvg');
+  const C=20, N=16, ox=40, oy=16, rows=11, W=ox+N*C+14, H=oy+rows*C+28;
+  s.setAttribute('viewBox',`0 0 ${W} ${H}`);s.setAttribute('width',W);s.setAttribute('height',H);
+  const Y=r=>oy+r*C;
+  const layer=(base,tag)=>{
+    for(let x=0;x<N;x++) s.append(el('rect',{x:ox+x*C,y:Y(base+4),width:C,height:C,fill:V('c-stone'),stroke:V('grid'),'stroke-width':.6}));
+    for(let h=1;h<=3;h++){
+      WALLS.forEach(x=>s.append(el('rect',{x:ox+x*C,y:Y(base+4-h),width:C,height:C,fill:V('c-leaf'),stroke:V('grid'),'stroke-width':.6})));
+      Object.keys(APR).forEach(x=>s.append(el('circle',{cx:ox+x*C+C/2,cy:Y(base+4-h)+C/2,r:5.5,fill:APR[x]==='mix'?COL.white[0]:COL[APR[x]][0],stroke:V('ink'),'stroke-width':.7})));
+    }
+    s.append(el('rect',{x:ox+8*C,y:Y(base+3),width:C,height:C,fill:V('c-dep'),stroke:V('ink')}));
+    [3.5,8.5,13.5].forEach(x=>s.append(el('rect',{x:ox+x*C+4,y:Y(base)+6,width:C-8,height:5,fill:V('gold'),opacity:.8})));
+    s.append(el('text',{x:ox-6,y:Y(base+2)+4,'text-anchor':'end','font-size':9.5,fill:V('muted')},tag));
+  };
+  layer(0,'2층'); layer(5,'1층');
+  s.append(el('rect',{x:ox,y:Y(10),width:N*C,height:C*.5,fill:V('c-belt')}));
+  s.append(el('text',{x:ox,y:Y(10)+C+6,'font-size':10.5,fill:V('muted')},'층 높이 5 · 노란 막대 = 통로 위 조명 · 맨 아래 = 지하 벨트'));
+})();
+/* calc */
+(function(){
+  const $=id=>document.getElementById(id);
+  const fmt=n=>n>=100?Math.round(n).toLocaleString('ko-KR'):(Math.round(n*10)/10).toLocaleString('ko-KR');
+  function calc(){
+    const m=+$('mods').value, t=Math.max(5,+$('ripe').value||30);
+    $('modsOut').textContent=m;
+    const slots=252*m, apr=slots*60/t;
+    $('kSlots').textContent=fmt(slots);$('kApr').textContent=fmt(apr);$('kSeed').textContent=fmt(apr*.1);
+    $('kBall').textContent=fmt(apr);$('kGold').textContent=fmt(apr/128);
+    $('kMon').textContent=(3*m)+'–'+(4*m);
+    $('aStatus').textContent=`한 시간 동안 규토리 ${fmt(apr)}개 → 하이퍼볼 ${fmt(apr*12/32)} · 루어볼 ${fmt(apr*8/32)} · 타이머볼 ${fmt(apr*8/32)} · 퀵볼 ${fmt(apr*4/32)}개. 금 주괴 ${fmt(apr*6/32)}개, 철 주괴 ${fmt(apr*2/32)}개가 필요합니다. 전부 팔면 금화 ${fmt(apr/128)}개라 스카이리스 포드 1개(뼛가루 모드 시간당 약 300 금화)에 한참 못 미칩니다. 쓰는 용도로 두고 남는 것만 파세요.`;
+  }
+  ['mods','ripe'].forEach(id=>$(id).addEventListener('input',calc));calc();
+})();
+/* store */
+(function(){
+  const s=document.getElementById('storeSvg');
+  const W=720, H=250;
+  s.setAttribute('viewBox',`0 0 ${W} ${H}`);s.setAttribute('width',W);s.setAttribute('height',H);
+  const B=(x,y,w,h,f,t,tc)=>{s.append(el('rect',{x,y,width:w,height:h,fill:f,stroke:V('ink'),'stroke-width':1}));if(t)s.append(el('text',{x:x+w/2,y:y+h/2+4,'text-anchor':'middle','font-size':11,'font-weight':700,fill:tc||V('panel')},t))};
+  // incoming belt
+  s.append(el('rect',{x:20,y:118,width:660,height:12,fill:V('c-belt')}));
+  s.append(el('line',{x1:20,y1:124,x2:680,y2:124,stroke:V('gold'),'stroke-width':1.5,class:'flowdash'}));
+  s.append(el('text',{x:20,y:112,'font-size':11,fill:V('ink')},'모듈에서 → 지하 벨트'));
+  const cols=Object.entries(COL).filter(([k])=>k!=='pink');
+  cols.forEach(([k,[c,n]],i)=>{
+    const x=120+i*70;
+    B(x,40,50,50,V('c-vault'));
+    s.append(el('circle',{cx:x+25,cy:65,r:10,fill:c,stroke:V('ink')}));
+    s.append(el('text',{x:x+25,y:32,'text-anchor':'middle','font-size':11,fill:V('ink')},n));
+    s.append(el('rect',{x:x+19,y:92,width:12,height:24,fill:V('c-hopper')}));
+    // threshold -> sell
+    s.append(el('rect',{x:x+19,y:132,width:12,height:24,fill:V('c-hopper'),opacity:.6}));
+  });
+  B(120+7*70-10,40,60,50,V('c-hopper'),'씨앗');
+  s.append(el('rect',{x:120,y:160,width:480,height:10,fill:V('c-belt'),opacity:.8}));
+  s.append(el('text',{x:120,y:188,'font-size':11,fill:V('ink')},'잉여만: 문턱 스위치(창고 80%↑) → 판매 벨트 → 판매함'));
+  B(610,150,60,40,V('c-bin'),'판매함');
+  // ball crafters
+  [['하이퍼 3',70],['루어 2',230],['타이머 2',390],['퀵 1',550]].forEach(([t,x])=>{
+    const cx=x+30, cy=222, q=9;
+    [[0,-1],[-1,0],[0,0],[1,0],[0,1]].forEach(([dx,dy])=>s.append(el('rect',{x:cx+dx*q*2-q,y:cy+dy*q*2-q,width:q*2-1,height:q*2-1,fill:(dx||dy)?V('c-crafter'):V('gold'),stroke:V('ink'),'stroke-width':.6})));
+    s.append(el('text',{x:cx+32,y:cy+4,'font-size':11,fill:V('ink')},t));
+  });
+  s.append(el('text',{x:20,y:18,'font-size':10.5,fill:V('muted'),class:'mono'},'창고 × 7 + 씨앗  ·  십자 조합기 (가운데 = 주괴)'));
+})();
+document.querySelectorAll('#checkList input').forEach(cb=>{try{cb.checked=localStorage.getItem('ap-'+cb.id)==='1'}catch(e){}cb.addEventListener('change',()=>{try{localStorage.setItem('ap-'+cb.id,cb.checked?'1':'0')}catch(e){}})});
+})();
+</script>

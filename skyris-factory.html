@@ -1,0 +1,729 @@
+<title>스카이리스 계단 공장</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Noto+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: engineering drawing set — title block, then numbered sheets (flow, site, pod, hall, calc, checks) in one column, drawings in scrollable frames */
+:root{
+  --paper:#edf2f0; --panel:#f8fbfa; --ink:#1c2a2c; --muted:#5a6c6e; --line:#c3d1cf;
+  --skyris:#2f8378; --bloom:#c9507f; --gold:#b8860b; --diamond:#1f8fb0;
+  --c-dirt:#8a6a47; --c-stone:#a9b1b0; --c-walk:#d9cfb8; --c-glass:#9fd3d8;
+  --c-dep:#d08a2e; --c-saw:#7b8794; --c-piston:#6f5a3a; --c-hopper:#4b5357;
+  --c-belt:#3b4245; --c-bin:#7a5230; --c-crafter:#b0763a; --c-vault:#6d7f86;
+  --c-log:#6e8f5a; --c-leaf:#8fc07a; --grid:#d5dfdd;
+  --f-display:"Do Hyeon","Noto Sans KR",system-ui,sans-serif;
+  --f-body:"Noto Sans KR",system-ui,-apple-system,"Malgun Gothic",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#11191b; --panel:#172225; --ink:#e2ebe9; --muted:#8fa2a2; --line:#2b3b3e;
+  --skyris:#5bb7aa; --bloom:#ea86b1; --gold:#e0b040; --diamond:#58c6e0;
+  --c-dirt:#9b7852; --c-stone:#5f6969; --c-walk:#5d5646; --c-glass:#3f7f86;
+  --c-dep:#e09a3e; --c-saw:#9aa6b3; --c-piston:#9a7f55; --c-hopper:#8a959a;
+  --c-belt:#6b7477; --c-bin:#a8744a; --c-crafter:#c98b4c; --c-vault:#8fa3ab;
+  --c-log:#86ab70; --c-leaf:#5f8f52; --grid:#243235; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#11191b; --panel:#172225; --ink:#e2ebe9; --muted:#8fa2a2; --line:#2b3b3e;
+  --skyris:#5bb7aa; --bloom:#ea86b1; --gold:#e0b040; --diamond:#58c6e0;
+  --c-dirt:#9b7852; --c-stone:#5f6969; --c-walk:#5d5646; --c-glass:#3f7f86;
+  --c-dep:#e09a3e; --c-saw:#9aa6b3; --c-piston:#9a7f55; --c-hopper:#8a959a;
+  --c-belt:#6b7477; --c-bin:#a8744a; --c-crafter:#c98b4c; --c-vault:#8fa3ab;
+  --c-log:#86ab70; --c-leaf:#5f8f52; --grid:#243235; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.65;margin:0}
+.wrap{max-width:1080px;margin:0 auto;padding-inline:20px;padding-block:28px 64px;display:flex;flex-direction:column;gap:44px}
+h1,h2,h3{font-family:var(--f-display);font-weight:400;line-height:1.2;text-wrap:balance;margin:0}
+h1{font-size:clamp(34px,6vw,54px);letter-spacing:.5px}
+h2{font-size:28px}
+h3{font-size:19px}
+p{margin:0;max-width:68ch}
+.mono,code{font-family:var(--f-mono);font-size:.88em}
+code{background:var(--panel);border:1px solid var(--line);padding:0 5px;border-radius:3px}
+.muted{color:var(--muted)}
+/* title block */
+.titleblock{display:grid;grid-template-columns:1.6fr 1fr;border:2px solid var(--ink);background:var(--panel)}
+.tb-main{padding:22px 24px;display:flex;flex-direction:column;gap:12px;border-right:2px solid var(--ink);min-width:0}
+.tb-main .kicker{font-family:var(--f-mono);font-size:12px;letter-spacing:.12em;color:var(--skyris);text-transform:uppercase}
+.tb-meta{display:grid;grid-template-columns:auto 1fr;font-size:13px}
+.tb-meta div{padding:8px 12px;border-bottom:1px solid var(--line)}
+.tb-meta div:nth-child(odd){font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;color:var(--muted);text-transform:uppercase;border-right:1px solid var(--line)}
+.tb-meta div:nth-last-child(-n+2){border-bottom:0}
+@media (max-width:720px){.titleblock{grid-template-columns:1fr}.tb-main{border-right:0;border-bottom:2px solid var(--ink)}}
+/* ratios */
+.ratios{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--line);background:var(--panel)}
+.ratio{padding:14px 16px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:4px;min-width:0}
+.ratio:last-child{border-right:0}
+.ratio b{font-family:var(--f-display);font-weight:400;font-size:26px;font-variant-numeric:tabular-nums;line-height:1.1}
+.ratio span{font-size:12.5px;color:var(--muted)}
+.ratio .g{color:var(--gold)} .ratio .d{color:var(--diamond)} .ratio .s{color:var(--skyris)}
+@media (max-width:760px){.ratios{grid-template-columns:repeat(2,1fr)}.ratio:nth-child(2){border-right:0}.ratio:nth-child(-n+2){border-bottom:1px solid var(--line)}}
+/* sheet */
+.sheet{display:flex;flex-direction:column;gap:18px}
+.sheet-head{display:flex;align-items:baseline;gap:14px;border-bottom:2px solid var(--ink);padding-bottom:8px;flex-wrap:wrap}
+.sheet-no{font-family:var(--f-mono);font-size:12px;font-weight:600;letter-spacing:.08em;border:1.5px solid var(--ink);padding:2px 8px}
+.sheet-head .sub{font-size:13px;color:var(--muted);margin-left:auto}
+.frame{border:1px solid var(--line);background:var(--panel);overflow-x:auto;padding:14px}
+.frame svg{display:block;margin:0 auto}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.two>*{min-width:0}
+@media (max-width:860px){.two{grid-template-columns:1fr}}
+/* flow */
+.flow{display:flex;flex-wrap:wrap;gap:10px;align-items:stretch;list-style:none;padding:0;margin:0;counter-reset:st}
+.flow li{flex:1 1 150px;min-width:0;background:var(--panel);border:1px solid var(--line);padding:12px 12px 12px;position:relative;display:flex;flex-direction:column;gap:4px;counter-increment:st}
+.flow li::before{content:counter(st);font-family:var(--f-mono);font-size:11px;color:var(--muted)}
+.flow li b{font-weight:700;font-size:14.5px}
+.flow li span{font-size:12.5px;color:var(--muted);line-height:1.5}
+.flow li .io{font-family:var(--f-mono);font-size:11.5px;color:var(--skyris)}
+.flow li.money{border-color:var(--gold)} .flow li.money .io{color:var(--gold)}
+.flow li.dia{border-color:var(--diamond)} .flow li.dia .io{color:var(--diamond)}
+/* controls */
+.seg{display:inline-flex;border:1px solid var(--ink);flex-wrap:wrap}
+.seg button{font:inherit;font-size:13px;background:transparent;color:var(--ink);border:0;border-right:1px solid var(--ink);padding:6px 12px;cursor:pointer}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.seg button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--skyris);outline-offset:2px}
+.ctrl-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+/* legend */
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--muted)}
+.legend i{display:inline-block;width:12px;height:12px;vertical-align:-1px;margin-right:5px;border:1px solid var(--line)}
+/* table */
+.tbl{overflow-x:auto;border:1px solid var(--line);background:var(--panel)}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th,td{text-align:left;padding:8px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;background:var(--paper)}
+tr:last-child td{border-bottom:0}
+td.mono{white-space:nowrap}
+/* steps */
+.steps{margin:0;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:0;counter-reset:s;border:1px solid var(--line);background:var(--panel)}
+.steps li{counter-increment:s;display:grid;grid-template-columns:44px 1fr;border-bottom:1px solid var(--line)}
+.steps li:last-child{border-bottom:0}
+.steps li::before{content:counter(s);font-family:var(--f-mono);font-weight:600;display:flex;align-items:flex-start;justify-content:center;padding-top:10px;border-right:1px solid var(--line);color:var(--skyris)}
+.steps li>div{padding:10px 14px;min-width:0}
+.steps li b{display:block}
+.steps li span{font-size:13.5px;color:var(--muted)}
+/* notes */
+.note{border-left:3px solid var(--bloom);background:var(--panel);padding:12px 16px;font-size:14px;display:flex;flex-direction:column;gap:6px}
+.note.gold{border-left-color:var(--gold)}
+.note b{font-weight:700}
+/* calc */
+.calc{display:grid;grid-template-columns:300px 1fr;border:2px solid var(--ink);background:var(--panel)}
+.calc-in{padding:18px;border-right:2px solid var(--ink);display:flex;flex-direction:column;gap:14px;min-width:0}
+.calc-in label{display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:500}
+.calc-in input[type=range]{width:100%;accent-color:var(--skyris)}
+.calc-in select,.calc-in input[type=number]{font:inherit;font-size:14px;padding:6px 8px;background:var(--paper);color:var(--ink);border:1px solid var(--line)}
+.calc-out{padding:18px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--line)}
+.kpi{padding:10px 12px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);min-width:0}
+.kpi:nth-child(3n){border-right:0}
+.kpi:nth-last-child(-n+3){border-bottom:0}
+.kpi small{display:block;font-size:11.5px;color:var(--muted)}
+.kpi b{font-family:var(--f-display);font-weight:400;font-size:24px;font-variant-numeric:tabular-nums}
+.kpi.g b{color:var(--gold)} .kpi.d b{color:var(--diamond)}
+.bar{height:10px;background:var(--paper);border:1px solid var(--line);position:relative}
+.bar>i{position:absolute;inset:0 auto 0 0;background:var(--skyris)}
+.bar.over>i{background:var(--bloom)}
+.status{font-size:13.5px}
+.status.warn{color:var(--bloom)}
+@media (max-width:760px){.calc{grid-template-columns:1fr}.calc-in{border-right:0;border-bottom:2px solid var(--ink)}.kpis{grid-template-columns:repeat(2,1fr)}.kpi{border-right:1px solid var(--line)!important;border-bottom:1px solid var(--line)!important}.kpi:nth-child(2n){border-right:0!important}}
+/* phases */
+.phases{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--line);background:var(--panel)}
+.phase{padding:16px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:8px;min-width:0}
+.phase:last-child{border-right:0}
+.phase .tag{font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;color:var(--skyris)}
+.phase ul{margin:0;padding-left:18px;font-size:13.5px;display:flex;flex-direction:column;gap:3px}
+@media (max-width:760px){.phases{grid-template-columns:1fr}.phase{border-right:0;border-bottom:1px solid var(--line)}}
+.checks{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;border:1px solid var(--line);background:var(--panel)}
+.checks li{display:grid;grid-template-columns:28px 1fr;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line);font-size:14px}
+.checks li:last-child{border-bottom:0}
+.checks input{width:16px;height:16px;margin-top:4px;accent-color:var(--skyris)}
+.checks span small{display:block;color:var(--muted);font-size:12.5px}
+svg text{font-family:var(--f-body)}
+svg .mono{font-family:var(--f-mono)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+.flowdash{stroke-dasharray:6 5;animation:dash 1.2s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-22}}
+footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:14px;display:flex;flex-direction:column;gap:4px}
+</style>
+
+<div class="wrap">
+
+<header class="titleblock">
+  <div class="tb-main">
+    <div class="kicker">Mayview · Skyris Stairs Works</div>
+    <h1>스카이리스 계단 공장</h1>
+    <p>스카이리스 나무를 키우고 베고, 원목을 판자와 계단으로 가공해 판매함에 넣고, 나온 금화를 다이아 코인으로 압축해 금고에 쌓는 사각 모듈형 공장입니다. 포드 한 칸이 청크 한 칸이라 오른쪽으로 계속 붙여 늘릴 수 있습니다.</p>
+  </div>
+  <div class="tb-meta">
+    <div>도면</div><div>설계도 세트 A–G (8장)</div>
+    <div>축척</div><div>1칸 = 1블록, 부지도 1칸 = 1청크</div>
+    <div>기준면</div><div><span class="mono">S</span> = 포드 바닥 높이(묘목이 서는 칸)</div>
+    <div>모드</div><div>Create 6.0.9 · Item Collectors · BYG 2.5.5</div>
+    <div>판</div><div>v1 · 2026-09-29</div>
+  </div>
+</header>
+
+<section class="ratios" aria-label="핵심 환산비">
+  <div class="ratio"><b class="s">16 원목</b><span>= 판자 64 = 계단 64 (톱 절단 판자 1 → 계단 1)</span></div>
+  <div class="ratio"><b class="g">1 금화</b><span>= 계단 64개 판매 1회 (판매함 레시피)</span></div>
+  <div class="ratio"><b class="d">1 다이아</b><span>= 금화 8 = 계단 512 = 원목 128</span></div>
+  <div class="ratio"><b>16배</b><span>원목 그대로 팔면 32개 = 철화 1 → 금화 1에 원목 256개</span></div>
+</section>
+
+<!-- D-0 FLOW -->
+<section class="sheet" id="flow">
+  <div class="sheet-head"><span class="sheet-no">D-0</span><h2>공정 흐름</h2><span class="sub">왼쪽에서 오른쪽, 사람 손 없이 순환</span></div>
+  <ol class="flow">
+    <li><b>재배</b><span>흙 1칸 위 묘목. 디플로이어가 심고 뼛가루를 줍니다.</span><span class="io">묘목 → 나무</span></li>
+    <li><b>벌목</b><span>피스톤에 달린 톱이 주기적으로 밀고 들어가 나무 전체를 쓰러뜨립니다.</span><span class="io">나무 → 원목·묘목</span></li>
+    <li><b>회수</b><span>바닥 밑 고급 아이템 수집기(반경 7)가 포드 전체를 흡수.</span><span class="io">묘목은 포드로 복귀</span></li>
+    <li><b>이송</b><span>포드마다 16칸 벨트 1개를 이어 붙인 지하 본선.</span><span class="io">원목 → 가공동</span></li>
+    <li><b>판자</b><span>단독 기계식 조합기 = 1×1 조합. 원목 1 → 판자 4.</span><span class="io">원목 → 판자</span></li>
+    <li><b>계단</b><span>벨트 위 기계식 톱. 필터를 스카이리스 계단으로 지정.</span><span class="io">판자 1 → 계단 1</span></li>
+    <li class="money"><b>판매</b><span>판매함 뱅크. 계단 64개를 넣으면 금화 1개가 나옵니다.</span><span class="io">계단 64 → 금화 1</span></li>
+    <li class="money"><b>수금</b><span>판매함 아래 깔때기가 금화만 빼서 코인 벨트로.</span><span class="io">금화 → 압축기</span></li>
+    <li class="dia"><b>압축·보관</b><span>금화 8 → 다이아 코인 1. 입구 옆 금고에 적립.</span><span class="io">금화 8 → 다이아 1</span></li>
+  </ol>
+</section>
+
+<!-- A-1 SITE -->
+<section class="sheet" id="site">
+  <div class="sheet-head"><span class="sheet-no">A-1</span><h2>부지 배치도</h2><span class="sub">1칸 = 1청크(16×16). 청크 경계에 맞춰 짓기</span></div>
+  <p>가공동(2×2청크)을 서쪽 끝에 두고, 포드를 북·남 두 줄로 동쪽으로 늘립니다. 두 줄 사이의 경계가 <b>척추(스파인)</b>입니다. 지상은 사람이 다니는 2칸 통로, 지하는 원목 본선 벨트와 동력축이 지나갑니다. 청크 단위로 맞추면 FTB Chunks 강제 로드도 포드 단위로 딱 떨어집니다.</p>
+  <div class="ctrl-row">
+    <div class="seg" role="group" aria-label="확장 단계">
+      <button type="button" id="ph1" data-phase="1" aria-pressed="false">1단계 · 포드 2</button>
+      <button type="button" id="ph2" data-phase="2" aria-pressed="true">2단계 · 포드 8</button>
+      <button type="button" id="ph3" data-phase="3" aria-pressed="false">3단계 · 포드 20</button>
+    </div>
+    <span class="mono muted" id="chunkCount"></span>
+  </div>
+  <div class="frame"><svg id="siteSvg" role="img" aria-label="부지 배치도"></svg></div>
+  <div class="legend">
+    <span><i style="background:var(--c-vault)"></i>가공동</span>
+    <span><i style="background:var(--c-leaf)"></i>가동 포드</span>
+    <span><i style="background:transparent;border-style:dashed;border-color:var(--muted)"></i>예약 부지</span>
+    <span><i style="background:var(--c-belt)"></i>지하 본선 벨트</span>
+    <span><i style="background:var(--bloom)"></i>플레이어 동선</span>
+  </div>
+</section>
+
+
+<!-- A-2 TOWER -->
+<section class="sheet" id="tower">
+  <div class="sheet-head"><span class="sheet-no">A-2</span><h2>수직 확장 (타워형)</h2><span class="sub">강제 로드 4청크로 포드 20개</span></div>
+  <p>청크 강제 로드는 그 청크의 맨 아래부터 맨 위까지 전부 로드하므로, 포드를 옆으로 늘리지 않고 위로 쌓으면 청크를 거의 쓰지 않습니다. 2×2청크 발판에 층마다 포드 4개를 넣고, 나무 높이(최대 약 37칸)에 설비층 6칸을 더해 <b>층 높이 45칸</b>으로 잡으면 지면 위로 5층, 포드 20개가 들어갑니다. 가로 배치에서 24청크가 들던 규모입니다.</p>
+  <div class="two">
+    <figure class="frame" style="margin:0"><svg id="towerSvg" role="img" aria-label="타워 입면도"></svg>
+      <figcaption class="muted mono" style="font-size:11.5px;text-align:center;margin-top:6px">A-2 입면도 · 지면 Y=64 기준 예시</figcaption></figure>
+    <figure class="frame" style="margin:0"><svg id="floorSvg" role="img" aria-label="타워 한 층 평면도"></svg>
+      <figcaption class="muted mono" style="font-size:11.5px;text-align:center;margin-top:6px">A-3 한 층 평면도 · 32×32 · 포드 4 + 가운데 코어</figcaption></figure>
+  </div>
+  <div class="tbl"><table>
+    <thead><tr><th>항목</th><th>가로 배치 (A-1)</th><th>타워 배치 (A-2)</th></tr></thead>
+    <tbody>
+      <tr><td>포드 20개 강제 로드</td><td class="mono">24청크</td><td class="mono">4청크 (가공동 포함)</td></tr>
+      <tr><td>포드 방향</td><td>모두 같은 방향, 척추가 남쪽</td><td>층마다 4개를 대칭으로 두고 통로가 가운데 십자로 모이게</td></tr>
+      <tr><td>원목 이동</td><td>본선 벨트 16칸 × 구간 수</td><td>코어의 수직 슈트로 떨어뜨림. 층마다 깔때기로 슈트 옆에 넣기만 하면 됩니다</td></tr>
+      <tr><td>뼛가루 공급</td><td>척추에 비료 벨트 1줄</td><td>위로 올려야 함: Create 6 패키지(체인 컨베이어 연결당 32칸) + 층별 프로그포트, 또는 AE2</td></tr>
+      <tr><td>사람 이동</td><td>척추 통로를 걸어서</td><td>코어의 엘리베이터(Elevator 모드) 또는 사다리</td></tr>
+      <tr><td>시공량</td><td>포드마다 바닥 1장</td><td>층마다 바닥·벽·천장 조명. 32×32×45 공간을 감싸는 벽이 필요해 재료가 더 듭니다</td></tr>
+      <tr><td>확장 한계</td><td>강제 로드 25청크</td><td>월드 높이. 지면 위 5층, 땅을 파 내려가면 더</td></tr>
+    </tbody>
+  </table></div>
+  <div class="note gold"><b>층 높이를 줄이면</b><span>천장이 낮아도 묘목은 자라려고 하지만, 키 큰 모양이 뽑히면 공간이 막혀 실패하고 뼛가루만 씁니다. 다음 시도에서 다른 모양이 나오면 자라므로 층을 35칸 정도로 줄여 6층을 만드는 것도 가능합니다. 대신 원목이 적은 작은 나무 비율이 늘어납니다. 시험 포드에서 확인한 뒤 정하세요.</span></div>
+  <div class="note"><b>밝기와 몹</b><span>층이 완전히 막혀 어두워지므로 천장(S+38) 줄에 조명을 촘촘히 넣습니다. 뼛가루 성장은 밝기와 상관없지만, 어두우면 층 안에 몹이 생깁니다.</span></div>
+</section>
+
+<!-- B POD -->
+<section class="sheet" id="pod">
+  <div class="sheet-head"><span class="sheet-no">B-1 · B-2</span><h2>재배 포드</h2><span class="sub">북쪽 줄 기준. 남쪽 줄은 남북 대칭</span></div>
+  <p>나무 한 그루 = 포드 한 칸. 스카이리스는 <b>묘목 1개</b>로 자라지만 5종 중 4종이 줄기 밑동이 <b>+자(가운데와 동서남북 1칸)</b>로 퍼지고, 수관(잎 덩어리)은 중심에서 최대 7칸까지 나갑니다. 그래서 모든 기계를 중심에서 <b>2칸 이상</b> 떨어뜨리고, 벌목은 톱을 피스톤으로 잠깐 밀어 넣는 방식으로 합니다.</p>
+  <div class="ctrl-row">
+    <div class="seg" role="group" aria-label="평면도 보기">
+      <button type="button" id="v0" data-view="empty" aria-pressed="true">묘목 상태</button>
+      <button type="button" id="v1" data-view="grown" aria-pressed="false">나무 성장 후</button>
+      <button type="button" id="v2" data-view="under" aria-pressed="false">지하 설비층</button>
+    </div>
+  </div>
+  <div class="two">
+    <figure class="frame" style="margin:0">
+      <svg id="podSvg" role="img" aria-label="포드 평면도"></svg>
+      <figcaption class="muted mono" style="font-size:11.5px;text-align:center;margin-top:6px">B-1 평면도 · S층 · 16×16</figcaption>
+    </figure>
+    <figure class="frame" style="margin:0">
+      <svg id="secSvg" role="img" aria-label="포드 단면도"></svg>
+      <figcaption class="muted mono" style="font-size:11.5px;text-align:center;margin-top:6px">B-2 단면도 · 중심선(동서) 절단</figcaption>
+    </figure>
+  </div>
+  <div class="legend">
+    <span><i style="background:var(--c-dirt)"></i>흙 (중심 1칸만)</span>
+    <span><i style="background:var(--c-stone)"></i>돌 바닥 (흙 X)</span>
+    <span><i style="background:var(--c-dep)"></i>디플로이어</span>
+    <span><i style="background:var(--c-saw)"></i>기계식 톱</span>
+    <span><i style="background:var(--c-piston)"></i>기계식 피스톤 + 연장 막대</span>
+    <span><i style="background:var(--c-hopper)"></i>호퍼·상자·깔때기</span>
+    <span><i style="background:var(--c-glass)"></i>유리 벽</span>
+    <span><i style="background:var(--c-walk)"></i>통로</span>
+    <span><i style="background:var(--bloom)"></i>줄기 +자 금지 구역</span>
+  </div>
+
+  <h3>B-3 포드 부품표</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>부품</th><th>좌표 (중심 기준 x,y,z)</th><th>설정</th></tr></thead>
+    <tbody>
+      <tr><td>흙 1칸</td><td class="mono">0, S−1, 0</td><td>일반 흙. 나머지 바닥은 돌 계열로 채워 다른 칸에 묘목이 심기지 않게 합니다. 주변에 잔디가 없어야 흙이 잔디로 번지지 않습니다.</td></tr>
+      <tr><td>디플로이어 P (심기)</td><td class="mono">+2, S, 0 → 서향</td><td>묘목을 들게 합니다. 디플로이어는 2칸 앞 칸을 조작하므로 중심이 비면 바로 묘목을 심습니다. 바닥 관통 수직축으로 동력 공급.</td></tr>
+      <tr><td>디플로이어 B (비료)</td><td class="mono">−2, S, 0 → 동향</td><td>뼛가루를 들게 합니다. 위에 호퍼(−2,S+1,0)와 상자(−2,S+2,0)를 얹어 보충. 자연 성장만 쓸 거면 생략 가능.</td></tr>
+      <tr><td>기계식 톱</td><td class="mono">0, S, −2 → 남향</td><td>피스톤 앞에 붙여 캐리지로 만듭니다. 움직이는 톱이라 동력은 필요 없습니다.</td></tr>
+      <tr><td>기계식 피스톤</td><td class="mono">0, S, −3 · 막대 3개 −4…−6</td><td>3칸 전진하면 톱이 (0,S,−1) → 중심 → (0,S,+1)까지 지나가며 줄기 밑동을 벱니다.</td></tr>
+      <tr><td>시퀀스 기어시프트</td><td class="mono">피스톤 바로 아래 S−1</td><td>레버를 켜둔 채 반복: 피스톤 3칸 전진 → 1초 대기 → 3칸 후진 → 25초 대기. 16 RPM 권장(나무가 멀리 튀지 않게).</td></tr>
+      <tr><td>고급 아이템 수집기</td><td class="mono">0, S−2, 0</td><td>반경 7로 설정하면 15×15 재배 구역 전체를 덮습니다. 필터: 스카이리스 원목, 스카이리스 묘목.</td></tr>
+      <tr><td>통 (버퍼)</td><td class="mono">0, S−3, 0</td><td>수집기를 이 통에 붙여 설치합니다.</td></tr>
+      <tr><td>기계식 팔</td><td class="mono">+1, S−2, +1</td><td>입력: 통 · 출력: 디플로이어 P · 필터: 묘목. 떨어진 묘목을 다시 심는 순환 고리입니다.</td></tr>
+      <tr><td>황동 깔때기</td><td class="mono">0, S−4, 0 (통 밑면)</td><td>필터: 스카이리스 원목. 아래 지선 벨트로 원목만 내보냅니다.</td></tr>
+      <tr><td>지선 벨트</td><td class="mono">0, S−5, 0 → +z 7칸</td><td>척추 밑 본선 벨트 위로 떨어뜨려 합류시킵니다.</td></tr>
+      <tr><td>유리 벽 · 조명</td><td class="mono">테두리, 높이 3</td><td>튄 원목을 막고, 모서리에 조명으로 몹 스폰을 막습니다. 천장은 뚫어 둡니다(나무 최대 약 S+37).</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>B-4 한 주기의 순서</h3>
+  <ol class="steps">
+    <li><div><b>심기</b><span>중심이 비면 디플로이어 P가 흙 위에 묘목을 놓습니다.</span></div></li>
+    <li><div><b>성장</b><span>디플로이어 B가 뼛가루를 계속 줍니다. BYG 묘목은 2단계라 평균 4~5개면 자랍니다. 비료가 없으면 자연 성장(바닐라 기준 평균 약 16분).</span></div></li>
+    <li><div><b>벌목</b><span>시퀀스 기어시프트가 톱 캐리지를 3칸 밀어 넣습니다. 톱이 +자 밑동(또는 1칸짜리 줄기)을 만나면 Create 벌목 판정으로 나무 전체가 한 번에 쓰러집니다. 묘목 상태면 톱이 자르지 못하고 그냥 지나갑니다.</span></div></li>
+    <li><div><b>낙엽</b><span>팩에 Leaves Be Gone이 있어 잎이 0.25~1초 안에 사라지고 묘목·사과가 떨어집니다.</span></div></li>
+    <li><div><b>회수</b><span>수집기가 원목·묘목을 통으로. 팔이 묘목을 P에 채우고, 깔때기가 원목을 벨트로 내보냅니다. 25초 후 다음 주기.</span></div></li>
+  </ol>
+</section>
+
+<!-- C HALL -->
+<section class="sheet" id="hall">
+  <div class="sheet-head"><span class="sheet-no">C-1</span><h2>가공동</h2><span class="sub">2×2청크(32×32) · 가공은 S층, 벨트·코인선은 지하</span></div>
+  <p>원목은 동쪽 척추 입구로 들어와 북쪽을 따라 서쪽으로 가공되고, 판매함 뱅크를 거쳐 입구 쪽으로 되돌아옵니다. U자 흐름이라 <b>사람이 가장 자주 가는 다이아 코인 금고가 입구 바로 옆</b>에 옵니다. 관제 통로(S+5)는 가공동을 가로질러 척추 통로로 이어집니다.</p>
+  <div class="frame"><svg id="hallSvg" role="img" aria-label="가공동 평면도"></svg></div>
+  <div class="tbl"><table>
+    <thead><tr><th>구역</th><th>구성</th><th>메모</th></tr></thead>
+    <tbody>
+      <tr><td>① 원목 버퍼</td><td>아이템 저장고 3×3×2</td><td>수확이 가공보다 빠를 때 받아 둡니다. 여기가 차면 벨트가 멈추고, 포드 통에 쌓이다가 결국 바닥에 남습니다.</td></tr>
+      <tr><td>② 판자 조합</td><td>단독 기계식 조합기 ×2</td><td>원목 1개를 넣으면 곧바로 판자 4개. 서버 설정 <code>allowRegularCraftingInCrafter = true</code> 확인됨. 기계식 톱은 스카이리스 원목을 판자로 자르지 못합니다(게임에서 확인). 원목 → 판자는 조합기, 판자 → 계단은 톱으로 나눕니다.</td></tr>
+      <tr><td>③ 계단 절단</td><td>위를 보는 기계식 톱 ×4 (벨트 사이)</td><td>벨트 → 톱 → 벨트로 이어 판자를 톱 위로 지나가게 합니다. 판자는 여러 가지로 잘릴 수 있으니 톱마다 <b>필터 칸에 스카이리스 계단</b>을 넣어야 계단만 나옵니다. 조합법(판자 6 → 계단 4)보다 수율이 1.5배라 조합기를 쓰지 않습니다. 느리면 톱을 한 줄 더 붙입니다.</td></tr>
+      <tr><td>④ 계단 버퍼</td><td>아이템 저장고</td><td>판매함이 느릴 때 흡수합니다.</td></tr>
+      <tr><td>⑤ 판매함 뱅크</td><td>판매함 4 → 12대</td><td>위에서 깔때기로 계단만 넣고, 밑면 깔때기로 금화만 뺍니다(입력칸은 넣기 전용, 출력칸은 빼기 전용이라 섞이지 않음). 구리 30초 · 미스릴 20초 · 비리디움 10초에 64개.</td></tr>
+      <tr><td>⑥ 코인 압축</td><td>기계식 조합기 8대 (2×4) 또는 바닐라 조합기</td><td>금화 8개 무형 조합 → 다이아 코인 1. 바닐라 조합기로 하면 칸 1개를 끄고 호퍼로 채운 뒤, 비교기 신호 9에서 펄스를 주면 됩니다.</td></tr>
+      <tr><td>⑦ 금고</td><td>저장고 + 디스플레이 링크·보드</td><td>입구 옆. 보드에 누적 다이아 코인 수를 띄웁니다. 웨이스톤을 입구에 두면 어디서든 수금하러 오기 편합니다.</td></tr>
+      <tr><td>⑧ 동력실</td><td>증기 기관 또는 풍차(지붕)</td><td>설정값 기준 부하: 디플로이어 4, 피스톤 4, 팔 2, 조합기 2 (SU/RPM). 포드 1개 약 14 SU/RPM → 32 RPM이면 약 450 SU.</td></tr>
+    </tbody>
+  </table></div>
+  <div class="note"><b>판매함 주변에 레드스톤 금지</b><span>판매함은 Custom Machinery 기계이고 레드스톤 입력을 받게 되어 있습니다. 이 모드의 기본 동작은 신호가 들어오면 일시정지라서, 코인 압축용 비교기 회로 등의 신호가 번지지 않게 한 칸 이상 띄우세요. 반대로 레버 하나로 판매를 끄는 스위치로 쓸 수도 있습니다.</span></div>
+  <div class="note"><b>사과는 판매함에 넣지 않기</b><span>판매함에는 사과를 넣으면 5% 확률로 먹다 남은 음식(Leftovers)이 나오는 레시피가 있습니다. 수집기 필터를 원목·묘목으로 좁혀 두면 계단 줄에 다른 물건이 섞이지 않습니다.</span></div>
+</section>
+
+<!-- E CALC -->
+<section class="sheet" id="calc">
+  <div class="sheet-head"><span class="sheet-no">E-1</span><h2>생산량 계산기</h2><span class="sub">시간당 · 추정치 기반</span></div>
+  <div class="calc">
+    <div class="calc-in">
+      <label for="pods">포드 수 <span class="mono" id="podsOut">8</span>
+        <input type="range" id="pods" min="1" max="20" value="8">
+      </label>
+      <label for="mode">성장 방식
+        <select id="mode">
+          <option value="bone">뼛가루 자동 공급 (주기 약 45초)</option>
+          <option value="natural">자연 성장 (평균 약 16분)</option>
+        </select>
+      </label>
+      <label for="tier">판매함 등급
+        <select id="tier">
+          <option value="30">구리 · 64개/30초</option>
+          <option value="20">미스릴 · 64개/20초</option>
+          <option value="10" selected>비리디움 · 64개/10초</option>
+        </select>
+      </label>
+      <label for="bins">판매함 수
+        <input type="number" id="bins" min="1" max="24" value="6">
+      </label>
+      <p class="muted" style="font-size:12px">가정: 나무 1그루 평균 원목 약 60개(5종 구조 파일 + 줄기 높이 5~15 분포로 추정). 원목 1 → 판자 4 → 계단 4 (톱).</p>
+    </div>
+    <div class="calc-out" aria-live="polite">
+      <div class="kpis">
+        <div class="kpi"><small>나무/시간</small><b id="kTrees">–</b></div>
+        <div class="kpi"><small>원목/시간</small><b id="kLogs">–</b></div>
+        <div class="kpi"><small>계단/시간</small><b id="kStairs">–</b></div>
+        <div class="kpi g"><small>금화/시간 (실판매)</small><b id="kGold">–</b></div>
+        <div class="kpi d"><small>다이아 코인/시간</small><b id="kDia">–</b></div>
+        <div class="kpi"><small>뼛가루/시간</small><b id="kBone">–</b></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <div class="mono muted" style="font-size:12px">판매함 가동률 <span id="util">–</span></div>
+        <div class="bar" id="utilBar"><i style="width:0"></i></div>
+      </div>
+      <p class="status" id="status">–</p>
+    </div>
+  </div>
+</section>
+
+<!-- F PHASES -->
+<section class="sheet" id="phases">
+  <div class="sheet-head"><span class="sheet-no">F-1</span><h2>확장 로드맵</h2><span class="sub">강제 로드 한도 25청크 기준</span></div>
+  <div class="phases">
+    <div class="phase"><span class="tag">1단계 · 6청크</span><h3>시험 포드 2개</h3>
+      <ul><li>가공동 골조, 판자 조합기 1, 계단 톱 2</li><li>구리 판매함 2 + 바닐라 조합기 압축</li><li>포드 1개로 먼저 G-1 검증 후 복사</li></ul></div>
+    <div class="phase"><span class="tag">2단계 · 12청크</span><h3>포드 8개</h3>
+      <ul><li>척추 벨트 4구간, 동력축 연장</li><li>계단 줄 2, 판매함 4대를 미스릴·비리디움으로 교체</li><li>금고 디스플레이 보드 설치</li></ul></div>
+    <div class="phase"><span class="tag">3단계 · 24청크</span><h3>포드 20개</h3>
+      <ul><li>북·남 10열 완성, 남는 강제 로드 1칸</li><li>판매함 12대, 압축기를 기계식 조합기 8대로</li><li>더 늘릴 땐 청크 대신 뼛가루 공급을 늘리는 쪽이 효율적</li></ul></div>
+  </div>
+  <div class="note gold"><b>늘리는 순서</b><span>병목은 보통 뼛가루 → 판매함 → 계단 조합 순서로 옵니다. 계산기로 판매함 가동률이 100%를 넘으면 판매함부터, 뼛가루가 모자라면 뼈 공급(스켈레톤 농장, 뼈 → 분쇄 휠)을 먼저 늘리세요. 포드는 척추 벨트 1구간 + 동력축 1구간만 이어 붙이면 됩니다. 강제 로드가 모자라면 A-2 타워형으로 가세요. 4청크 안에 같은 포드 20개가 들어갑니다.</span></div>
+</section>
+
+<!-- G CHECKS -->
+<section class="sheet" id="checks">
+  <div class="sheet-head"><span class="sheet-no">G-1</span><h2>시공 전 검증</h2><span class="sub">포드 1개로 먼저 확인할 것</span></div>
+  <p>아래 항목은 모드 파일로 확인할 수 없어 게임 안에서 한 번 봐야 하는 부분입니다. 체크는 이 브라우저에만 저장됩니다.</p>
+  <ul class="checks" id="checkList">
+    <li><input type="checkbox" id="c1"><label for="c1"><span>기계를 2칸 거리에 둔 채로 묘목이 자라는가<small>안 자라면 디플로이어 P·B를 3칸으로 빼고, 디플로이어를 톱 캐리지 위에 싣는 방식으로 바꿉니다.</small></span></label></li>
+    <li><input type="checkbox" id="c2"><label for="c2"><span>2칸 떨어진 디플로이어가 중심에 묘목을 심고 뼛가루를 주는가<small>디플로이어 모드가 '사용'인지 렌치로 확인하세요.</small></span></label></li>
+    <li><input type="checkbox" id="c3"><label for="c3"><span>톱 캐리지가 묘목을 부수지 않고 통과하는가<small>묘목이 부서지면 캐리지 전진 거리를 2칸으로 줄이고, 1칸 줄기 나무(5종 중 1종)는 관측기로 따로 감지합니다.</small></span></label></li>
+    <li><input type="checkbox" id="c4"><label for="c4"><span>쓰러진 원목이 유리 벽 안에 떨어지는가<small>톱 방향으로 튀므로 RPM을 낮추거나 남쪽 벽을 높입니다. 옆 포드로 넘어가도 옆 포드 수집기가 받아 같은 본선으로 갑니다.</small></span></label></li>
+    <li><input type="checkbox" id="c5"><label for="c5"><span>판매함이 레드스톤 신호에 멈추는지<small>멈춘다면 판매 ON/OFF 스위치로 활용하고, 압축 회로와는 떨어뜨립니다.</small></span></label></li>
+    <li><input type="checkbox" id="c6"><label for="c6"><span>자리를 비웠을 때도 도는가<small>강제 로드된 청크에서 기계는 돌지만, 묘목의 자연 성장은 플레이어가 가까이 있어야 할 수 있습니다. 비울 때는 뼛가루 방식이 안전합니다.</small></span></label></li>
+  </ul>
+</section>
+
+<footer>
+  <span>근거: 팩 파일에서 직접 확인한 값 · <code>kubejs/startup_scripts/lib/mayview_sellables.js</code>(계단 64 → 금화 1), <code>mayview-1.0.2.jar</code>(금화 8 → 다이아 1), 판매함 기계 JSON(처리 시간·입출력 면), BYG 스카이리스 나무 구조 파일 5종(묘목 1개, +자 밑동, 수관 반경 최대 7), <code>itemcollectors-common.toml</code>(고급 반경 7, 필터 가능), <code>leavesbegone-server.toml</code>, <code>ftbchunks-world.snbt</code>(강제 로드 25), <code>create-server.toml</code>(부하값).</span>
+  <span>추정값: 나무당 원목 수, 성장 시간, 뼛가루 소모량. G-1 검증 후 계산기 가정을 조정하세요.</span>
+  <span>같이 보기: <a href="https://claude.ai/artifact/Ng3aJGZY9Wta7rwcCrcfNJ" style="color:var(--skyris)">뼛가루 공장</a> · <a href="https://claude.ai/artifact/HLTQoq81DLmw1MqY1utSA1" style="color:var(--skyris)">규토리 과수원</a> · <a href="https://claude.ai/artifact/BdMTau4Y3XCDjFRi2CFEz8" style="color:var(--skyris)">음식 공장</a> · <a href="https://claude.ai/artifact/KUcT63ePdJpbHaQ7iDMRiM" style="color:var(--skyris)">생활 주방</a> · <a href="https://claude.ai/artifact/6CPYkb3D9FMjZRRTjNQR6e" style="color:var(--skyris)">메이뷰 공장 단지</a></span>
+</footer>
+</div>
+
+<script>
+(function(){
+const NS='http://www.w3.org/2000/svg';
+const el=(t,a={},txt)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(txt!=null)e.textContent=txt;return e};
+const V=n=>`var(--${n})`;
+
+/* ---------- A-1 SITE ---------- */
+const site=document.getElementById('siteSvg');
+let phase=2;
+function drawSite(){
+  site.innerHTML='';
+  const C=46, cols=12, ox=40, oy=40, W=ox+cols*C+30, H=oy+2*C+90;
+  site.setAttribute('viewBox',`0 0 ${W} ${H}`);site.setAttribute('width',W);site.setAttribute('height',H);
+  // grid labels
+  for(let c=0;c<cols;c++) site.append(el('text',{x:ox+c*C+C/2,y:oy-10,'text-anchor':'middle','font-size':10,class:'mono',fill:V('muted')},'X+'+c));
+  site.append(el('text',{x:ox-8,y:oy+C/2+4,'text-anchor':'end','font-size':11,fill:V('muted')},'북'));
+  site.append(el('text',{x:ox-8,y:oy+C*1.5+4,'text-anchor':'end','font-size':11,fill:V('muted')},'남'));
+  const built={1:1,2:4,3:10}[phase];
+  // hall
+  site.append(el('rect',{x:ox,y:oy,width:2*C,height:2*C,fill:V('c-vault'),stroke:V('ink'),'stroke-width':1.5}));
+  site.append(el('text',{x:ox+C,y:oy+C-4,'text-anchor':'middle','font-size':14,fill:V('panel'),'font-weight':700},'가공동'));
+  site.append(el('text',{x:ox+C,y:oy+C+13,'text-anchor':'middle','font-size':10,fill:V('panel')},'2×2 청크'));
+  let n=0;
+  for(let c=2;c<cols;c++){
+    for(let r=0;r<2;r++){
+      const on=(c-2)<built; n++;
+      const g=el('g');
+      g.append(el('rect',{x:ox+c*C+2,y:oy+r*C+2,width:C-4,height:C-4,fill:on?V('c-leaf'):'none',stroke:on?V('skyris'):V('muted'),'stroke-width':1.2,'stroke-dasharray':on?'':'4 3'}));
+      if(on){
+        g.append(el('circle',{cx:ox+c*C+C/2,cy:oy+r*C+C/2,r:5,fill:V('c-log')}));
+      }
+      g.append(el('text',{x:ox+c*C+5,y:oy+r*C+13,'font-size':9,class:'mono',fill:on?V('ink'):V('muted')},(r?'S':'N')+(c-1)));
+      site.append(g);
+    }
+  }
+  // spine
+  const sy=oy+C;
+  site.append(el('line',{x1:ox+2*C,y1:sy,x2:ox+(2+built)*C,y2:sy,stroke:V('c-belt'),'stroke-width':5}));
+  site.append(el('line',{x1:ox+2*C,y1:sy,x2:ox+(2+built)*C,y2:sy,stroke:V('gold'),'stroke-width':1.5,class:'flowdash'}));
+  site.append(el('text',{x:ox+(2+built)*C+6,y:sy+4,'font-size':10,fill:V('muted')},'← 본선'));
+  // player route
+  const px=ox-24, py=oy+C;
+  const path=`M ${px} ${py} L ${ox+18} ${py} L ${ox+18} ${oy+C-14} L ${ox+2*C-8} ${oy+C-14} L ${ox+2*C-8} ${py} L ${ox+(2+built)*C-6} ${py}`;
+  site.append(el('path',{d:path,fill:'none',stroke:V('bloom'),'stroke-width':2,'stroke-dasharray':'5 4'}));
+  site.append(el('circle',{cx:px,cy:py,r:5,fill:V('bloom')}));
+  site.append(el('text',{x:px-2,y:py+20,'font-size':10,fill:V('bloom')},'입구·웨이스톤'));
+  // compass & notes
+  const ny=oy+2*C+34;
+  site.append(el('text',{x:ox,y:ny,'font-size':11,fill:V('muted')},'지상: 척추 = 2칸 통로(북 포드 z15 + 남 포드 z0)  ·  지하 S−5: 본선 벨트(포드마다 16칸 1구간)  ·  S−4: 동력축'));
+  site.append(el('text',{x:ox,y:ny+18,'font-size':11,fill:V('muted')},'확장 = 동쪽으로 1열(북·남 2포드) + 벨트 1구간 + 동력축 1구간'));
+  document.getElementById('chunkCount').textContent=`강제 로드 ${4+built*2} / 25 청크`;
+}
+document.querySelectorAll('[data-phase]').forEach(b=>b.addEventListener('click',()=>{
+  phase=+b.dataset.phase;document.querySelectorAll('[data-phase]').forEach(x=>x.setAttribute('aria-pressed',x===b));drawSite();
+}));
+drawSite();
+
+/* ---------- B-1 POD PLAN ---------- */
+const pod=document.getElementById('podSvg');
+let view='empty';
+function cell(g,x,z,fill,C,ox,oy,extra={}){g.append(el('rect',Object.assign({x:ox+x*C,y:oy+z*C,width:C,height:C,fill,stroke:V('grid'),'stroke-width':.6},extra)))}
+function arrow(g,x,z,dir,C,ox,oy,col){
+  const cx=ox+x*C+C/2, cy=oy+z*C+C/2, s=C*.28;
+  const pts={W:[[s,-s],[s,s],[-s,0]],E:[[-s,-s],[-s,s],[s,0]],S:[[-s,-s],[s,-s],[0,s]],N:[[-s,s],[s,s],[0,-s]]}[dir];
+  g.append(el('polygon',{points:pts.map(p=>(cx+p[0])+','+(cy+p[1])).join(' '),fill:col||V('panel')}));
+}
+function drawPod(){
+  pod.innerHTML='';
+  const C=21, ox=26, oy=22, N=16, W=ox+N*C+14, H=oy+N*C+26;
+  pod.setAttribute('viewBox',`0 0 ${W} ${H}`);pod.setAttribute('width',W);pod.setAttribute('height',H);
+  const g=el('g');pod.append(g);
+  const cx=7, cz=7;
+  const under=view==='under';
+  for(let x=0;x<N;x++)for(let z=0;z<N;z++){
+    let f=V('c-stone');
+    if(x===15||z===15) f=V('c-walk');
+    cell(g,x,z,f,C,ox,oy,under?{opacity:.35}:{});
+  }
+  // glass border around grow area
+  g.append(el('rect',{x:ox-1,y:oy-1,width:15*C+2,height:15*C+2,fill:'none',stroke:V('c-glass'),'stroke-width':3}));
+  // axis labels
+  for(let i=0;i<N;i+=1){ if(i%7===0||i===15){
+    g.append(el('text',{x:ox+i*C+C/2,y:oy-7,'text-anchor':'middle','font-size':9,class:'mono',fill:V('muted')},i-7>0?'+'+(i-7):String(i-7)));
+    g.append(el('text',{x:ox-6,y:oy+i*C+C/2+3,'text-anchor':'end','font-size':9,class:'mono',fill:V('muted')},i-7>0?'+'+(i-7):String(i-7)));
+  }}
+  if(!under){
+    if(view==='grown'){
+      g.append(el('circle',{cx:ox+cx*C+C/2,cy:oy+cz*C+C/2,r:7*C+C/2,fill:V('c-leaf'),'fill-opacity':.28,stroke:V('skyris'),'stroke-dasharray':'5 4'}));
+      [[0,-1],[0,1],[-1,0],[1,0]].forEach(([dx,dz])=>cell(g,cx+dx,cz+dz,V('c-log'),C,ox,oy));
+      cell(g,cx,cz,V('c-log'),C,ox,oy);
+      [[0,-1],[0,1],[-1,0],[1,0],[0,0]].forEach(([dx,dz])=>g.append(el('rect',{x:ox+(cx+dx)*C+1.5,y:oy+(cz+dz)*C+1.5,width:C-3,height:C-3,fill:'none',stroke:V('bloom'),'stroke-width':2})));
+      g.append(el('text',{x:ox+cx*C+C/2,y:oy+1*C-5,'text-anchor':'middle','font-size':10,fill:V('skyris')},'수관 반경 최대 7'));
+    }else{
+      [[0,-1],[0,1],[-1,0],[1,0]].forEach(([dx,dz])=>g.append(el('rect',{x:ox+(cx+dx)*C+1.5,y:oy+(cz+dz)*C+1.5,width:C-3,height:C-3,fill:V('bloom'),'fill-opacity':.18,stroke:V('bloom'),'stroke-width':1.2,'stroke-dasharray':'3 2'})));
+      cell(g,cx,cz,V('c-dirt'),C,ox,oy);
+      g.append(el('circle',{cx:ox+cx*C+C/2,cy:oy+cz*C+C/2,r:C*.28,fill:V('c-leaf'),stroke:V('skyris')}));
+    }
+    // deployers
+    cell(g,cx+2,cz,V('c-dep'),C,ox,oy);arrow(g,cx+2,cz,'W',C,ox,oy);
+    cell(g,cx-2,cz,V('c-dep'),C,ox,oy);arrow(g,cx-2,cz,'E',C,ox,oy);
+    g.append(el('text',{x:ox+(cx+2)*C+C/2,y:oy+(cz+1)*C+12,'text-anchor':'middle','font-size':10,'font-weight':700,fill:V('ink')},'P'));
+    g.append(el('text',{x:ox+(cx-2)*C+C/2,y:oy+(cz+1)*C+12,'text-anchor':'middle','font-size':10,'font-weight':700,fill:V('ink')},'B'));
+    // saw carriage
+    cell(g,cx,cz-2,V('c-saw'),C,ox,oy);arrow(g,cx,cz-2,'S',C,ox,oy);
+    cell(g,cx,cz-3,V('c-piston'),C,ox,oy);
+    for(let i=4;i<=6;i++) g.append(el('rect',{x:ox+cx*C+C*.35,y:oy+(cz-i)*C,width:C*.3,height:C,fill:V('c-piston'),opacity:.75}));
+    // saw path
+    g.append(el('line',{x1:ox+cx*C+C/2,y1:oy+(cz-1.5)*C,x2:ox+cx*C+C/2,y2:oy+(cz+1.7)*C,stroke:V('ink'),'stroke-width':1.3,'stroke-dasharray':'3 3','marker-end':'url(#ah)'}));
+    g.append(el('text',{x:ox+(cx+1)*C+3,y:oy+(cz-3)*C+C/2+4,'font-size':10,fill:V('ink')},'톱 캐리지 3칸 왕복'));
+    g.append(el('text',{x:ox+(cx+3)*C+3,y:oy+cz*C+C/2+4,'font-size':10,fill:V('ink')},'심기'));
+    g.append(el('text',{x:ox+(cx-3)*C-3,y:oy+cz*C+C/2+4,'text-anchor':'end','font-size':10,fill:V('ink')},'뼛가루'));
+  }else{
+    // underground
+    const u=(x,z,f,lab)=>{cell(g,x,z,f,C,ox,oy,{stroke:V('ink'),'stroke-width':1});if(lab)g.append(el('text',{x:ox+x*C+C/2,y:oy+z*C+C/2+3.5,'text-anchor':'middle','font-size':9,'font-weight':700,fill:V('panel')},lab))};
+    for(let z=cz;z<=14;z++) u(cx,z,V('c-belt'));
+    for(let x=0;x<16;x++) cell(g,x,15,V('c-belt'),C,ox,oy,{stroke:V('ink'),'stroke-width':1});
+    g.append(el('line',{x1:ox+15.8*C,y1:oy+15.5*C,x2:ox+.3*C,y2:oy+15.5*C,stroke:V('gold'),'stroke-width':1.6,class:'flowdash'}));
+    g.append(el('line',{x1:ox+cx*C+C/2,y1:oy+(cz+.5)*C,x2:ox+cx*C+C/2,y2:oy+14.8*C,stroke:V('gold'),'stroke-width':1.6,class:'flowdash'}));
+    u(cx,cz,V('c-hopper'),'수');
+    u(cx+1,cz+1,V('c-dep'),'팔');
+    u(cx+2,cz,V('c-saw'),'축');u(cx-2,cz,V('c-saw'),'축');u(cx,cz-3,V('c-saw'),'기');
+    g.append(el('text',{x:ox+(cx+1)*C,y:oy+(cz-1)*C-4,'font-size':10,fill:V('ink')},'수집기 S−2 · 통 S−3 · 깔때기 S−4'));
+    g.append(el('text',{x:ox+(cx+1)*C+4,y:oy+11*C+4,'font-size':10,fill:V('ink')},'지선 벨트 S−5'));
+    g.append(el('text',{x:ox+.5*C,y:oy+15*C-5,'font-size':10,fill:V('ink')},'척추 본선 → 가공동(서쪽)'));
+    g.append(el('circle',{cx:ox+cx*C+C/2,cy:oy+cz*C+C/2,r:7*C+C/2,fill:'none',stroke:V('diamond'),'stroke-dasharray':'5 4'}));
+    g.append(el('text',{x:ox+cx*C+C/2,y:oy+1*C-5,'text-anchor':'middle','font-size':10,fill:V('diamond')},'수집 반경 7 (15×15)'));
+  }
+  // marker + north
+  const defs=el('defs');const m=el('marker',{id:'ah',viewBox:'0 0 10 10',refX:5,refY:5,markerWidth:6,markerHeight:6,orient:'auto-start-reverse'});m.append(el('path',{d:'M0,0 L10,5 L0,10 z',fill:V('ink')}));defs.append(m);pod.prepend(defs);
+  pod.append(el('text',{x:ox+N*C-2,y:oy+N*C+18,'text-anchor':'end','font-size':10,class:'mono',fill:V('muted')},'↑북 · 동→  척추(남)·통로(동)'));
+}
+document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>{
+  view=b.dataset.view;document.querySelectorAll('[data-view]').forEach(x=>x.setAttribute('aria-pressed',x===b));drawPod();
+}));
+drawPod();
+
+/* ---------- B-2 SECTION ---------- */
+(function(){
+  const s=document.getElementById('secSvg');
+  const C=21, ox=44, top=9, bot=-6, rows=top-bot+1, oy=30, N=16;
+  const W=ox+N*C+14, H=oy+rows*C+30;
+  s.setAttribute('viewBox',`0 0 ${W} ${H}`);s.setAttribute('width',W);s.setAttribute('height',H);
+  const Y=y=>oy+(top-y)*C;
+  const X=x=>ox+(x+7)*C;
+  const box=(x,y,f,lab,dash)=>{s.append(el('rect',{x:X(x),y:Y(y),width:C,height:C,fill:f,stroke:V('ink'),'stroke-width':.8,'stroke-dasharray':dash||''}));if(lab)s.append(el('text',{x:X(x)+C/2,y:Y(y)+C/2+3.5,'text-anchor':'middle','font-size':9,'font-weight':700,fill:V('panel')},lab))};
+  // level labels
+  for(let y=bot;y<=top;y++){
+    const t=y===0?'S':(y>0?'S+'+y:'S−'+(-y));
+    s.append(el('text',{x:ox-6,y:Y(y)+C/2+3,'text-anchor':'end','font-size':9,class:'mono',fill:y===0?V('ink'):V('muted')},t));
+  }
+  // sky zone
+  s.append(el('rect',{x:X(-7),y:Y(top),width:15*C,height:(top)*C,fill:V('c-glass'),'fill-opacity':.08}));
+  // floor S-1
+  for(let x=-7;x<=8;x++) box(x,-1,x===0?V('c-dirt'):(x===8?V('c-walk'):V('c-stone')));
+  // basement floor S-6
+  for(let x=-7;x<=8;x++) box(x,-6,V('c-stone'));
+  // walls
+  for(let y=0;y<=2;y++){box(-8+0.0,y,V('c-glass'));}
+  s.append(el('rect',{x:X(8),y:Y(2),width:C,height:3*C,fill:V('c-glass'),stroke:V('ink'),'stroke-width':.8}));
+  // tree
+  for(let y=0;y<=top;y++) box(0,y,V('c-log'));
+  box(1,0,V('c-log'),'','3 2');box(-1,0,V('c-log'),'','3 2');
+  for(let y=1;y<=4;y++){box(1,y,V('c-log'),'','3 2');box(-1,y,V('c-log'),'','3 2');}
+  s.append(el('text',{x:X(0)+C/2,y:Y(top)-8,'text-anchor':'middle','font-size':10,fill:V('skyris')},'↑ 줄기 5~15 + 수관 → 최대 약 S+37, 천장 개방'));
+  s.append(el('text',{x:X(1)+C+3,y:Y(3)+4,'font-size':9.5,fill:V('muted')},'+자 줄기(점선)'));
+  // machines
+  box(2,0,V('c-dep'),'P');box(-2,0,V('c-dep'),'B');box(-2,1,V('c-hopper'),'호');box(-2,2,V('c-hopper'),'상');
+  for(let y=-5;y<=-1;y++){ s.append(el('rect',{x:X(2)+C*.38,y:Y(y),width:C*.24,height:C,fill:V('c-saw')})); s.append(el('rect',{x:X(-2)+C*.38,y:Y(y),width:C*.24,height:C,fill:V('c-saw')})); }
+  // drive shaft S-4 along
+  s.append(el('rect',{x:X(-7),y:Y(-4)+C*.38,width:16*C,height:C*.24,fill:V('c-saw'),opacity:.55}));
+  box(0,-2,V('c-hopper'),'수');box(0,-3,V('c-hopper'),'통');box(0,-4,V('c-hopper'),'깔');box(0,-5,V('c-belt'),'');
+  box(1,-2,V('c-dep'),'팔','3 2');
+  s.append(el('text',{x:X(0)-4,y:Y(-5)+C/2+3,'text-anchor':'end','font-size':9.5,fill:V('ink')},'지선 벨트 →'));
+  s.append(el('text',{x:X(3)+4,y:Y(-4)-3,'font-size':9.5,fill:V('muted')},'동력축 S−4 · 디플로이어 수직축'));
+  s.append(el('text',{x:X(3)+4,y:Y(-2)+C/2+3,'font-size':9.5,fill:V('muted')},'수집기 반경 7 → S+5까지'));
+  s.append(el('text',{x:X(-7)+2,y:Y(0)-4,'font-size':9.5,fill:V('muted')},'유리 벽 3칸'));
+  s.append(el('text',{x:X(-7)+2,y:Y(-6)+C+14,'font-size':9.5,fill:V('muted')},'지하 설비층 S−2 ~ S−5 · 바닥 S−6 (서서 정비 가능)'));
+  s.append(el('line',{x1:X(-7),y1:Y(-1),x2:X(9),y2:Y(-1),stroke:V('ink'),'stroke-width':1.4}));
+})();
+
+/* ---------- C-1 HALL ---------- */
+(function(){
+  const s=document.getElementById('hallSvg');
+  const C=15, ox=30, oy=24, N=32, W=ox+N*C+200, H=oy+N*C+30;
+  s.setAttribute('viewBox',`0 0 ${W} ${H}`);s.setAttribute('width',W);s.setAttribute('height',H);
+  s.append(el('rect',{x:ox,y:oy,width:N*C,height:N*C,fill:V('paper'),stroke:V('ink'),'stroke-width':2}));
+  for(let i=0;i<=N;i+=4){
+    s.append(el('line',{x1:ox+i*C,y1:oy,x2:ox+i*C,y2:oy+N*C,stroke:V('grid'),'stroke-width':.6}));
+    s.append(el('line',{x1:ox,y1:oy+i*C,x2:ox+N*C,y2:oy+i*C,stroke:V('grid'),'stroke-width':.6}));
+  }
+  s.append(el('line',{x1:ox+16*C,y1:oy,x2:ox+16*C,y2:oy+N*C,stroke:V('muted'),'stroke-width':.8,'stroke-dasharray':'2 3'}));
+  s.append(el('line',{x1:ox,y1:oy+16*C,x2:ox+N*C,y2:oy+16*C,stroke:V('muted'),'stroke-width':.8,'stroke-dasharray':'2 3'}));
+  const R=(x,z,w,h,f,lab,n,tc)=>{
+    s.append(el('rect',{x:ox+x*C,y:oy+z*C,width:w*C,height:h*C,fill:f,stroke:V('ink'),'stroke-width':1}));
+    if(n) s.append(el('text',{x:ox+x*C+3,y:oy+z*C+11,'font-size':10,'font-weight':700,fill:tc||V('panel')},n));
+    return [ox+(x+w/2)*C, oy+(z+h/2)*C];
+  };
+  const P={};
+  P.power=R(24,0,8,5,V('c-hopper'),'','⑧');
+  P.log=R(27,13,3,3,V('c-vault'),'','①');
+  P.plank=R(27,8,3,2,V('c-crafter'),'','②');
+  // stair crafter arrays (stair shape)
+  const stair=(bx,bz)=>{[[0,2],[0,1],[1,2],[0,0],[1,1],[2,2]].forEach(([dx,dz])=>s.append(el('rect',{x:ox+(bx+dx)*C,y:oy+(bz+dz)*C,width:C,height:C,fill:V('c-crafter'),stroke:V('ink'),'stroke-width':.8})));};
+  [[14,5],[16,5],[19,5],[21,5]].forEach(([x,z])=>{s.append(el('rect',{x:ox+x*C,y:oy+z*C,width:C,height:C,fill:V('c-saw'),stroke:V('ink'),'stroke-width':.8}));s.append(el('polygon',{points:`${ox+x*C+3},${oy+z*C+C-3} ${ox+x*C+C-3},${oy+z*C+C-3} ${ox+x*C+C/2},${oy+z*C+3}`,fill:V('panel')}))});s.append(el('rect',{x:ox+13*C,y:oy+5.2*C,width:10*C,height:C*.6,fill:V('c-belt'),opacity:.55}));
+  s.append(el('text',{x:ox+14*C+3,y:oy+5*C-4,'font-size':10,'font-weight':700,fill:V('ink')},'③'));
+  P.stair=[ox+18*C, oy+4.5*C];
+  // belt z=7
+  s.append(el('rect',{x:ox+13*C,y:oy+7*C,width:15*C,height:C*.6,fill:V('c-belt')}));
+  P.svault=R(12,11,3,3,V('c-vault'),'','④');
+  // bins
+  for(let i=0;i<12;i++){ s.append(el('rect',{x:ox+(9+i)*C+1,y:oy+20*C+1,width:C-2,height:C-2,fill:i<4?V('c-bin'):'none',stroke:V('c-bin'),'stroke-width':1.2,'stroke-dasharray':i<4?'':'3 2'})); }
+  s.append(el('text',{x:ox+9*C,y:oy+20*C-4,'font-size':10,'font-weight':700,fill:V('ink')},'⑤'));
+  P.bins=[ox+15*C, oy+20.5*C];
+  s.append(el('rect',{x:ox+4*C,y:oy+21.9*C,width:17*C,height:C*.4,fill:V('gold'),opacity:.7}));
+  P.comp=R(3,23,4,2,V('c-crafter'),'','⑥');
+  P.vault=R(2,11,4,3,V('c-vault'),'','⑦');
+  // display board
+  s.append(el('rect',{x:ox+2*C,y:oy+10*C+4,width:4*C,height:5,fill:V('diamond')}));
+  // entrance & spine door
+  s.append(el('rect',{x:ox-6,y:oy+15*C,width:8,height:2*C,fill:V('bloom')}));
+  s.append(el('rect',{x:ox+N*C-2,y:oy+15*C,width:8,height:2*C,fill:V('c-walk'),stroke:V('ink')}));
+  s.append(el('circle',{cx:ox+1.5*C,cy:oy+16*C,r:5,fill:V('diamond'),stroke:V('ink')}));
+  // flow arrows
+  const defs=el('defs');const m=el('marker',{id:'ah2',viewBox:'0 0 10 10',refX:6,refY:5,markerWidth:7,markerHeight:7,orient:'auto-start-reverse'});m.append(el('path',{d:'M0,0 L10,5 L0,10 z',fill:V('skyris')}));defs.append(m);
+  const m2=el('marker',{id:'ah3',viewBox:'0 0 10 10',refX:6,refY:5,markerWidth:7,markerHeight:7,orient:'auto-start-reverse'});m2.append(el('path',{d:'M0,0 L10,5 L0,10 z',fill:V('gold')}));defs.append(m2);
+  s.prepend(defs);
+  const line=(pts,col,mk)=>s.append(el('polyline',{points:pts.map(p=>p.join(',')).join(' '),fill:'none',stroke:col,'stroke-width':2,'marker-end':`url(#${mk})`}));
+  line([[ox+N*C+4,oy+16*C],[P.log[0]+C*1.6,oy+16*C],[P.log[0]+C*1.6,P.log[1]]].map((p,i)=>i==2?[P.log[0]+C*1.5,P.log[1]]:p),V('skyris'),'ah2');
+  line([[P.log[0],oy+13*C],[P.plank[0],oy+10*C+2]],V('skyris'),'ah2');
+  line([[P.plank[0]-C*1.5,P.plank[1]],[ox+13*C,oy+7.3*C]],V('skyris'),'ah2');
+  line([[ox+13*C,oy+7.8*C],[ox+13*C,oy+10.6*C]],V('skyris'),'ah2');
+  line([[P.svault[0],oy+14*C],[P.svault[0],oy+19.6*C]],V('skyris'),'ah2');
+  line([[ox+8.4*C,oy+22.1*C],[ox+7.2*C,oy+23.5*C]],V('gold'),'ah3');
+  line([[P.comp[0],oy+23*C],[P.vault[0],oy+14.2*C]],V('diamond'),'ah3');
+  // player route
+  s.append(el('path',{d:`M ${ox-4} ${oy+16*C} L ${ox+4*C} ${oy+16*C} L ${ox+4*C} ${oy+14*C+3} M ${ox+4*C} ${oy+16*C} L ${ox+N*C} ${oy+16*C}`,fill:'none',stroke:V('bloom'),'stroke-width':2,'stroke-dasharray':'5 4'}));
+  // legend right
+  const lx=ox+N*C+22; let ly=oy+10;
+  const L=[['① 원목 버퍼 (척추 벨트 도착)','c-vault'],['② 판자 조합기 ×2','c-crafter'],['③ 계단 톱 ×4 (필터: 계단)','c-saw'],['④ 계단 버퍼','c-vault'],['⑤ 판매함 4 → 12','c-bin'],['⑥ 코인 압축 8 → 1','c-crafter'],['⑦ 다이아 금고 + 보드','c-vault'],['⑧ 동력실','c-hopper']];
+  L.forEach(([t,c])=>{s.append(el('rect',{x:lx,y:ly-9,width:11,height:11,fill:V(c),stroke:V('ink'),'stroke-width':.6}));s.append(el('text',{x:lx+17,y:ly,'font-size':11,fill:V('ink')},t));ly+=21;});
+  ly+=8;
+  s.append(el('line',{x1:lx,y1:ly-4,x2:lx+14,y2:ly-4,stroke:V('skyris'),'stroke-width':2}));s.append(el('text',{x:lx+20,y:ly,'font-size':11,fill:V('ink')},'원목·판자·계단'));ly+=19;
+  s.append(el('line',{x1:lx,y1:ly-4,x2:lx+14,y2:ly-4,stroke:V('gold'),'stroke-width':2}));s.append(el('text',{x:lx+20,y:ly,'font-size':11,fill:V('ink')},'금화 (지하 코인선)'));ly+=19;
+  s.append(el('line',{x1:lx,y1:ly-4,x2:lx+14,y2:ly-4,stroke:V('diamond'),'stroke-width':2}));s.append(el('text',{x:lx+20,y:ly,'font-size':11,fill:V('ink')},'다이아 코인'));ly+=19;
+  s.append(el('line',{x1:lx,y1:ly-4,x2:lx+14,y2:ly-4,stroke:V('bloom'),'stroke-width':2,'stroke-dasharray':'4 3'}));s.append(el('text',{x:lx+20,y:ly,'font-size':11,fill:V('ink')},'동선 (입구 → 금고 → 척추)'));ly+=26;
+  s.append(el('text',{x:lx,y:ly,'font-size':10.5,fill:V('muted')},'서쪽 = 입구 · 동쪽 = 척추'));
+  s.append(el('text',{x:lx,y:ly+16,'font-size':10.5,fill:V('muted')},'점선 = 청크 경계'));
+  s.append(el('text',{x:ox,y:oy-8,'font-size':10,class:'mono',fill:V('muted')},'32 × 32  ·  1칸 = 1블록'));
+})();
+
+
+/* ---------- A-2 TOWER ---------- */
+(function(){
+  const s=document.getElementById('towerSvg');
+  const k=1.25, W=380, ox=62, base=64, top=320, H=(top-base+20)*k+40;
+  s.setAttribute('viewBox',`0 0 ${W} ${H}`);s.setAttribute('width',W);s.setAttribute('height',H);
+  const Y=y=>20+(top-y)*k;
+  const w=32*4.2, x0=ox+30;
+  s.append(el('rect',{x:ox-10,y:Y(base),width:W-ox,height:18,fill:V('c-dirt'),opacity:.5}));
+  s.append(el('text',{x:ox-14,y:Y(base)+4,'text-anchor':'end','font-size':9,class:'mono',fill:V('muted')},'Y64'));
+  s.append(el('rect',{x:x0,y:Y(base+12),width:w,height:12*k,fill:V('c-vault'),stroke:V('ink')}));
+  s.append(el('text',{x:x0+w/2,y:Y(base+6)+4,'text-anchor':'middle','font-size':10,'font-weight':700,fill:V('panel')},'가공동 + AFK'));
+  for(let f=0;f<5;f++){
+    const S=82+45*f;
+    s.append(el('rect',{x:x0,y:Y(S-1),width:w,height:5*k,fill:V('c-stone'),stroke:V('ink'),'stroke-width':.6}));
+    s.append(el('rect',{x:x0,y:Y(S+38),width:w,height:38*k,fill:V('c-glass'),'fill-opacity':.12,stroke:V('ink'),'stroke-width':.6}));
+    [x0+w*.25,x0+w*.75].forEach(cx=>{
+      s.append(el('rect',{x:cx-2,y:Y(S+20),width:4,height:20*k,fill:V('c-log')}));
+      s.append(el('ellipse',{cx,cy:Y(S+26),rx:w*.2,ry:11*k,fill:V('c-leaf'),opacity:.8}));
+    });
+    s.append(el('text',{x:ox-14,y:Y(S)+4,'text-anchor':'end','font-size':9,class:'mono',fill:V('muted')},'S='+S));
+    s.append(el('text',{x:x0+w+8,y:Y(S+20),'font-size':10,fill:V('ink')},(f+1)+'층 · 포드 4'));
+  }
+  s.append(el('rect',{x:x0+w/2-4,y:Y(82+45*4+38),width:8,height:(82+45*4+38-(base+12))*k,fill:V('c-belt'),opacity:.85}));
+  s.append(el('line',{x1:x0+w/2-1,y1:Y(290),x2:x0+w/2-1,y2:Y(base+14),stroke:V('skyris'),'stroke-width':2,class:'flowdash'}));
+  s.append(el('text',{x:x0+w+8,y:Y(base+18),'font-size':9.5,fill:V('skyris')},'↓ 원목 슈트'));
+  s.append(el('text',{x:x0+w+8,y:Y(base+30),'font-size':9.5,fill:V('gold')},'↑ 뼛가루 패키지'));
+  s.append(el('text',{x:ox-14,y:Y(top)+4,'text-anchor':'end','font-size':9,class:'mono',fill:V('muted')},'Y320'));
+  s.append(el('line',{x1:ox-8,y1:Y(top),x2:W-6,y2:Y(top),stroke:V('bloom'),'stroke-dasharray':'4 3'}));
+  s.append(el('text',{x:W-8,y:Y(top)-4,'text-anchor':'end','font-size':9.5,fill:V('bloom')},'월드 최고 높이'));
+})();
+(function(){
+  const s=document.getElementById('floorSvg');
+  const C=10, ox=16, oy=16, N=32, W=ox+N*C+16, H=oy+N*C+30;
+  s.setAttribute('viewBox',`0 0 ${W} ${H}`);s.setAttribute('width',W);s.setAttribute('height',H);
+  [[0,0],[16,0],[0,16],[16,16]].forEach(([qx,qz])=>{
+    s.append(el('rect',{x:ox+qx*C,y:oy+qz*C,width:16*C,height:16*C,fill:V('c-stone'),stroke:V('ink'),'stroke-width':1}));
+    const gx=qx===0?0:1, gz=qz===0?0:1;
+    s.append(el('rect',{x:ox+(qx+gx)*C,y:oy+(qz+gz)*C,width:15*C,height:15*C,fill:V('c-leaf'),'fill-opacity':.3,stroke:V('c-glass'),'stroke-width':2}));
+    const cx=qx+gx+7, cz=qz+gz+7;
+    s.append(el('circle',{cx:ox+(cx+.5)*C,cy:oy+(cz+.5)*C,r:7.5*C,fill:'none',stroke:V('skyris'),'stroke-dasharray':'4 3'}));
+    s.append(el('rect',{x:ox+cx*C,y:oy+cz*C,width:C,height:C,fill:V('c-dirt')}));
+  });
+  s.append(el('rect',{x:ox+15*C,y:oy,width:2*C,height:N*C,fill:V('c-walk'),opacity:.9}));
+  s.append(el('rect',{x:ox,y:oy+15*C,width:N*C,height:2*C,fill:V('c-walk'),opacity:.9}));
+  s.append(el('rect',{x:ox+15*C,y:oy+15*C,width:2*C,height:2*C,fill:V('c-belt'),stroke:V('ink')}));
+  s.append(el('text',{x:ox+16*C,y:oy+N*C+18,'text-anchor':'middle','font-size':10.5,fill:V('muted')},'가운데 2×2 코어: 슈트 · 엘리베이터 · 체인 컨베이어'));
+})();
+/* ---------- E-1 CALC ---------- */
+const $=id=>document.getElementById(id);
+const fmt=n=>n>=100?Math.round(n).toLocaleString('ko-KR'):(Math.round(n*10)/10).toLocaleString('ko-KR');
+function calc(){
+  const pods=+$('pods').value, mode=$('mode').value, t=+$('tier').value, bins=Math.max(1,+$('bins').value||1);
+  $('podsOut').textContent=pods;
+  const tpp=mode==='bone'?3600/45:60/16;
+  const trees=pods*tpp, logs=trees*60, stairs=logs*4;
+  const binCap=bins*64*3600/t;
+  const sold=Math.min(stairs,binCap);
+  const gold=sold/64, dia=gold/8;
+  $('kTrees').textContent=fmt(trees);$('kLogs').textContent=fmt(logs);$('kStairs').textContent=fmt(stairs);
+  $('kGold').textContent=fmt(gold);$('kDia').textContent=fmt(dia);
+  $('kBone').textContent=mode==='bone'?fmt(trees*4.4):'0';
+  const u=stairs/binCap;
+  $('util').textContent=Math.round(u*100)+'%';
+  const bar=$('utilBar');bar.firstElementChild.style.width=Math.min(100,u*100)+'%';bar.classList.toggle('over',u>1);
+  const need=Math.ceil(stairs/(64*3600/t));
+  const st=$('status');
+  if(u>1){st.className='status warn';st.textContent=`판매함이 병목입니다. 계단이 시간당 ${fmt(stairs-binCap)}개 남아 버퍼에 쌓입니다. 이 등급이면 ${need}대가 필요합니다.`;}
+  else{st.className='status';st.textContent=`판매함 ${bins}대로 충분합니다(최소 ${need}대).`+(mode==='bone'?` 뼛가루는 뼈 약 ${fmt(trees*4.4/3)}개/시간 분량입니다.`:' 자연 성장은 플레이어가 근처에 있어야 할 수 있습니다.');}
+}
+['pods','mode','tier','bins'].forEach(id=>$(id).addEventListener('input',calc));
+calc();
+
+/* ---------- G-1 checks (per-viewer) ---------- */
+document.querySelectorAll('#checkList input').forEach(cb=>{
+  try{cb.checked=localStorage.getItem('skyris-'+cb.id)==='1'}catch(e){}
+  cb.addEventListener('change',()=>{try{localStorage.setItem('skyris-'+cb.id,cb.checked?'1':'0')}catch(e){}});
+});
+})();
+</script>

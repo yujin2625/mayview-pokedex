@@ -1,0 +1,172 @@
+<title>규토리 과수원</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Noto+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+{{STYLE}}
+.apr{display:inline-block;width:11px;height:11px;border-radius:50%;border:1px solid var(--ink);vertical-align:-1px;margin-right:4px}
+</style>
+
+<div class="wrap">
+
+<header class="titleblock">
+  <div class="tb-main">
+    <div class="kicker">Mayview · Apricorn Orchard</div>
+    <h1>규토리 과수원</h1>
+    <p>7색 규토리 나무를 1청크 모듈에 심고, 목장(파스처)에 둔 벌레 타입 포켓몬이 열매를 따서 상자에 넣습니다. 색깔별 창고에 모아 몬스터볼 재료로 쓰고, 정해 둔 재고를 넘는 양만 판매함으로 보냅니다.</p>
+  </div>
+  <div class="tb-meta">
+    <div>도면</div><div>설계도 세트 A–E (5장)</div>
+    <div>축척</div><div>1칸 = 1블록</div>
+    <div>기준면</div><div><span class="mono">G</span> = 과수원 지면</div>
+    <div>모드</div><div>Cobblemon 1.7.3 · Cobbleworkers 2.0.2 · Create 6</div>
+    <div>판</div><div>v1 · 2026-09-29</div>
+  </div>
+</header>
+
+<section class="ratios" aria-label="핵심 수치">
+  <div class="ratio"><b class="s">나무는 남김</b><span>익은 규토리를 따면 열매 블록이 0단계로 돌아가고 나무는 그대로. 베지 않는 과수원</span></div>
+  <div class="ratio"><b>1 + 10%</b><span>익은 열매 1개 수확 = 규토리 1 + 10% 확률로 씨앗 1</span></div>
+  <div class="ratio"><b class="g">규토리 1 = 볼 1</b><span>같은 색 4개 + 주괴 1 → 볼 4개 (몬스터볼: 빨강 + 구리)</span></div>
+  <div class="ratio"><b>128개 = 금화 1</b><span>판매가 12개 = 동화 6. 팔기보다 쓰는 쪽이 이득인 작물</span></div>
+</section>
+
+<section class="sheet">
+  <div class="sheet-head"><span class="sheet-no">A-0</span><h2>먼저 알아둘 제약</h2><span class="sub">위치를 정하는 조건</span></div>
+  <div class="two">
+    <div class="note"><b>사람이 있을 때만 도는 설비</b><span>이 팩의 Does It Tick 설정은 플레이어에게서 수평 64칸·수직 32칸 밖의 생물 엔티티를 멈춥니다. 수확하는 포켓몬도 여기에 걸리고, 열매가 익는 무작위 틱도 플레이어 근처에서만 돕니다. 그래서 강제 로드 대신 <b>기지 바로 옆</b>에 짓습니다.</span></div>
+    <div class="note gold"><b>뼛가루 공장과 이웃하게</b><span>뼛가루 공장의 AFK 방 반경 안에 과수원을 두면, 기지에 있는 동안 뼛가루와 규토리를 동시에 모읍니다. 청크당 목장은 2개까지라 모듈 1개 = 1청크 = 목장 1개로 잡았습니다.</span></div>
+  </div>
+</section>
+
+<section class="sheet" id="flow">
+  <div class="sheet-head"><span class="sheet-no">B-0</span><h2>공정 흐름</h2><span class="sub">수확 → 분류 → 자급 → 잉여 판매</span></div>
+  <ol class="flow">
+    <li><b>재배</b><span>7색 나무 8그루(빨강 2). 열매가 익기를 기다립니다.</span><span class="io">씨앗 → 나무</span></li>
+    <li><b>수확</b><span>목장의 벌레 타입(또는 메타몽·슬리퍼) 포켓몬이 반경 8·높이 5 안의 익은 열매를 땁니다.</span><span class="io">열매 → 상자</span></li>
+    <li><b>수거</b><span>목장 옆 통에서 깔때기로 벨트에 올려 창고로.</span><span class="io">통 → 벨트</span></li>
+    <li><b>분류</b><span>황동 깔때기 필터로 7색과 씨앗을 나눕니다.</span><span class="io">7색 · 씨앗</span></li>
+    <li class="dia"><b>자급</b><span>색깔별 창고. 볼 조합기가 여기서 꺼내 씁니다.</span><span class="io">규토리 4 + 주괴 → 볼 4</span></li>
+    <li class="money"><b>잉여 판매</b><span>창고가 목표 재고를 넘으면 문턱 스위치가 판매 깔때기를 엽니다.</span><span class="io">12개 → 동화 6</span></li>
+  </ol>
+</section>
+
+<section class="sheet" id="plan">
+  <div class="sheet-head"><span class="sheet-no">C-1</span><h2>모듈 평면도</h2><span class="sub">1청크(16×16) · 목장 1 · 나무 8</span></div>
+  <p>목장을 가운데 두고 나무를 5칸 간격 3×3 격자에 심습니다(가운데 칸은 목장). 모서리 나무까지 목장에서 가로세로 5칸이라 수확 반경 8 안에 잎까지 들어옵니다. 포켓몬이 걸어 다닐 길을 위해 나무 사이는 비워 둡니다.</p>
+  <div class="frame"><svg id="planSvg" role="img" aria-label="규토리 모듈 평면도"></svg></div>
+  <div class="legend" id="aprLegend"></div>
+  <div class="tbl"><table>
+    <thead><tr><th>부품</th><th>위치 (중심 기준 x,z)</th><th>설정·메모</th></tr></thead>
+    <tbody>
+      <tr><td>목장(파스처) 블록</td><td class="mono">0, 0</td><td>포켓몬 최대 16마리. 청크당 2개까지. 벌레 타입 3~4마리면 나무 8그루는 충분할 것으로 봅니다.</td></tr>
+      <tr><td>규토리 나무 ×8</td><td class="mono">(±5, ±5), (0, ±5), (±5, 0)</td><td>씨앗을 심어 키웁니다. 빨강은 몬스터볼·슈퍼볼에 다 들어가서 2그루.</td></tr>
+      <tr><td>통 ×2</td><td class="mono">목장 옆 (+1,0), (−1,0)</td><td>Cobbleworkers가 수확물을 가까운 보관함에 넣습니다. 아래에 깔때기를 달아 지하 벨트로 뺍니다.</td></tr>
+      <tr><td>지하 벨트</td><td class="mono">G−2, 모듈 → 창고</td><td>모듈 여러 개를 벨트 한 줄로 창고에 연결합니다(벨트 1개 최대 20칸).</td></tr>
+      <tr><td>조명·울타리</td><td class="mono">테두리</td><td>몹 스폰 방지. 목장 포켓몬은 목장 반경(최대 32) 안에서 돌아다닙니다.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="sheet" id="store">
+  <div class="sheet-head"><span class="sheet-no">D-1</span><h2>창고와 볼 공방</h2><span class="sub">자급 우선, 잉여만 판매</span></div>
+  <div class="frame"><svg id="storeSvg" role="img" aria-label="규토리 창고 배치도"></svg></div>
+  <div class="tbl"><table>
+    <thead><tr><th>볼</th><th>규토리</th><th>재료</th><th>나오는 수</th></tr></thead>
+    <tbody>
+      <tr><td>몬스터볼</td><td><span class="apr" style="background:#d9463b"></span>빨강 ×4</td><td>구리 주괴</td><td>4</td></tr>
+      <tr><td>슈퍼볼</td><td><span class="apr" style="background:#3d6fd1"></span>파랑 ×2 · <span class="apr" style="background:#d9463b"></span>빨강 ×2</td><td>철 주괴</td><td>4</td></tr>
+      <tr><td>하이퍼볼</td><td><span class="apr" style="background:#2a2a2a"></span>검정 ×2 · <span class="apr" style="background:#e6c229"></span>노랑 ×2</td><td>금 주괴</td><td>4</td></tr>
+      <tr><td>그 밖의 볼</td><td colspan="3">분홍·초록·하양 등을 씁니다. 조합법은 EMI에서 확인하세요.</td></tr>
+    </tbody>
+  </table></div>
+  <div class="note"><b>자동 볼 조합</b><span>볼 조합법은 3×3 가운데 십자 모양(위·왼쪽·오른쪽·아래가 규토리, 가운데가 주괴)이라 기계식 조합기 5대를 십자로 붙이면 됩니다. 볼 종류마다 한 세트씩 두고, 기계식 팔이 색깔 창고와 주괴 상자에서 꺼내 채웁니다.</span></div>
+  <div class="note gold"><b>잉여 판매 기준</b><span>색깔 창고마다 문턱 스위치를 달아 예를 들어 80% 이상 차면 판매 깔때기를 켭니다. 판매는 12개 단위라 구리 판매함 1대로 충분합니다. 스카이리스 가공동의 판매함 뱅크에 한 칸을 빌려도 됩니다.</span></div>
+  <div class="note"><b>씨앗</b><span>수확할 때 10% 확률로 나옵니다. 몇 세트 모아 모듈을 늘리는 데 쓰고, 넘치면 뼛가루 공장의 퇴비통 줄로 보냅니다.</span></div>
+</section>
+
+<section class="sheet">
+  <div class="sheet-head"><span class="sheet-no">E-1</span><h2>확장과 검증</h2><span class="sub">모듈 복사 · 층 쌓기</span></div>
+  <div class="phases">
+    <div class="phase"><span class="tag">1단계</span><h3>모듈 1개</h3><ul><li>목장 1, 나무 8, 통 2</li><li>상자로 수동 수거</li></ul></div>
+    <div class="phase"><span class="tag">2단계</span><h3>창고 + 볼 공방</h3><ul><li>지하 벨트, 7색 분류</li><li>몬스터볼·슈퍼볼 조합기</li><li>잉여 판매 라인</li></ul></div>
+    <div class="phase"><span class="tag">3단계</span><h3>층으로 쌓기</h3><ul><li>같은 청크 위에 한 층 더 (층 높이 약 12)</li><li>AFK 자리에서 수직 32칸 안까지만 포켓몬이 움직임 → 위아래 1층씩이 한계</li></ul></div>
+  </div>
+  <ul class="checks" id="checkList">
+    <li><input type="checkbox" id="a1"><label for="a1"><span>Cobbleworkers 포켓몬이 수확물을 목장 옆 통에 넣는가<small>다른 상자로 가면 그 상자 아래에 깔때기를 답니다.</small></span></label></li>
+    <li><input type="checkbox" id="a2"><label for="a2"><span>모서리 나무의 열매까지 수확되는가<small>반경이 원형이면 모서리 나무를 한 칸 안쪽으로 옮깁니다.</small></span></label></li>
+    <li><input type="checkbox" id="a3"><label for="a3"><span>나무 높이가 수확 높이 5 안에 드는가<small>높으면 목장을 한 칸 높은 받침 위에 둡니다.</small></span></label></li>
+    <li><input type="checkbox" id="a4"><label for="a4"><span>수확할 때 씨앗도 나오는가<small>안 나오면 씨앗 줄은 빼고, 씨앗은 가끔 손으로 따서 얻습니다.</small></span></label></li>
+  </ul>
+</section>
+
+<footer>
+  <span>근거: <code>Cobblemon-neoforge-1.7.3</code>(열매 블록 전리품: 3단계에서 규토리 1 + 씨앗 10%, 볼 조합법, 규토리 블록 뼛가루 적용 가능), <code>config/cobbleworkers.json</code>(규토리 수확: 벌레 타입·메타몽·슬리퍼, 반경 8·높이 5), <code>config/cobblemon/main.json</code>(목장 16마리, 청크당 2개), <code>mayview_sellables.js</code>(규토리 12 → 동화 6), <code>does_it_tick-common.toml</code>.</span>
+  <span>{{LINKS}}</span>
+</footer>
+</div>
+
+<script>
+(function(){
+const NS='http://www.w3.org/2000/svg';
+const el=(t,a={},txt)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(txt!=null)e.textContent=txt;return e};
+const V=n=>`var(--${n})`;
+const COL={red:['#d9463b','빨강'],blue:['#3d6fd1','파랑'],black:['#2a2a2a','검정'],yellow:['#e6c229','노랑'],pink:['#e58bb6','분홍'],green:['#4c9a4a','초록'],white:['#f2f2ee','하양']};
+const lg=document.getElementById('aprLegend');
+Object.values(COL).forEach(([c,n])=>{const s=document.createElement('span');s.innerHTML=`<i style="background:${c};border-radius:50%"></i>${n}`;lg.append(s)});
+/* plan */
+(function(){
+  const s=document.getElementById('planSvg');
+  const C=22, N=16, ox=30, oy=20, W=ox+N*C+20, H=oy+N*C+30;
+  s.setAttribute('viewBox',`0 0 ${W} ${H}`);s.setAttribute('width',W);s.setAttribute('height',H);
+  for(let x=0;x<N;x++)for(let z=0;z<N;z++) s.append(el('rect',{x:ox+x*C,y:oy+z*C,width:C,height:C,fill:V('c-leaf'),'fill-opacity':.35,stroke:V('grid'),'stroke-width':.6}));
+  const cx=8,cz=8;
+  // radius 8 box
+  s.append(el('rect',{x:ox+(cx-8)*C,y:oy+(cz-8)*C,width:16*C,height:16*C,fill:'none',stroke:V('diamond'),'stroke-width':1.5,'stroke-dasharray':'6 4'}));
+  const trees=[[-5,-5,'red'],[0,-5,'blue'],[5,-5,'black'],[-5,0,'yellow'],[5,0,'pink'],[-5,5,'green'],[0,5,'white'],[5,5,'red']];
+  trees.forEach(([dx,dz,c])=>{
+    const x=cx+dx, z=cz+dz;
+    s.append(el('rect',{x:ox+(x-1)*C,y:oy+(z-1)*C,width:3*C,height:3*C,fill:V('c-leaf'),stroke:V('skyris'),'stroke-width':1}));
+    s.append(el('rect',{x:ox+x*C+4,y:oy+z*C+4,width:C-8,height:C-8,fill:V('c-log')}));
+    [[-1.1,0],[1.1,0],[0,-1.1],[0,1.1]].forEach(([ax,az])=>s.append(el('circle',{cx:ox+(x+.5+ax)*C,cy:oy+(z+.5+az)*C,r:5,fill:COL[c][0],stroke:V('ink'),'stroke-width':.8})));
+  });
+  s.append(el('rect',{x:ox+cx*C,y:oy+cz*C,width:C,height:C,fill:V('c-dep'),stroke:V('ink')}));
+  s.append(el('text',{x:ox+cx*C+C/2,y:oy+cz*C+C/2+4,'text-anchor':'middle','font-size':10,'font-weight':700,fill:V('panel')},'목'));
+  [[1,0],[-1,0]].forEach(([dx,dz])=>{s.append(el('rect',{x:ox+(cx+dx)*C,y:oy+(cz+dz)*C,width:C,height:C,fill:V('c-hopper'),stroke:V('ink')}));s.append(el('text',{x:ox+(cx+dx)*C+C/2,y:oy+(cz+dz)*C+C/2+4,'text-anchor':'middle','font-size':10,'font-weight':700,fill:V('panel')},'통'))});
+  s.append(el('text',{x:ox,y:oy+N*C+18,'font-size':10.5,fill:V('muted')},'점선 = 수확 반경 8 · 열매 위치는 그림용 예시'));
+})();
+/* store */
+(function(){
+  const s=document.getElementById('storeSvg');
+  const W=720, H=250;
+  s.setAttribute('viewBox',`0 0 ${W} ${H}`);s.setAttribute('width',W);s.setAttribute('height',H);
+  const B=(x,y,w,h,f,t,tc)=>{s.append(el('rect',{x,y,width:w,height:h,fill:f,stroke:V('ink'),'stroke-width':1}));if(t)s.append(el('text',{x:x+w/2,y:y+h/2+4,'text-anchor':'middle','font-size':11,'font-weight':700,fill:tc||V('panel')},t))};
+  // incoming belt
+  s.append(el('rect',{x:20,y:118,width:660,height:12,fill:V('c-belt')}));
+  s.append(el('line',{x1:20,y1:124,x2:680,y2:124,stroke:V('gold'),'stroke-width':1.5,class:'flowdash'}));
+  s.append(el('text',{x:20,y:112,'font-size':11,fill:V('ink')},'모듈에서 → 지하 벨트'));
+  const cols=Object.entries(COL);
+  cols.forEach(([k,[c,n]],i)=>{
+    const x=120+i*70;
+    B(x,40,50,50,V('c-vault'));
+    s.append(el('circle',{cx:x+25,cy:65,r:10,fill:c,stroke:V('ink')}));
+    s.append(el('text',{x:x+25,y:32,'text-anchor':'middle','font-size':11,fill:V('ink')},n));
+    s.append(el('rect',{x:x+19,y:92,width:12,height:24,fill:V('c-hopper')}));
+    // threshold -> sell
+    s.append(el('rect',{x:x+19,y:132,width:12,height:24,fill:V('c-hopper'),opacity:.6}));
+  });
+  B(120+7*70-10,40,60,50,V('c-hopper'),'씨앗');
+  s.append(el('rect',{x:120,y:160,width:480,height:10,fill:V('c-belt'),opacity:.8}));
+  s.append(el('text',{x:120,y:188,'font-size':11,fill:V('ink')},'잉여만: 문턱 스위치(창고 80%↑) → 판매 벨트 → 판매함'));
+  B(610,150,60,40,V('c-bin'),'판매함');
+  // ball crafters
+  [['몬스터볼',140],['슈퍼볼',300],['하이퍼볼',460]].forEach(([t,x])=>{
+    const cx=x+30, cy=222, q=9;
+    [[0,-1],[-1,0],[0,0],[1,0],[0,1]].forEach(([dx,dy])=>s.append(el('rect',{x:cx+dx*q*2-q,y:cy+dy*q*2-q,width:q*2-1,height:q*2-1,fill:(dx||dy)?V('c-crafter'):V('gold'),stroke:V('ink'),'stroke-width':.6})));
+    s.append(el('text',{x:cx+32,y:cy+4,'font-size':11,fill:V('ink')},t));
+  });
+  s.append(el('text',{x:20,y:18,'font-size':10.5,fill:V('muted'),class:'mono'},'창고 × 7 + 씨앗  ·  십자 조합기 (가운데 = 주괴)'));
+})();
+document.querySelectorAll('#checkList input').forEach(cb=>{try{cb.checked=localStorage.getItem('ap-'+cb.id)==='1'}catch(e){}cb.addEventListener('change',()=>{try{localStorage.setItem('ap-'+cb.id,cb.checked?'1':'0')}catch(e){}})});
+})();
+</script>

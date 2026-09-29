@@ -1,0 +1,179 @@
+<title>생활 주방</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Noto+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+{{STYLE}}
+.pill{display:inline-block;font-family:var(--f-mono);font-size:11px;padding:1px 7px;border:1px solid var(--line);border-radius:10px;white-space:nowrap}
+.pill.ok{border-color:var(--skyris);color:var(--skyris)}
+.pill.warn{border-color:var(--gold);color:var(--gold)}
+tr.hl td{background:var(--paper)}
+</style>
+
+<div class="wrap">
+
+<header class="titleblock">
+  <div class="tb-main">
+    <div class="kicker">Mayview · Home Kitchen</div>
+    <h1>생활 주방</h1>
+    <p>팔려고 만드는 게 아니라 내가 먹을 음식을 위한 층입니다. 일은 두 가지입니다. 하나는 배부르고 오래가는 수프를 자동으로 끓여 가방에 채워 두는 것, 다른 하나는 처음 먹는 음식마다 최대 체력이 늘어나는 Spice of Life 하트를 모으는 시식 주방입니다.</p>
+  </div>
+  <div class="tb-meta">
+    <div>도면</div><div>설계도 세트 A–D (5장)</div>
+    <div>축척</div><div>1칸 = 1블록</div>
+    <div>기준면</div><div><span class="mono">F</span> = 주방 층 바닥</div>
+    <div>모드</div><div>Farmer's Delight · Central Kitchen · Spice of Life: Carrot</div>
+    <div>판</div><div>v1 · 2026-09-29</div>
+  </div>
+</header>
+
+<section class="ratios" aria-label="핵심 수치">
+  <div class="ratio"><b class="s">새 음식 5종 = 하트 2칸</b><span>Spice of Life: Carrot 설정. 기본 10칸에서 시작해 400종까지 이정표가 있습니다</span></div>
+  <div class="ratio"><b>206종</b><span>팩의 음식 등급 태그에 있는 음식 수(설치 안 된 모드 제외). 전부 먹으면 이정표 41개 = 하트 +82칸</span></div>
+  <div class="ratio"><b class="g">작물 3종</b><span>채소 수프 = 당근 1 · 감자 1.5 · 양배추 0.5. 동물 없이 최고 등급(배부름·포만감 모두 높음) 음식</span></div>
+  <div class="ratio"><b>작물 8칸</b><span>채소 수프를 시간당 10그릇 끓이는 데 필요한 텃밭 크기(번갈아 심기 기준). 먹는 양은 아주 적습니다</span></div>
+</section>
+
+<section class="sheet" id="staple">
+  <div class="sheet-head"><span class="sheet-no">A-1</span><h2>주식 고르기</h2><span class="sub">팩 음식 등급 "배부름 높음 · 포만감 높음" 중에서</span></div>
+  <p>팩에는 음식을 배부름(허기 회복)과 포만감에 따라 9등급으로 나눈 KubeJS 태그가 있습니다(보급 상자에 쓰임). 그중 가장 높은 등급 32종에서 자동화 가능 여부와 재료를 따졌습니다. 동물이 필요한 요리는 플레이어가 가까이 있어야 동물이 움직이므로 뒤로 뺐습니다.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>음식</th><th>재료 (1그릇)</th><th>설비</th><th>평가</th></tr></thead>
+    <tbody>
+      <tr class="hl"><td><b>채소 수프</b></td><td>당근 1 · 감자 1.5 · 양배추 0.5 · 그릇</td><td>도마 + 요리 냄비</td><td><span class="pill ok">주식 추천</span> 작물만, 전부 자동</td></tr>
+      <tr class="hl"><td><b>알리움 오디온 수프</b></td><td>오디온 구근 2 · 그릇</td><td>모닥불(굽기) + 조합</td><td><span class="pill ok">보조 주식</span> BYG 작물 1종만</td></tr>
+      <tr><td>비프 스튜</td><td>소고기 0.5 · 당근 1 · 감자 0.5</td><td>도마 + 요리 냄비</td><td><span class="pill warn">소 필요</span></td></tr>
+      <tr><td>치킨 수프</td><td>닭고기 0.5 · 당근 1 · 양배추 0.5</td><td>도마 + 요리 냄비</td><td><span class="pill warn">닭 필요</span></td></tr>
+      <tr><td>토끼 스튜</td><td>토끼고기 1 · 감자 1 · 당근 1 · 갈색 버섯 1</td><td>조합</td><td><span class="pill warn">토끼 필요</span></td></tr>
+      <tr><td>치즈 요리 (라자냐 등)</td><td>치즈 덩어리 필요</td><td>통 → 월드에 놓아 숙성</td><td><span class="pill warn">자동화 막힘</span> 시식용으로만</td></tr>
+    </tbody>
+  </table></div>
+  <div class="note"><b>그릇과 가방</b><span>수프를 먹으면 그릇이 돌아오므로 그릇은 한 번만 만들면 됩니다(판자 3 → 4개). 수프는 16개씩 쌓입니다. Sophisticated Backpacks의 급식 업그레이드를 단 가방에 수프를 채워 두면 배고플 때 자동으로 먹습니다. 가방에 쌓인 빈 그릇은 주방에 들를 때 그릇 상자에 넣으세요.</span></div>
+</section>
+
+<section class="sheet" id="plan">
+  <div class="sheet-head"><span class="sheet-no">B-1</span><h2>주방 층 평면도</h2><span class="sub">1청크(16×16) · 높이 4 · 음식 타워의 AFK 방 옆 층</span></div>
+  <p>이 층은 음식 타워(판매용) 안에 끼워 넣습니다. 작물은 AFK 자리에서 가로 128칸 안이면 높이와 상관없이 자라므로 타워 어디에 둬도 됩니다. 동쪽 절반은 여러 작물을 한 줄씩 번갈아 심는 텃밭(번갈아 심으면 성장 2배), 서쪽 절반은 자동 수프 라인과 시식 주방입니다.</p>
+  <div class="frame"><svg id="planSvg" role="img" aria-label="주방 층 평면도"></svg></div>
+  <div class="tbl"><table>
+    <thead><tr><th>구역</th><th>구성</th><th>메모</th></tr></thead>
+    <tbody>
+      <tr><td>① 텃밭</td><td>8×14, 한 줄씩 다른 작물 14줄</td><td>당근·감자·양배추(수프용) + 시식용 작물(양파·토마토·마늘·생강·레몬그라스·우베·옥수수·가지·오이·피망·오디온 등). 줄마다 1종이라 작물 종류를 늘리기 쉽습니다.</td></tr>
+      <tr><td>② 수확기</td><td>갠트리에 수확기 한 줄</td><td>다 자란 작물만 베고 다시 심습니다. 바닥 밑 수집기가 모아 식재료 창고로.</td></tr>
+      <tr><td>③ 식재료 창고</td><td>아이템 저장고 + 재고 관리(Create 6 스톡 키퍼)</td><td>시식할 때 필요한 재료를 화면에서 골라 꺼냅니다. 판매용 타워의 밀·코코아·버섯도 여기서 조금씩 받습니다.</td></tr>
+      <tr><td>④ 수프 라인</td><td>도마 디플로이어 2 → 요리 냄비 1</td><td>양배추 → 잎, 감자 → 조각 → 냄비(그릇 자동 투입). 한 번에 약 10초라 냄비 1개로 충분합니다.</td></tr>
+      <tr><td>⑤ 밥상 상자</td><td>상자 + 그릇 상자</td><td>수프가 쌓이는 곳. 문턱 스위치로 3세트가 차면 수프 라인을 멈춰 재료를 아낍니다.</td></tr>
+      <tr><td>⑥ 시식 주방</td><td>요리 냄비, 도마, 화덕·훈연기, 모닥불, 통(Keg), Let's Do 조리대들, Ube's Delight 제빵 매트, Cobblemon 모닥불 냄비</td><td>한 번씩만 만들면 되는 요리는 손으로. 조리대를 한 줄에 모아 창고에서 재료를 꺼내 바로 만들 수 있게.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="sheet" id="sol">
+  <div class="sheet-head"><span class="sheet-no">C-1</span><h2>하트 모으기 (Spice of Life)</h2><span class="sub">처음 먹는 음식마다 기록</span></div>
+  <p>음식에 마우스를 올리면 아직 안 먹은 음식인지 툴팁에 표시되도록 설정되어 있습니다(<code>shouldShowUneatenFoods = true</code>). 죽어도 기록이 사라지지 않습니다(<code>resetOnDeath = false</code>). 약초 대파(<code>cobblemon:medicinal_leek</code>)는 제외 목록에 있습니다.</p>
+  <div class="calc">
+    <div class="calc-in">
+      <label for="eaten">지금까지 먹은 음식 종류<input type="number" id="eaten" min="0" max="400" value="23"></label>
+      <p class="muted" style="font-size:12px">이정표: 5, 10, 15 … 400종. 이정표마다 하트 2칸(서버 설정 <code>heartsPerMilestone = 2</code>). 기본 10칸.</p>
+    </div>
+    <div class="calc-out" aria-live="polite">
+      <div class="kpis">
+        <div class="kpi"><small>지금 최대 체력</small><b id="kHearts">–</b></div>
+        <div class="kpi"><small>다음 이정표까지</small><b id="kNext">–</b></div>
+        <div class="kpi g"><small>206종 다 먹으면</small><b id="kAll">–</b></div>
+      </div>
+      <p class="status" id="solStatus">–</p>
+    </div>
+  </div>
+  <h3>C-2 시식 순서</h3>
+  <ol class="steps">
+    <li><div><b>바로 먹을 수 있는 것</b><span>바닐라 음식, 구운 고기, 과일, 규토리 주스, 쿠키, 빵. 판매용 타워와 과수원에서 나오는 것부터.</span></div></li>
+    <li><div><b>도마·요리 냄비 요리</b><span>Farmer's Delight, Rustic·Veggies·Cultural Delight 수프와 스튜. 텃밭 작물만으로 대부분 됩니다.</span></div></li>
+    <li><div><b>동물 재료 요리</b><span>기지 근처 목장(소·닭·돼지)에서 고기·우유·달걀을 가끔 챙겨 한꺼번에 만듭니다.</span></div></li>
+    <li><div><b>전용 조리대 요리</b><span>Let's Do 스토브·제빵, Ube's Delight 제빵 매트, 통 발효 음료, 치즈 숙성. 가장 손이 많이 가는 것들이라 마지막에.</span></div></li>
+    <li><div><b>네더·엔드 재료</b><span>My Nether's Delight, Ender's Delight 요리. 탐험하면서 재료를 모아 옵니다.</span></div></li>
+  </ol>
+</section>
+
+<section class="sheet">
+  <div class="sheet-head"><span class="sheet-no">D-1</span><h2>텃밭 크기와 검증</h2><span class="sub">먹는 양 기준</span></div>
+  <div class="calc">
+    <div class="calc-in">
+      <label for="bowls">시간당 수프 몇 그릇 <span class="mono" id="bowlsOut">10</span><input type="range" id="bowls" min="2" max="60" value="10"></label>
+      <p class="muted" style="font-size:12px">가정: 번갈아 심기로 작물 1칸 시간당 수확 2.51회. 순수확 당근·감자 1.71개, 양배추 1개. 채소 수프 1그릇 = 당근 1 + 감자 1.5 + 양배추 0.5.</p>
+    </div>
+    <div class="calc-out" aria-live="polite">
+      <div class="kpis">
+        <div class="kpi"><small>당근 줄</small><b id="kC">–</b></div>
+        <div class="kpi"><small>감자 줄</small><b id="kP">–</b></div>
+        <div class="kpi"><small>양배추 줄</small><b id="kB">–</b></div>
+      </div>
+      <p class="status" id="gStatus">–</p>
+    </div>
+  </div>
+  <ul class="checks" id="checkList">
+    <li><input type="checkbox" id="k1"><label for="k1"><span>요리 냄비에 그릇이 자동으로 들어가는가 (Central Kitchen)<small>안 되면 냄비 옆 깔때기로 그릇을 넣습니다.</small></span></label></li>
+    <li><input type="checkbox" id="k2"><label for="k2"><span>디플로이어 도마(Slice and Dice)로 양배추·감자를 손질하는가</span></label></li>
+    <li><input type="checkbox" id="k3"><label for="k3"><span>가방 급식 업그레이드가 수프를 먹고 그릇을 가방에 남기는가</span></label></li>
+    <li><input type="checkbox" id="k4"><label for="k4"><span>수확기가 양배추·양파 같은 Farmer's Delight 작물도 다시 심는가</span></label></li>
+  </ul>
+</section>
+
+<footer>
+  <span>근거: <code>kubejs/server_scripts/tags/food_tiers/*.js</code>(음식 9등급, 최고 등급 32종), <code>care_packages/generic/food.js</code>, <code>solcarrot-server.toml</code>(기본 하트 10, 이정표당 2, 5종 간격 400종까지), 레시피 분석(채소 수프: <code>veggiesdelight:compat/farmersdelight/recipe/cooking/vegetable_soup</code>), Farmer's Delight 작물 전리품.</span>
+  <span>206종은 음식 등급 태그 기준이고, 태그에 없는 음식(Let's Do 등)까지 치면 더 많습니다. {{LINKS}}</span>
+</footer>
+</div>
+
+<script>
+(function(){
+const NS='http://www.w3.org/2000/svg';
+const el=(t,a={},txt)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(txt!=null)e.textContent=txt;return e};
+const V=n=>`var(--${n})`;
+(function(){
+  const s=document.getElementById('planSvg');
+  const C=22, N=16, ox=24, oy=18, W=ox+N*C+16, H=oy+N*C+30;
+  s.setAttribute('viewBox',`0 0 ${W} ${H}`);s.setAttribute('width',W);s.setAttribute('height',H);
+  for(let x=0;x<N;x++)for(let z=0;z<N;z++) s.append(el('rect',{x:ox+x*C,y:oy+z*C,width:C,height:C,fill:V('c-stone'),'fill-opacity':.5,stroke:V('grid'),'stroke-width':.6}));
+  const crops=['c-leaf','gold','c-log','c-dirt','bloom','diamond','c-crafter'];
+  for(let z=1;z<15;z++){
+    for(let x=8;x<16;x++) s.append(el('rect',{x:ox+x*C,y:oy+z*C,width:C,height:C,fill:V(crops[z%crops.length]),'fill-opacity':.55,stroke:V('grid'),'stroke-width':.6}));
+  }
+  s.append(el('rect',{x:ox+8*C,y:oy+7*C+C*.3,width:8*C,height:C*.4,fill:V('c-glass')}));
+  s.append(el('rect',{x:ox+8*C-4,y:oy+C,width:4,height:14*C,fill:V('c-piston')}));
+  const Z=(x,z,w,h,f,t)=>{s.append(el('rect',{x:ox+x*C,y:oy+z*C,width:w*C,height:h*C,fill:V(f),stroke:V('ink'),'stroke-width':1}));s.append(el('text',{x:ox+(x+w/2)*C,y:oy+(z+h/2)*C+4,'text-anchor':'middle','font-size':11,'font-weight':700,fill:V('panel')},t))};
+  Z(1,1,4,3,'c-vault','③ 창고');
+  Z(1,5,2,2,'c-saw','④ 도마');Z(3,5,2,2,'c-crafter','④ 냄비');
+  Z(5,5,2,2,'c-hopper','⑤ 밥상');
+  Z(1,9,6,2,'c-crafter','⑥ 조리대 줄');
+  Z(1,12,6,2,'c-crafter','⑥ 조리대 줄');
+  s.append(el('text',{x:ox+12*C,y:oy+C-5,'text-anchor':'middle','font-size':11,'font-weight':700,fill:V('ink')},'① 텃밭 · 한 줄 1종 × 14줄'));
+  s.append(el('text',{x:ox+8*C-8,y:oy+15*C+14,'text-anchor':'end','font-size':10,fill:V('muted')},'② 수확기 갠트리'));
+  s.append(el('circle',{cx:ox+4*C,cy:oy+8*C,r:6,fill:V('bloom')}));
+  s.append(el('text',{x:ox+4*C+10,y:oy+8*C+4,'font-size':10,fill:V('ink')},'통로'));
+  s.append(el('text',{x:ox,y:oy+N*C+20,'font-size':10.5,fill:V('muted')},'서쪽: 주방 · 동쪽: 텃밭(가운데 물길) · 바닥 밑: 수집기와 창고로 가는 벨트'));
+})();
+const $=id=>document.getElementById(id);
+const fmt=n=>(Math.round(n*10)/10).toLocaleString('ko-KR');
+function sol(){
+  const e=Math.max(0,Math.min(400,+$('eaten').value||0));
+  const ms=Math.floor(e/5);
+  $('kHearts').textContent=(10+ms*2)+'칸';
+  $('kNext').textContent=e>=400?'완료':(5-e%5)+'종';
+  $('kAll').textContent=(10+Math.floor(206/5)*2)+'칸';
+  $('solStatus').textContent=`이정표 ${ms}개 달성. 다음 이정표에서 ${10+(ms+1)*2}칸이 됩니다.`;
+}
+function garden(){
+  const b=+$('bowls').value; $('bowlsOut').textContent=b;
+  const h=2.51, row=8;
+  const c=b*1/(1.71*h), p=b*1.5/(1.71*h), g=b*0.5/(1*h);
+  $('kC').textContent=fmt(c/row)+'줄';$('kP').textContent=fmt(p/row)+'줄';$('kB').textContent=fmt(g/row)+'줄';
+  $('gStatus').textContent=`작물 ${fmt(c+p+g)}칸(8칸 줄로 ${fmt((c+p+g)/row)}줄)이면 됩니다. 텃밭 14줄 중 1~2줄이면 충분하고, 나머지는 시식용 작물을 심으세요.`;
+}
+['eaten'].forEach(id=>$(id).addEventListener('input',sol));sol();
+['bowls'].forEach(id=>$(id).addEventListener('input',garden));garden();
+document.querySelectorAll('#checkList input').forEach(cb=>{try{cb.checked=localStorage.getItem('kt-'+cb.id)==='1'}catch(e){}cb.addEventListener('change',()=>{try{localStorage.setItem('kt-'+cb.id,cb.checked?'1':'0')}catch(e){}})});
+try{const v=localStorage.getItem('kt-eaten');if(v!=null){$('eaten').value=v;sol();}}catch(e){}
+$('eaten').addEventListener('change',()=>{try{localStorage.setItem('kt-eaten',$('eaten').value)}catch(e){}});
+})();
+</script>

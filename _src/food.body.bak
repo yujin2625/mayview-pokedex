@@ -1,0 +1,238 @@
+<title>음식 공장</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Noto+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+{{STYLE}}
+.pill{display:inline-block;font-family:var(--f-mono);font-size:11px;padding:1px 7px;border:1px solid var(--line);border-radius:10px;white-space:nowrap}
+.pill.ok{border-color:var(--skyris);color:var(--skyris)}
+.pill.warn{border-color:var(--gold);color:var(--gold)}
+.pill.no{border-color:var(--bloom);color:var(--bloom)}
+tr.hl td{background:var(--paper)}
+</style>
+
+<div class="wrap">
+
+<header class="titleblock">
+  <div class="tb-main">
+    <div class="kicker">Mayview · Food Works</div>
+    <h1>음식 공장</h1>
+    <p>작물을 층층이 키워 음식으로 가공하고 판매함에 넣는 수직 농장입니다. 팩의 판매가표 422개 전부와 요리 모드 레시피를 원재료까지 거슬러 계산해서, 금화 1개를 가장 적은 원재료로 채우는 음식을 골랐습니다.</p>
+  </div>
+  <div class="tb-meta">
+    <div>도면</div><div>설계도 세트 A–E (6장)</div>
+    <div>축척</div><div>1칸 = 1블록</div>
+    <div>기준면</div><div><span class="mono">F</span> = 각 층 바닥</div>
+    <div>모드</div><div>Create 6 · Central Kitchen · Brewin' and Chewin'</div>
+    <div>판</div><div>v1 · 2026-09-29</div>
+  </div>
+</header>
+
+<section class="ratios" aria-label="핵심 수치">
+  <div class="ratio"><b class="g">금화 1</b><span>판매함 1회 판매의 상한. 422개 품목 중 한 번에 64동화(금화 1)를 넘는 것은 없습니다</span></div>
+  <div class="ratio"><b class="s">밀 1 + 버섯 1</b><span>맥주 4잔 = 금화 1. 씨앗 1과 물 1000mB 추가. 원재료가 가장 적게 드는 자동화 음식</span></div>
+  <div class="ratio"><b>밀 8 + 코코아 4</b><span>쿠키 32개 = 금화 1. 조합기만으로 만들 수 있는 가장 단순한 라인</span></div>
+  <div class="ratio"><b>밀 170개</b><span>밀을 그대로 팔 때 금화 1에 드는 양 (16개 = 동화 6)</span></div>
+</section>
+
+<section class="sheet">
+  <div class="sheet-head"><span class="sheet-no">A-0</span><h2>수입은 판매함 대수로 정해집니다</h2><span class="sub">품목보다 판매함이 먼저</span></div>
+  <div class="two">
+    <div class="note gold"><b>판매 1회 = 최대 금화 1</b><span>어떤 음식이든 판매함이 한 번에 받는 묶음 가치는 64동화 이하입니다. 그래서 판매함 1대의 수입 상한은 품목과 상관없이 정해져 있습니다. 구리 시간당 금화 120, 미스릴 180, 비리디움 360.</span></div>
+    <div class="note"><b>그래서 고르는 기준</b><span>① 묶음 가치가 딱 64동화인 음식(40·48동화짜리는 판매함 한 번을 덜 채움), ② 그 64동화를 가장 적은 원재료로 채우는 음식, ③ Create로 사람 손 없이 돌아가는 음식. 스카이리스 계단도 같은 64동화 묶음이라 판매함을 서로 나눠 씁니다.</span></div>
+  </div>
+</section>
+
+<section class="sheet" id="rank">
+  <div class="sheet-head"><span class="sheet-no">A-1</span><h2>효율 순위</h2><span class="sub">자동화 가능한 것만 · 금화 1개 기준</span></div>
+  <div class="tbl"><table>
+    <thead><tr><th>음식</th><th>한 번 판매</th><th>금화 1에 드는 원재료</th><th>원재료 수</th><th>가공 설비</th><th>자동화</th></tr></thead>
+    <tbody>
+      <tr class="hl"><td><b>맥주</b></td><td class="mono">4잔 = 64</td><td>밀 1 · 밀 씨앗 1 · 갈색 버섯 1 · 물 1000mB</td><td class="mono">2</td><td>통(Keg) 발효 → 따르기</td><td><span class="pill warn">검증 필요</span></td></tr>
+      <tr class="hl"><td><b>쿠키</b></td><td class="mono">32개 = 64</td><td>밀 8 · 코코아 콩 4</td><td class="mono">12</td><td>조합기 (밀·코코아·밀 → 8개)</td><td><span class="pill ok">가능</span></td></tr>
+      <tr><td>생강 쿠키</td><td class="mono">32개 = 64</td><td>밀 8 · 생강 2</td><td class="mono">10</td><td>도마(생강 다지기) + 조합기</td><td><span class="pill ok">가능</span></td></tr>
+      <tr><td>시럽 쿠키</td><td class="mono">32개 = 64</td><td>밀 8 · 사과 6</td><td class="mono">14</td><td>요리 냄비(시럽) + 조합기</td><td><span class="pill ok">가능</span></td></tr>
+      <tr><td>비건 피자</td><td class="mono">1판 = 64</td><td>밀 2 · 토마토 2 · 피망 1 · 양파 1 · 감자 0.5</td><td class="mono">6.5</td><td>맷돌·믹서(반죽), 요리 냄비(소스), 도마, 조합기</td><td><span class="pill ok">가능</span></td></tr>
+      <tr><td>양배추 롤</td><td class="mono">4개 = 40</td><td>양배추 3.2 · 감자 3.2</td><td class="mono">6.4</td><td>도마 + 요리 냄비</td><td><span class="pill ok">가능</span></td></tr>
+      <tr><td>마늘빵</td><td class="mono">4개 = 40</td><td>마늘 2.1 · 밀 1.4</td><td class="mono">3.6</td><td>사워도우 반복 + 도마 + 조합기</td><td><span class="pill ok">가능</span></td></tr>
+      <tr><td>치킨 수프</td><td class="mono">4개 = 48</td><td>당근 5.3 · 닭고기 2.7 · 양배추 2.7</td><td class="mono">10.7</td><td>도마 + 요리 냄비</td><td><span class="pill warn">닭 필요</span></td></tr>
+      <tr><td class="muted">비교: 스카이리스 계단</td><td class="mono">64개 = 64</td><td>원목 16 (뼛가루 약 1.2)</td><td class="mono">16</td><td>조합기 + 톱</td><td><span class="pill ok">가능</span></td></tr>
+    </tbody>
+  </table></div>
+  <p class="muted" style="font-size:13px">40·48동화 묶음은 판매함 한 번에 금화 0.63·0.75개밖에 못 채우므로, 판매함이 병목이면 64동화 묶음보다 불리합니다. 요리 냄비·도마·통은 Create Central Kitchen과 Slice and Dice로 자동화합니다.</p>
+
+  <div class="two">
+    <div class="note"><b>수동 전용이지만 비싼 것</b><span>Let's Do 계열 조리대(Candlelight 스토브의 로스트비프, 치킨 알프레도, HerbalBrews 커피 등)와 Ube's Delight 제빵 매트 요리는 원재료당 가치가 높지만 Create로 자동화할 방법이 없습니다. 치즈가 들어가는 요리도 치즈 덩어리를 월드에 놓아 숙성시켜야 해서 막힙니다.</span></div>
+    <div class="note gold"><b>가공하면 손해인 것</b><span>빵(원재료의 0.67배), 밀가루(0.67배), 토마토 소스(0.75배), 구운 고기(1배), 구운 대구·연어(1.04배). 물고기는 날것이 가장 비싼 원재료(개당 4.8동화)지만 낚시는 사람이 해야 합니다.</span></div>
+  </div>
+  <div class="note"><b>분석 중 발견: 할로할로 복제 반복</b><span>Ube's Delight의 할로할로 3개 + 우유 1병으로 할로할로 대접을 만들고, 도마로 자르면 할로할로 4개가 나옵니다. 우유 1병마다 1개(16동화)가 늘어나는 구조라 의도치 않은 복제로 보입니다. 이 설계에는 넣지 않았습니다.</span></div>
+</section>
+
+<section class="sheet" id="tower">
+  <div class="sheet-head"><span class="sheet-no">B-1</span><h2>수직 음식 타워</h2><span class="sub">1청크 발판 · 층 높이 4</span></div>
+  <p>작물은 무작위 틱으로 자라고, 무작위 틱은 플레이어가 수평 128칸 안에 있는 청크에서만 돕니다. 이 거리는 청크 기준(가로)이라 <b>높이는 상관없습니다</b>. 그래서 기지 AFK 자리 위아래로 작물 층을 쌓으면 층 수만큼 생산이 늘어납니다. 동물이 없으니 Does It Tick의 수직 32칸 제한도 걸리지 않습니다. 기지에 있을 때만 도는 설비라 강제 로드는 필요 없습니다.</p>
+  <div class="two">
+    <figure class="frame" style="margin:0"><svg id="towerSvg" role="img" aria-label="음식 타워 입면도"></svg>
+      <figcaption class="muted mono" style="font-size:11.5px;text-align:center;margin-top:6px">B-1 입면도 · 쿠키 + 맥주 구성 예시</figcaption></figure>
+    <figure class="frame" style="margin:0"><svg id="wheatSvg" role="img" aria-label="밀 층 평면도"></svg>
+      <figcaption class="muted mono" style="font-size:11.5px;text-align:center;margin-top:6px">B-2 밀 층 평면도 · 16×16</figcaption></figure>
+  </div>
+  <div class="tbl"><table>
+    <thead><tr><th>층</th><th>구성</th><th>수확·회수</th></tr></thead>
+    <tbody>
+      <tr><td>밀 층 ×N</td><td>경작지 15×14 = 210칸, 가운데 물길 1줄(물은 4칸까지 적심). 천장에 조명.</td><td>갠트리에 기계식 수확기를 한 줄로 달아 왕복. 수확기는 다 자란 작물만 베고 다시 심습니다. 바닥 밑 고급 아이템 수집기(반경 7)가 층 전체를 흡수.</td></tr>
+      <tr><td>코코아 층</td><td>정글 원목 벽 3줄(높이 3) 양면에 코코아. 규토리 과수원과 같은 벽 구조로 252자리.</td><td>통로를 따라 가는 갠트리에 수확기 3단. 코코아는 한 층이면 쿠키 라인에 충분합니다.</td></tr>
+      <tr><td>버섯 층</td><td>어둡게. 방식은 B-3 참고.</td><td>맥주를 만들 때만 필요.</td></tr>
+      <tr><td>가공 층</td><td>쿠키 조합기, 통(Keg)과 따르는 줄, 탱커드 조합기</td><td>위층 작물은 슈트로 떨어져 들어옵니다.</td></tr>
+      <tr><td>판매 층 (지면)</td><td>판매함 뱅크, 코인 압축, 금고</td><td>스카이리스 가공동과 같은 방식. 두 공장이 판매함을 나눠 쓰면 대수만 늘리면 됩니다.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="sheet" id="lines">
+  <div class="sheet-head"><span class="sheet-no">C-1</span><h2>가공 라인</h2><span class="sub">쿠키는 확실, 맥주는 검증 후</span></div>
+  <ol class="flow">
+    <li><b>쿠키 · 조합</b><span>기계식 조합기 3대를 가로로. 밀·코코아·밀을 넣으면 쿠키 8개.</span><span class="io">밀 2 + 코코아 1 → 8</span></li>
+    <li class="money"><b>쿠키 · 판매</b><span>32개가 모이면 판매함으로. 4번 조합 = 판매 1회.</span><span class="io">쿠키 32 → 금화 1</span></li>
+    <li><b>맥주 · 발효</b><span>통에 물 1000mB(펌프), 밀·씨앗·갈색 버섯을 깔때기로. 발효 시간은 측정 필요.</span><span class="io">→ 맥주 1000mB</span></li>
+    <li><b>맥주 · 따르기</b><span>Central Kitchen의 통 연동으로 펌프가 맥주를 빼고, 스파우트가 벨트 위 탱커드에 250mB씩 채웁니다.</span><span class="io">250mB → 맥주 1잔</span></li>
+    <li class="money"><b>맥주 · 판매</b><span>4잔이 판매 1회.</span><span class="io">맥주 4 → 금화 1</span></li>
+  </ol>
+  <div class="two">
+    <div class="note"><b>탱커드</b><span>맥주를 담는 잔이 필요하면 판자 5 + 철 조각 2 → 탱커드 4개(판매 1회분)입니다. 판자는 스카이리스 판자를 쓰면 됩니다(판자 1개 = 계단 1개 = 금화 1/64). 통 자체는 철 주괴 4 + 벌집 1 + 판자 4.</span></div>
+    <div class="note"><b>통 온도</b><span>통은 바이옴과 주변 블록으로 온도가 정해지고, 레시피마다 맞는 온도가 있을 수 있습니다. 맥주 레시피에는 온도 지정이 없어 기본값으로 보이지만 게임에서 확인하세요.</span></div>
+  </div>
+  <h3>B-3 갈색 버섯 공급 방식</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>방식</th><th>내용</th><th>평가</th></tr></thead>
+    <tbody>
+      <tr><td>거대 버섯 + 뼛가루</td><td>균사체·회백토 위 갈색 버섯에 디플로이어로 뼛가루(성공 40%) → 거대 갈색 버섯. 드릴 캐리지로 부숴 버섯 회수</td><td>뼛가루 1개당 버섯 여러 개. 가장 빠르지만 거대 버섯을 캐는 장치가 필요</td></tr>
+      <tr><td>Farmer's Delight 버섯 군락</td><td>비옥한 토양 위 군락이 자라면 가위 든 디플로이어로 수확</td><td>뼛가루 없이 돌지만 속도 확인 필요</td></tr>
+      <tr><td>어두운 방 번식</td><td>균사체 위에 퍼지게 두고 수확</td><td>느림. 보조용</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="sheet" id="calc">
+  <div class="sheet-head"><span class="sheet-no">D-1</span><h2>생산량 계산기</h2><span class="sub">시간당 · 추정치 기반</span></div>
+  <div class="calc">
+    <div class="calc-in">
+      <label for="prod">만들 음식
+        <select id="prod"><option value="cookie" selected>쿠키</option><option value="beer">맥주</option></select></label>
+      <label for="wf">밀 층 수 <span class="mono" id="wfOut">6</span><input type="range" id="wf" min="1" max="20" value="6"></label>
+      <label for="h">작물 1칸 시간당 수확 횟수
+        <select id="h"><option value="1.25">1.25 · 느리게</option><option value="1.5" selected>1.5 · 보통</option><option value="2.5">2.5 · 물길 옆 줄 심기</option></select></label>
+      <label for="mush" id="mushL">갈색 버섯/시간<input type="number" id="mush" min="0" value="300"></label>
+      <label for="kegs" id="kegL">통 수<input type="number" id="kegs" min="1" value="20"></label>
+      <label for="ft" id="ftL">발효 시간(분, 측정해서 입력)<input type="number" id="ft" min="1" value="10"></label>
+      <label for="tier">판매함 등급
+        <select id="tier"><option value="30">구리 · 30초</option><option value="20">미스릴 · 20초</option><option value="10" selected>비리디움 · 10초</option></select></label>
+      <label for="bins">판매함 수<input type="number" id="bins" min="1" value="1"></label>
+      <p class="muted" style="font-size:12px">가정: 밀 층 210칸, 수확 1회 = 밀 1. 코코아 층은 1개로 충분(시간당 3,000개 이상). 수확 횟수는 바닐라 성장 확률로 추정한 값입니다.</p>
+    </div>
+    <div class="calc-out" aria-live="polite">
+      <div class="kpis">
+        <div class="kpi"><small>밀/시간</small><b id="kWheat">–</b></div>
+        <div class="kpi"><small>판매 가능 묶음/시간</small><b id="kLots">–</b></div>
+        <div class="kpi"><small>판매함 상한</small><b id="kCap">–</b></div>
+        <div class="kpi g"><small>금화/시간</small><b id="kGold">–</b></div>
+        <div class="kpi d"><small>다이아 코인/시간</small><b id="kDia">–</b></div>
+        <div class="kpi"><small>병목</small><b id="kNeck" style="font-size:19px">–</b></div>
+      </div>
+      <p class="status" id="status">–</p>
+    </div>
+  </div>
+</section>
+
+<section class="sheet">
+  <div class="sheet-head"><span class="sheet-no">E-1</span><h2>확장과 검증</h2><span class="sub">위아래로 층 추가</span></div>
+  <div class="phases">
+    <div class="phase"><span class="tag">1단계</span><h3>쿠키 라인</h3><ul><li>밀 층 2 + 코코아 층 1</li><li>조합기 3대 1세트</li><li>구리 판매함 1</li></ul></div>
+    <div class="phase"><span class="tag">2단계</span><h3>밀 층 늘리기</h3><ul><li>밀 층 6~10 (쿠키는 밀이 병목)</li><li>판매함 비리디움으로 교체</li></ul></div>
+    <div class="phase"><span class="tag">3단계</span><h3>맥주로 전환</h3><ul><li>버섯 층 + 통 여러 개</li><li>같은 밀 층으로 금화가 8배(쿠키 밀 8 → 맥주 밀 1)</li><li>병목이 판매함으로 옮겨 감</li></ul></div>
+  </div>
+  <ul class="checks" id="checkList">
+    <li><input type="checkbox" id="f1"><label for="f1"><span>통에 깔때기로 재료를, 펌프로 물을 넣어 발효가 시작되는가<small>안 되면 맥주는 수동으로 두고 쿠키 라인으로 갑니다.</small></span></label></li>
+    <li><input type="checkbox" id="f2"><label for="f2"><span>맥주 발효 시간 측정<small>계산기에 넣으세요. 통 수를 정하는 값입니다.</small></span></label></li>
+    <li><input type="checkbox" id="f3"><label for="f3"><span>스파우트로 탱커드에 맥주를 담을 수 있는가 (Central Kitchen)<small>안 되면 통의 따르는 칸에 탱커드를 넣고 깔때기로 빼는 방식으로.</small></span></label></li>
+    <li><input type="checkbox" id="f4"><label for="f4"><span>수확기가 코코아와 밀을 다시 심는가</span></label></li>
+    <li><input type="checkbox" id="f5"><label for="f5"><span>AFK 자리에서 가장 먼 층까지 작물이 자라는가<small>수평 128칸 안이면 높이와 상관없이 자라야 합니다.</small></span></label></li>
+  </ul>
+</section>
+
+<footer>
+  <span>근거: <code>mayview_sellables.js</code> 판매가 422개 전부, 모드 jar 370개 + 바닐라의 레시피 20,086개와 태그를 원재료까지 전개. KubeJS 레시피 변경 반영. 맥주: <code>brewinandchewin:fermenting/beer_from_water</code>, <code>pouring/beer</code>(250mB), 통 용량 1000mB(<code>brewinandchewin-common.toml</code>). 쿠키: <code>minecraft:cookie</code>(밀·코코아·밀 → 8).</span>
+  <span>추정값: 작물 수확 횟수, 버섯 공급량, 발효 시간. 판매할 수 없는 원재료(달걀·우유·꿀·버섯)는 가정값으로 계산했습니다. {{LINKS}}</span>
+</footer>
+</div>
+
+<script>
+(function(){
+const NS='http://www.w3.org/2000/svg';
+const el=(t,a={},txt)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(txt!=null)e.textContent=txt;return e};
+const V=n=>`var(--${n})`;
+/* tower */
+(function(){
+  const s=document.getElementById('towerSvg');
+  const k=7, W=380, x0=90, w=16*9;
+  const floors=[['판매 층','c-bin'],['가공 층','c-crafter'],['AFK 방','bloom'],['밀 층 1','c-leaf'],['밀 층 2','c-leaf'],['밀 층 3','c-leaf'],['코코아 층','c-log'],['버섯 층','c-hopper'],['밀 층 4','c-leaf'],['밀 층 5','c-leaf'],['밀 층 6','c-leaf']];
+  const H=floors.length*4*k+60;
+  s.setAttribute('viewBox',`0 0 ${W} ${H}`);s.setAttribute('width',W);s.setAttribute('height',H);
+  floors.forEach(([t,c],i)=>{
+    const y=H-30-(i+1)*4*k;
+    s.append(el('rect',{x:x0,y:y+3*k,width:w,height:k,fill:V('c-stone'),stroke:V('ink'),'stroke-width':.6}));
+    s.append(el('rect',{x:x0,y:y,width:w,height:3*k,fill:V(c),'fill-opacity':c==='bloom'?.35:.55,stroke:V('ink'),'stroke-width':.6}));
+    s.append(el('text',{x:x0+w+8,y:y+2*k+3,'font-size':10.5,fill:V('ink')},t));
+    s.append(el('text',{x:x0-8,y:y+2*k+3,'text-anchor':'end','font-size':9,class:'mono',fill:V('muted')},'F+'+(i*4)));
+  });
+  s.append(el('rect',{x:x0+w-10,y:30,width:6,height:H-60-4*k,fill:V('c-belt'),opacity:.8}));
+  s.append(el('text',{x:x0+w+8,y:22,'font-size':10,fill:V('skyris')},'↓ 작물 슈트 (오른쪽 모서리)'));
+  s.append(el('rect',{x:x0-2,y:H-30,width:w+4,height:8,fill:V('c-dirt'),opacity:.6}));
+})();
+/* wheat floor */
+(function(){
+  const s=document.getElementById('wheatSvg');
+  const C=19, N=16, ox=18, oy=18, W=ox+N*C+14, H=oy+N*C+30;
+  s.setAttribute('viewBox',`0 0 ${W} ${H}`);s.setAttribute('width',W);s.setAttribute('height',H);
+  for(let x=0;x<N;x++)for(let z=0;z<N;z++){
+    let f=V('c-dirt'),op=.75;
+    if(x===15||z===15){f=V('c-walk');op=1}
+    else if(x===7){f=V('c-glass');op=1}
+    s.append(el('rect',{x:ox+x*C,y:oy+z*C,width:C,height:C,fill:f,'fill-opacity':op,stroke:V('grid'),'stroke-width':.6}));
+    if(f===V('c-dirt')) s.append(el('line',{x1:ox+x*C+C/2,y1:oy+z*C+4,x2:ox+x*C+C/2,y2:oy+z*C+C-4,stroke:V('gold'),'stroke-width':2}));
+  }
+  s.append(el('rect',{x:ox,y:oy+3*C,width:15*C,height:C*.5,fill:V('c-piston'),opacity:.85}));
+  s.append(el('text',{x:ox+2,y:oy+3*C-4,'font-size':10,fill:V('ink')},'갠트리 + 수확기 한 줄 (남북 왕복)'));
+  s.append(el('circle',{cx:ox+7.5*C,cy:oy+7.5*C,r:7.5*C,fill:'none',stroke:V('diamond'),'stroke-dasharray':'5 4'}));
+  s.append(el('text',{x:ox,y:oy+N*C+20,'font-size':10.5,fill:V('muted')},'밀 210칸 · 가운데 물길 · 점선 = 수집기 반경 7'));
+})();
+/* calc */
+const $=id=>document.getElementById(id);
+const fmt=n=>n>=100?Math.round(n).toLocaleString('ko-KR'):(Math.round(n*10)/10).toLocaleString('ko-KR');
+function calc(){
+  const prod=$('prod').value, wf=+$('wf').value, h=+$('h').value, t=+$('tier').value, bins=Math.max(1,+$('bins').value||1);
+  $('wfOut').textContent=wf;
+  const beer=prod==='beer';
+  ['mushL','kegL','ftL'].forEach(id=>$(id).hidden=!beer);
+  const wheat=wf*210*h, cap=bins*3600/t;
+  let lots, neck, extra='';
+  if(!beer){
+    const byWheat=wheat/8; lots=Math.min(byWheat,cap);
+    neck=byWheat<cap?'밀':'판매함';
+    extra=`쿠키는 판매 1회에 밀 8개가 들어 밀이 먼저 모자랍니다. 코코아는 1층이면 시간당 3,000개 넘게 나와 남습니다.`;
+  }else{
+    const mush=+$('mush').value||0, kegs=Math.max(1,+$('kegs').value||1), ft=Math.max(1,+$('ft').value||10);
+    const byKeg=kegs*60/ft;
+    const opts=[[wheat,'밀'],[mush,'버섯'],[byKeg,'통'],[cap,'판매함']];
+    opts.sort((a,b)=>a[0]-b[0]); lots=opts[0][0]; neck=opts[0][1];
+    extra=`맥주는 판매 1회에 밀·버섯 1개씩과 통 1회 발효가 듭니다. 탱커드가 필요하면 시간당 ${fmt(lots*4)}개(판자 ${fmt(lots*5)}, 철 조각 ${fmt(lots*2)}).`;
+  }
+  $('kWheat').textContent=fmt(wheat);$('kLots').textContent=fmt(lots);$('kCap').textContent=fmt(cap);
+  $('kGold').textContent=fmt(lots);$('kDia').textContent=fmt(lots/8);$('kNeck').textContent=neck;
+  $('status').className='status'+(neck==='판매함'?' warn':'');
+  $('status').textContent=(neck==='판매함'?`판매함이 병목입니다. 판매함을 늘리면 금화가 더 나옵니다. `:'')+extra;
+}
+['prod','wf','h','mush','kegs','ft','tier','bins'].forEach(id=>$(id).addEventListener('input',calc));calc();
+document.querySelectorAll('#checkList input').forEach(cb=>{try{cb.checked=localStorage.getItem('fd-'+cb.id)==='1'}catch(e){}cb.addEventListener('change',()=>{try{localStorage.setItem('fd-'+cb.id,cb.checked?'1':'0')}catch(e){}})});
+})();
+</script>
