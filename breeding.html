@@ -3,29 +3,19 @@
 <title>Mayview Breeding Guide</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Silkscreen:wght@400;700&display=swap">
 <style>
+@font-face{font-family:"Galmuri11";src:url("pokedex/fonts/Galmuri11.woff2") format("woff2");font-display:swap}
+/* Single warm "handheld menu" theme shared with the Pokédex */
 :root{
-  --ground:#F1F5F1; --surface:#FFFFFF; --sunk:#E6EDE7; --ink:#18261F; --muted:#56675E; --line:#CFDAD2;
-  --accent:#0E7A68; --accent-ink:#FFFFFF; --spot:#E8A700; --spot-soft:#FFF3CC; --shiny:#B8499A;
-  --good:#1F8A4C; --warn:#B26A00; --bad:#B8352C;
-  --display:"Bricolage Grotesque","IBM Plex Sans KR",system-ui,sans-serif;
-  --body:"IBM Plex Sans KR",system-ui,-apple-system,"Segoe UI","Malgun Gothic",sans-serif;
-  --mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
-}
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    color-scheme:dark;
-    --ground:#0E1613; --surface:#15201C; --sunk:#1B2823; --ink:#E3ECE7; --muted:#9AADA3; --line:#2A3A33;
-    --accent:#3CC4AC; --accent-ink:#06201A; --spot:#F2C230; --spot-soft:#3A3212; --shiny:#E48ACB;
-    --good:#56C98A; --warn:#E8A443; --bad:#F07A70;
-  }
-}
-:root[data-theme="dark"]{
-  color-scheme:dark;
-  --ground:#0E1613; --surface:#15201C; --sunk:#1B2823; --ink:#E3ECE7; --muted:#9AADA3; --line:#2A3A33;
-  --accent:#3CC4AC; --accent-ink:#06201A; --spot:#F2C230; --spot-soft:#3A3212; --shiny:#E48ACB;
-  --good:#56C98A; --warn:#E8A443; --bad:#F07A70;
+  color-scheme:light;
+  --ground:#FCEFD6; --surface:#FFFBF0; --sunk:#F6E3BF; --raise:#FFF6E2; --ink:#4A2E1E; --muted:#8A6A52; --line:#4A2E1E; --soft-line:#E4C9A0;
+  --accent:#E4513B; --accent-ink:#FFFBF0; --spot:#FFD23F; --spot-soft:#FFE89A; --shiny:#C2408F;
+  --good:#2E8B3E; --warn:#B26A00; --bad:#C23A2B;
+  --display:"Silkscreen","Galmuri11","DotGothic16",monospace;
+  --body:"Galmuri11","DotGothic16","Malgun Gothic",monospace;
+  --mono:"Galmuri11","DotGothic16",monospace;
+  --px:3px;
 }
 :root:not([data-lang="ko"]) .ko{display:none!important}
 :root[data-lang="ko"] .en{display:none!important}
@@ -136,13 +126,61 @@ footer{color:var(--muted);font-size:13px;padding-top:40px;border-top:1px solid v
   .brand .full{display:none}
 }
 @media (prefers-reduced-motion:reduce){.meter i{transition:none}}
+
+/* ---------- game skin ---------- */
+body{font-size:15px;line-height:1.7;background-image:radial-gradient(rgba(74,46,30,.07) 1px,transparent 1.2px);background-size:12px 12px;-webkit-font-smoothing:none}
+a{color:var(--accent)}
+code{background:var(--sunk);border-radius:0;border:1px solid var(--soft-line)}
+.bar{background:var(--accent);backdrop-filter:none;border-bottom:var(--px) solid var(--line);box-shadow:0 var(--px) 0 #B8392A}
+.brand{color:var(--accent-ink);font-family:var(--display);font-weight:700;text-shadow:2px 2px 0 #B8392A}
+.brand .full{color:var(--accent-ink)!important;opacity:.85}
+.egg{border-radius:0;box-shadow:2px 2px 0 var(--line)}
+.egg::before,.egg::after{border-radius:0}
+.seg{border:var(--px) solid var(--line);border-radius:0;padding:2px}
+.seg button{border-radius:0;font-family:var(--display)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--surface)}
+.homebtn{font:700 12px/1 var(--display);color:var(--ink);background:var(--surface);border:var(--px) solid var(--line);box-shadow:2px 2px 0 var(--line);padding:8px 10px;text-decoration:none;white-space:nowrap}
+.homebtn:hover{background:var(--spot)}
+nav.toc a{border-left:3px solid var(--soft-line)}
+nav.toc a:hover{border-color:var(--accent);background:var(--raise)}
+nav.toc a::before{content:"▶ ";color:var(--accent);opacity:0}
+nav.toc a:hover::before{opacity:1}
+header.hero{border-bottom:var(--px) solid var(--line)}
+.eyebrow{font-family:var(--display);color:var(--accent)}
+h1{font-family:var(--display);letter-spacing:0;text-shadow:3px 3px 0 var(--spot)}
+h2{font-family:var(--display);letter-spacing:0;font-size:24px;text-shadow:2px 2px 0 var(--spot)}
+h2::before{content:"▶ ";color:var(--accent)}
+.specs{background:var(--line);border:var(--px) solid var(--line);border-radius:0;gap:3px;box-shadow:4px 4px 0 var(--line)}
+.spec b{font-family:var(--display);color:var(--accent)}
+.steps li,.rule,.case{border:var(--px) solid var(--line);border-radius:0;box-shadow:4px 4px 0 var(--line)}
+.steps li::before{border-radius:0;background:var(--spot);border:2px solid var(--line);font-family:var(--display)}
+.rule .tag{border-radius:0;font-family:var(--display);border:2px solid currentColor}
+.tbl{border:var(--px) solid var(--line);border-radius:0;box-shadow:4px 4px 0 var(--line)}
+th{font-family:var(--display);color:var(--accent);background:var(--raise);border-bottom:var(--px) solid var(--line)}
+th,td{border-bottom-color:var(--soft-line)}
+td.num{font-family:var(--display)}
+.berry i{border-radius:0;border:1px solid var(--line)}
+.recipe span{border-radius:0;border:1px solid var(--soft-line);font-family:var(--display)}
+.calc{border:var(--px) solid var(--line);border-radius:0;box-shadow:4px 4px 0 var(--line)}
+.calc-out{background:var(--raise);border-left:var(--px) solid var(--line)}
+.pick{border:var(--px) solid var(--line);border-radius:0}
+.pick button{font-family:var(--display);border-right:2px solid var(--line)}
+.pick button[aria-pressed="true"]{background:var(--spot);color:var(--ink)}
+.odds{font-family:var(--display);color:var(--shiny);text-shadow:3px 3px 0 var(--spot-soft)}
+.meter{border-radius:0;border:2px solid var(--line);background:var(--surface);height:12px}
+.meter i{background:var(--shiny)}
+.note{border:var(--px) solid var(--line);border-left:8px solid var(--spot);border-radius:0;box-shadow:3px 3px 0 var(--soft-line)}
+.cmd div{border-bottom:2px dashed var(--soft-line)}
+footer{border-top:var(--px) solid var(--line)}
+@media (max-width:620px){.calc-out{border-left:0;border-top:var(--px) solid var(--line)}.homebtn{padding:7px 8px}}
 </style>
 
 <div class="bar"><div class="bar-in">
+  <a class="homebtn" id="homeBtn" href="./" aria-label="Home"><span class="en">◀ Home</span><span class="ko">◀ 메인</span></a>
   <div class="brand"><span class="egg" aria-hidden="true"></span><span><span class="en">Mayview Breeding</span><span class="ko">메이뷰 교배</span><span class="full dim" style="font-weight:600"> · Cobbreeding 2.2.1</span></span></div>
   <div class="seg" role="group" aria-label="Language">
     <button id="lang-en" type="button" data-lang="en" aria-pressed="true">EN</button>
-    <button id="lang-ko" type="button" data-lang="ko" aria-pressed="false">한국어</button>
+    <button id="lang-ko" type="button" data-lang="ko" aria-pressed="false">KO</button>
   </div>
 </div></div>
 
@@ -398,6 +436,7 @@ footer{color:var(--muted);font-size:13px;padding-top:40px;border-top:1px solid v
 
 <script>
 (function(){
+  if(/claude\.ai|claudeusercontent/.test(location.hostname)){var hb=document.getElementById("homeBtn");if(hb)hb.hidden=true;}
   var groups=[
     ["field","Field","육상",261,[["Eevee","이브이"],["Growlithe","가디"],["Meowth","나옹"]],[["Rawst Berry","복분열매","#6FA7D8"]]],
     ["water_1","Water 1","수중 1",109,[["Squirtle","꼬부기"],["Psyduck","고라파덕"],["Dratini","미뇽"]],[["Aspear Berry","배리열매","#E9D44C"]]],

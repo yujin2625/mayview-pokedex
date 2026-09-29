@@ -93,6 +93,9 @@ main{min-width:0;padding:16px}
 .abil .ab:hover,.abil .ab:focus-visible{background:var(--sun)}
 .tip{position:fixed;z-index:70;max-width:min(280px,calc(100vw - 24px));background:var(--surface);color:var(--ink);border:var(--px,3px) solid var(--line);box-shadow:4px 4px 0 var(--line);padding:8px 10px;font:13px/1.5 var(--body);pointer-events:none}
 .tip b{display:block;font-family:var(--display);color:var(--accent);font-size:12px;margin-bottom:2px}
+.homebtn{font:700 13px/1 var(--display);color:var(--ink);background:var(--surface);border:var(--px) solid var(--line);box-shadow:2px 2px 0 var(--line);padding:8px 10px;text-decoration:none;flex:none}
+.homebtn:hover{background:var(--sun)}
+@media (max-width:640px){.homebtn .ht{display:none}}
 .nospr::after{content:"?";position:absolute;inset:0;display:grid;place-items:center;font:700 42px/1 var(--display);color:var(--soft-line,#ccc)}
 .empty{padding:60px 20px;text-align:center;color:var(--muted);background:var(--surface);border:1px dashed var(--line);border-radius:12px}
 
@@ -308,6 +311,7 @@ details.bt[open] summary{background:var(--sun);color:var(--ink)}
 
 <div class="bar"><div class="bar-in">
   <button class="iconbtn" id="menuBtn" type="button" aria-label="Filters">☰</button>
+  <a class="homebtn" id="homeBtn" href="../" aria-label="Home">◀<span class="ht" data-i="home"></span></a>
   <div class="brand"><span class="dexmark" aria-hidden="true"></span><span class="t" data-i="brand"></span></div>
   <label class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
     <input id="q" type="search" autocomplete="off" spellcheck="false"></label>
@@ -359,7 +363,7 @@ const TYPES=Object.keys(TYPE_C);
 const MODEL_CREDIT={};
 const BREED_URL=/claude\.ai|claudeusercontent/.test(location.hostname)?'https://claude.ai/artifact/MPUHUtkLQkQhSm8XW73xjH':'../breeding.html';
 const S={
-  en:{brand:'Mayview Pokédex',search:'Search by name or number…',fuzzy:'no exact match, showing close spellings',collections:'Collections',all:'All Pokémon',starred:'Starred',add:'Add',newList:'New list name',type:'Type',source:'How to get',eggGroup:'Egg group',gen:'Generation',more:'More',clearFilters:'Clear filters',sort:'Sort',sortNo:'Dex number',sortName:'Name',sortBst:'Base stat total',rename:'Rename',deleteList:'Delete list',confirmDelete:'Click again to delete',results:'Pokémon',none:'No Pokémon match. Try clearing a filter or the search.',noneList:'This list is empty. Open a Pokémon and use “Lists” to add it.',noneStar:'No starred Pokémon yet. Tap the star on any card.',
+  en:{home:' Home',brand:'Mayview Pokédex',search:'Search by name or number…',fuzzy:'no exact match, showing close spellings',collections:'Collections',all:'All Pokémon',starred:'Starred',add:'Add',newList:'New list name',type:'Type',source:'How to get',eggGroup:'Egg group',gen:'Generation',more:'More',clearFilters:'Clear filters',sort:'Sort',sortNo:'Dex number',sortName:'Name',sortBst:'Base stat total',rename:'Rename',deleteList:'Delete list',confirmDelete:'Click again to delete',results:'Pokémon',none:'No Pokémon match. Try clearing a filter or the search.',noneList:'This list is empty. Open a Pokémon and use “Lists” to add it.',noneStar:'No starred Pokémon yet. Tap the star on any card.',
     wild:'Wild spawn',raid:'Raid den',evoOnly:'Evolution only',noWild:'Not in the wild',rideable:'Rideable',shoulder:'Shoulder mount',hasForms:'Has forms',mega:'Mega',gmax:'Gigantamax',legendary:'Legendary / Mythical',anyEgg:'Any egg group',
     tabs:{info:'Info',where:'Where to find',evo:'Evolution',breed:'Breeding',shiny:'Shiny',forms:'Forms'},
     star:'Star',starredBtn:'Starred',lists:'Lists',shiny:'Shiny',normal:'Normal',height:'Height',weight:'Weight',catch:'Catch rate',gender:'Gender',genderless:'Genderless',friend:'Base friendship',exp:'Growth',evs:'EV yield',abilities:'Abilities',hidden:'Hidden',baseStats:'Base stats',total:'Total',dexEntry:'Pokédex entry',drops:'Drops',rideable2:'Rideable',riding:'Ride',
@@ -373,7 +377,7 @@ const S={
     listsTitle:'Add to list',noLists:'Create a list in the sidebar first.',saved:'Saved',local:'Saved on this device',
     niNote:'Cobblemon 1.7.3 marks this Pokémon as not yet implemented, but this pack still lists it as a raid boss. It may use a placeholder model in game.',niModel:'No 3D model in this pack',modelCredit:'The image uses a model from a separate addon that is not installed in this pack:',
     storeHint:'Stars and lists are saved to your account on this page.',storeLocal:'Stars and lists are saved in this browser only.'},
-  ko:{brand:'메이뷰 포켓몬 도감',search:'이름, 번호, 초성 검색…',fuzzy:'정확히 일치하는 이름이 없어 비슷한 철자를 보여줍니다',collections:'모아보기',all:'전체 포켓몬',starred:'별표',add:'추가',newList:'새 리스트 이름',type:'타입',source:'얻는 방법',eggGroup:'알 그룹',gen:'세대',more:'기타',clearFilters:'필터 초기화',sort:'정렬',sortNo:'도감 번호',sortName:'이름',sortBst:'종족값 합계',rename:'이름 변경',deleteList:'리스트 삭제',confirmDelete:'한 번 더 누르면 삭제',results:'마리',none:'조건에 맞는 포켓몬이 없습니다. 필터나 검색어를 지워 보세요.',noneList:'리스트가 비어 있습니다. 포켓몬을 열고 "리스트"에서 추가하세요.',noneStar:'별표한 포켓몬이 없습니다. 카드의 별을 눌러 보세요.',
+  ko:{home:' 메인',brand:'메이뷰 포켓몬 도감',search:'이름, 번호, 초성 검색…',fuzzy:'정확히 일치하는 이름이 없어 비슷한 철자를 보여줍니다',collections:'모아보기',all:'전체 포켓몬',starred:'별표',add:'추가',newList:'새 리스트 이름',type:'타입',source:'얻는 방법',eggGroup:'알 그룹',gen:'세대',more:'기타',clearFilters:'필터 초기화',sort:'정렬',sortNo:'도감 번호',sortName:'이름',sortBst:'종족값 합계',rename:'이름 변경',deleteList:'리스트 삭제',confirmDelete:'한 번 더 누르면 삭제',results:'마리',none:'조건에 맞는 포켓몬이 없습니다. 필터나 검색어를 지워 보세요.',noneList:'리스트가 비어 있습니다. 포켓몬을 열고 "리스트"에서 추가하세요.',noneStar:'별표한 포켓몬이 없습니다. 카드의 별을 눌러 보세요.',
     wild:'야생 출현',raid:'레이드 굴',evoOnly:'진화로만',noWild:'야생 미출현',rideable:'탈 수 있음',shoulder:'어깨에 태우기',hasForms:'폼 있음',mega:'메가진화',gmax:'거다이맥스',legendary:'전설 / 환상',anyEgg:'모든 알 그룹',
     tabs:{info:'정보',where:'출현 장소',evo:'진화',breed:'교배',shiny:'이로치',forms:'폼'},
     star:'별표',starredBtn:'별표됨',lists:'리스트',shiny:'이로치',normal:'일반',height:'키',weight:'몸무게',catch:'포획률',gender:'성비',genderless:'무성',friend:'기본 친밀도',exp:'성장 속도',evs:'노력치',abilities:'특성',hidden:'숨겨진 특성',baseStats:'종족값',total:'합계',dexEntry:'도감 설명',drops:'드롭 아이템',rideable2:'탑승 가능',riding:'탑승',
@@ -406,6 +410,7 @@ const $=id=>document.getElementById(id);
 
 // ---------- data
 let DEX=null, META=null, BY={}, SPR={}, SHEETS=[], TH={map:{},sheets:[]}, LARGE_OK=true;
+if(/claude\.ai|claudeusercontent/.test(location.hostname)){const hb=document.getElementById('homeBtn');if(hb)hb.hidden=true;}
 const MOBILE=(()=>{try{return matchMedia('(max-width: 640px), (pointer: coarse)').matches;}catch(e){return false;}})();
 const state={view:'all',q:'',types:new Set(),source:null,egg:'',gens:new Set(),more:new Set(),sort:'no',sel:null,form:'',shiny:false,tab:'info'};
 const store={favs:[],lists:[]};
