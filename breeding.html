@@ -1,0 +1,476 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mayview Breeding Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+:root{
+  --ground:#F1F5F1; --surface:#FFFFFF; --sunk:#E6EDE7; --ink:#18261F; --muted:#56675E; --line:#CFDAD2;
+  --accent:#0E7A68; --accent-ink:#FFFFFF; --spot:#E8A700; --spot-soft:#FFF3CC; --shiny:#B8499A;
+  --good:#1F8A4C; --warn:#B26A00; --bad:#B8352C;
+  --display:"Bricolage Grotesque","IBM Plex Sans KR",system-ui,sans-serif;
+  --body:"IBM Plex Sans KR",system-ui,-apple-system,"Segoe UI","Malgun Gothic",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --ground:#0E1613; --surface:#15201C; --sunk:#1B2823; --ink:#E3ECE7; --muted:#9AADA3; --line:#2A3A33;
+    --accent:#3CC4AC; --accent-ink:#06201A; --spot:#F2C230; --spot-soft:#3A3212; --shiny:#E48ACB;
+    --good:#56C98A; --warn:#E8A443; --bad:#F07A70;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --ground:#0E1613; --surface:#15201C; --sunk:#1B2823; --ink:#E3ECE7; --muted:#9AADA3; --line:#2A3A33;
+  --accent:#3CC4AC; --accent-ink:#06201A; --spot:#F2C230; --spot-soft:#3A3212; --shiny:#E48ACB;
+  --good:#56C98A; --warn:#E8A443; --bad:#F07A70;
+}
+:root:not([data-lang="ko"]) .ko{display:none!important}
+:root[data-lang="ko"] .en{display:none!important}
+
+*{box-sizing:border-box}
+body{background:var(--ground);color:var(--ink);font:15px/1.65 var(--body);margin:0}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+code,.mono{font-family:var(--mono);font-size:.86em}
+code{background:var(--sunk);padding:.08em .38em;border-radius:4px}
+
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:color-mix(in srgb,var(--ground) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.bar-in{max-width:1180px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:16px}
+.brand{font:800 17px/1 var(--display);letter-spacing:-.01em;display:flex;align-items:center;gap:10px;margin-right:auto}
+.egg{width:18px;height:22px;border-radius:50% 50% 50% 50%/58% 58% 42% 42%;background:var(--surface);border:2px solid var(--ink);position:relative;flex:none;overflow:hidden}
+.egg::before,.egg::after{content:"";position:absolute;border-radius:50%;background:var(--spot)}
+.egg::before{width:7px;height:7px;left:2px;top:4px}.egg::after{width:5px;height:5px;right:2px;top:11px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:3px;background:var(--surface)}
+.seg button{font:600 13px/1 var(--body);border:0;background:transparent;color:var(--muted);padding:7px 13px;border-radius:999px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--ground)}
+
+.wrap{max-width:1180px;margin:0 auto;padding-inline:16px;padding-block:0 80px;display:grid;grid-template-columns:210px minmax(0,1fr);gap:48px}
+nav.toc{position:sticky;top:calc(env(safe-area-inset-top,0px) + 72px);align-self:start;padding-top:40px;font-size:13.5px}
+nav.toc ol{list-style:none;margin:0;padding:0;display:grid;gap:2px;counter-reset:t}
+nav.toc a{display:block;color:var(--muted);text-decoration:none;padding:5px 10px;border-left:2px solid var(--line)}
+nav.toc a:hover{color:var(--ink);border-color:var(--accent)}
+main{min-width:0}
+
+header.hero{padding-block:44px 28px;border-bottom:1px solid var(--line)}
+.eyebrow{font:600 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+h1{font:800 clamp(34px,5.4vw,56px)/1.02 var(--display);letter-spacing:-.025em;margin:14px 0 14px;text-wrap:balance}
+.lede{max-width:64ch;color:var(--muted);font-size:16.5px;margin:0}
+.specs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-top:28px}
+.spec{background:var(--surface);padding:14px 16px}
+.spec b{display:block;font:700 22px/1.15 var(--display);font-variant-numeric:tabular-nums}
+.spec span{font-size:12.5px;color:var(--muted)}
+
+section{padding-block:44px 8px;scroll-margin-top:70px}
+h2{font:800 28px/1.15 var(--display);letter-spacing:-.015em;margin:0 0 6px;text-wrap:balance}
+h3{font:700 17px/1.3 var(--body);margin:26px 0 8px}
+.sub{color:var(--muted);margin:0 0 20px;max-width:68ch}
+p{max-width:70ch}
+
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:10px;counter-reset:s}
+.steps li{counter-increment:s;display:grid;grid-template-columns:34px 1fr;gap:14px;align-items:start;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.steps li::before{content:counter(s);font:700 15px/34px var(--mono);text-align:center;width:34px;height:34px;border-radius:50%;background:var(--spot-soft);color:var(--ink);border:1.5px solid var(--spot)}
+.steps b{display:block;margin-bottom:2px}
+.steps p{margin:0;color:var(--muted)}
+
+.rules{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.rule{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.rule .tag{display:inline-block;font:600 11px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;padding:4px 7px;border-radius:4px;margin-bottom:8px}
+.ok{background:color-mix(in srgb,var(--good) 16%,transparent);color:var(--good)}
+.no{background:color-mix(in srgb,var(--bad) 16%,transparent);color:var(--bad)}
+.rule p{margin:0}
+
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:600 11.5px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);background:var(--sunk);white-space:nowrap}
+tr:last-child td{border-bottom:0}
+td.num{font-variant-numeric:tabular-nums;font-family:var(--mono);text-align:right;white-space:nowrap}
+.grp{font-weight:700;white-space:nowrap}
+.grp small{display:block;font:400 11.5px/1.3 var(--mono);color:var(--muted)}
+.berry{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.berry i{width:9px;height:9px;border-radius:50%;background:var(--c);flex:none}
+.dim{color:var(--muted)}
+
+.recipe{display:grid;grid-template-columns:repeat(3,18px);gap:2px;margin-top:4px}
+.recipe span{width:18px;height:18px;border-radius:3px;background:var(--sunk);font:600 10px/18px var(--mono);text-align:center;color:var(--ink)}
+
+.calc{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface)}
+.calc-in{padding:20px;display:grid;gap:16px;align-content:start}
+.calc-out{padding:20px;background:var(--sunk);display:grid;align-content:center;gap:10px}
+.field label.l{display:block;font-weight:600;margin-bottom:6px}
+.toggle{display:flex;gap:10px;align-items:flex-start;cursor:pointer}
+.toggle input{margin-top:5px;accent-color:var(--accent);width:16px;height:16px}
+.toggle small{display:block;color:var(--muted)}
+.pick{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.pick button{font:600 14px/1 var(--mono);border:0;border-right:1px solid var(--line);background:var(--surface);color:var(--ink);padding:9px 16px;cursor:pointer}
+.pick button:last-child{border-right:0}
+.pick button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.odds{font:800 clamp(38px,6vw,56px)/1 var(--display);font-variant-numeric:tabular-nums;color:var(--shiny)}
+.chain{font:13px/1.5 var(--mono);color:var(--muted)}
+.meter{height:8px;border-radius:99px;background:var(--line);overflow:hidden}
+.meter i{display:block;height:100%;background:var(--shiny);width:0;transition:width .25s}
+
+.note{border:1px solid var(--line);border-left:3px solid var(--spot);background:var(--surface);border-radius:6px;padding:12px 16px;margin-top:16px;font-size:14px}
+.note p{margin:0}
+.cases{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.case{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:14px}
+.case .from{font-weight:700}
+.case .to{color:var(--muted)}
+.cmd{display:grid;gap:8px}
+.cmd div{display:grid;grid-template-columns:minmax(0,300px) 1fr;gap:14px;align-items:baseline;padding:9px 0;border-bottom:1px dashed var(--line)}
+.cmd code{white-space:nowrap;overflow-x:auto}
+footer{color:var(--muted);font-size:13px;padding-top:40px;border-top:1px solid var(--line);margin-top:48px}
+
+@media (max-width:900px){
+  .wrap{grid-template-columns:1fr;gap:0}
+  nav.toc{display:none}
+  .specs{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .cases{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:620px){
+  .rules,.calc,.cases{grid-template-columns:1fr}
+  .cmd div{grid-template-columns:1fr;gap:4px}
+  .brand .full{display:none}
+}
+@media (prefers-reduced-motion:reduce){.meter i{transition:none}}
+</style>
+
+<div class="bar"><div class="bar-in">
+  <div class="brand"><span class="egg" aria-hidden="true"></span><span><span class="en">Mayview Breeding</span><span class="ko">메이뷰 교배</span><span class="full dim" style="font-weight:600"> · Cobbreeding 2.2.1</span></span></div>
+  <div class="seg" role="group" aria-label="Language">
+    <button id="lang-en" type="button" data-lang="en" aria-pressed="true">EN</button>
+    <button id="lang-ko" type="button" data-lang="ko" aria-pressed="false">한국어</button>
+  </div>
+</div></div>
+
+<div class="wrap">
+<nav class="toc" aria-label="Contents"><ol>
+  <li><a href="#start"><span class="en">Getting eggs</span><span class="ko">알 얻기</span></a></li>
+  <li><a href="#pairs"><span class="en">Who can breed</span><span class="ko">교배 가능 조건</span></a></li>
+  <li><a href="#groups"><span class="en">Egg groups</span><span class="ko">알 그룹</span></a></li>
+  <li><a href="#inherit"><span class="en">Inheritance</span><span class="ko">유전 규칙</span></a></li>
+  <li><a href="#items"><span class="en">Breeding items</span><span class="ko">교배 아이템</span></a></li>
+  <li><a href="#shiny"><span class="en">Shiny breeding</span><span class="ko">이로치 교배</span></a></li>
+  <li><a href="#hatch"><span class="en">Timing &amp; hatching</span><span class="ko">시간과 부화</span></a></li>
+  <li><a href="#special"><span class="en">Special species</span><span class="ko">특수 포켓몬</span></a></li>
+  <li><a href="#config"><span class="en">Pack settings</span><span class="ko">모드팩 설정값</span></a></li>
+</ol></nav>
+
+<main>
+<header class="hero">
+  <div class="eyebrow">Mayview (with Cobblemon) · Cobblemon 1.7.3</div>
+  <h1><span class="en">Breeding in the Pasture</span><span class="ko">목장에서 하는 교배</span></h1>
+  <p class="lede en">Breeding in this pack comes from the Cobbreeding mod. Put two compatible Pokémon in a Pasture Block, switch breeding on, and eggs show up in the nest at the bottom of the block. Everything below reflects this pack's actual config, not the mod defaults.</p>
+  <p class="lede ko">이 모드팩의 교배는 Cobbreeding 모드가 담당합니다. 교배 가능한 포켓몬 두 마리를 목장 블록에 넣고 교배를 켜 두면, 블록 아래쪽 둥지에 알이 생깁니다. 아래 내용은 모드 기본값이 아니라 이 모드팩의 실제 설정값 기준입니다.</p>
+  <div class="specs">
+    <div class="spec"><b>6:40 – 11:40</b><span class="en">minutes between eggs</span><span class="ko">알 생성 간격 (분:초)</span></div>
+    <div class="spec"><b>5</b><span class="en">egg slots per pasture</span><span class="ko">목장당 알 보관 칸</span></div>
+    <div class="spec"><b>×0.3</b><span class="en">hatch time (70% faster)</span><span class="ko">부화 시간 (70% 단축)</span></div>
+    <div class="spec"><b>1 / 2048</b><span class="en">base shiny odds for any egg</span><span class="ko">모든 알의 기본 이로치 확률</span></div>
+  </div>
+</header>
+
+<section id="start">
+  <h2><span class="en">Getting your first egg</span><span class="ko">첫 알 얻기</span></h2>
+  <p class="sub"><span class="en">The whole loop, in order.</span><span class="ko">전체 과정을 순서대로 정리했습니다.</span></p>
+  <ol class="steps">
+    <li><div><b><span class="en">Craft and place a Pasture Block</span><span class="ko">목장 블록을 만들어 설치</span></b>
+      <p class="en">The FTB quest "Craft a Pasture Block and Let Your Pokémon Roam" walks you through it. There is no limit on how many pastures you can activate.</p>
+      <p class="ko">FTB 퀘스트 "Craft a Pasture Block and Let Your Pokémon Roam"에서 안내합니다. 활성화할 수 있는 목장 개수에 제한이 없습니다.</p></div></li>
+    <li><div><b><span class="en">Send in two compatible Pokémon</span><span class="ko">교배 가능한 포켓몬 두 마리를 풀어놓기</span></b>
+      <p class="en">One male and one female sharing an egg group, or any breedable Pokémon plus Ditto. The two can belong to different players.</p>
+      <p class="ko">알 그룹이 겹치는 수컷·암컷 한 쌍, 또는 교배 가능한 포켓몬 + 메타몽. 두 마리의 주인이 달라도 됩니다.</p></div></li>
+    <li><div><b><span class="en">Press the breeding toggle in the pasture screen</span><span class="ko">목장 화면에서 교배 토글 버튼 누르기</span></b>
+      <p class="en">The button's tooltip reads "Toggle breeding". Pastures without it switched on never make eggs.</p>
+      <p class="ko">버튼 툴팁은 "Toggle breeding"입니다. 이 버튼을 켜지 않은 목장에서는 알이 생기지 않습니다.</p></div></li>
+    <li><div><b><span class="en">Collect eggs from the nest</span><span class="ko">둥지에서 알 수거</span></b>
+      <p class="en">The pasture holds up to 5 eggs. Hoppers under the block can pull eggs out automatically, so a hopper into a chest keeps the nest from filling.</p>
+      <p class="ko">목장에는 알이 최대 5개까지 쌓입니다. 블록 아래 호퍼로 알을 자동으로 빼낼 수 있으니, 호퍼→상자를 연결해 두면 둥지가 가득 찰 일이 없습니다.</p></div></li>
+    <li><div><b><span class="en">Carry the egg until it hatches</span><span class="ko">부화할 때까지 알을 들고 다니기</span></b>
+      <p class="en">The hatch timer only runs while the egg sits in a player's inventory. Stored in a chest, it stays frozen.</p>
+      <p class="ko">부화 타이머는 알이 플레이어 인벤토리에 있을 때만 흘러갑니다. 상자에 넣어 두면 멈춰 있습니다.</p></div></li>
+  </ol>
+</section>
+
+<section id="pairs">
+  <h2><span class="en">Who can breed</span><span class="ko">교배 가능 조건</span></h2>
+  <p class="sub"><span class="en">Same rules as the main series games, with one pack-specific change for Ditto.</span><span class="ko">본가 게임과 같은 규칙이며, 메타몽 관련 설정 하나가 이 모드팩에 맞게 정해져 있습니다.</span></p>
+  <div class="rules">
+    <div class="rule"><span class="tag ok">OK</span>
+      <p class="en"><b>Male + female</b> that share at least one egg group. Species can differ: a Growlithe and an Eevee both sit in Field.</p>
+      <p class="ko">알 그룹이 하나 이상 겹치는 <b>수컷 + 암컷</b>. 종이 달라도 됩니다. 가디와 이브이는 둘 다 육상 그룹입니다.</p></div>
+    <div class="rule"><span class="tag ok">OK</span>
+      <p class="en"><b>Any breedable Pokémon + Ditto</b>, including genderless ones like Magnemite. This is the only way to breed genderless Pokémon.</p>
+      <p class="ko"><b>교배 가능한 모든 포켓몬 + 메타몽</b>. 코일 같은 무성 포켓몬도 포함되며, 무성 포켓몬은 이 방법으로만 교배할 수 있습니다.</p></div>
+    <div class="rule"><span class="tag no">NO</span>
+      <p class="en"><b>Ditto + Ditto.</b> Random-egg mode is turned off in this pack, so two Ditto produce nothing.</p>
+      <p class="ko"><b>메타몽 + 메타몽.</b> 이 모드팩은 랜덤 알 설정이 꺼져 있어 메타몽끼리는 알을 만들지 않습니다.</p></div>
+    <div class="rule"><span class="tag no">NO</span>
+      <p class="en"><b>Undiscovered egg group:</b> legendaries, mythicals, baby Pokémon (Pichu, Togepi…) and Nidorina/Nidoqueen cannot breed at all. Breed their evolved or pre-evolved relatives instead.</p>
+      <p class="ko"><b>알미발견 그룹:</b> 전설·환상, 아기 포켓몬(피츄, 토게피 등), 니드리나/니드퀸은 교배할 수 없습니다. 진화 전후의 다른 단계로 교배하세요.</p></div>
+    <div class="rule"><span class="tag no">NO</span>
+      <p class="en"><b>Same-gender pairs</b> and <b>genderless + anything other than Ditto</b>.</p>
+      <p class="ko"><b>같은 성별 한 쌍</b>, 그리고 <b>무성 + 메타몽이 아닌 포켓몬</b>.</p></div>
+    <div class="rule"><span class="tag no">NO</span>
+      <p class="en"><b>Pokémon marked as not breedable.</b> The summary screen has a toggle that stops a Pokémon from breeding. Only its original trainer can flip it.</p>
+      <p class="ko"><b>교배 불가로 설정된 포켓몬.</b> 요약 화면에 교배를 막는 토글이 있으며, 최초 트레이너(어버이)만 바꿀 수 있습니다.</p></div>
+  </div>
+</section>
+
+<section id="groups">
+  <h2><span class="en">Egg groups</span><span class="ko">알 그룹</span></h2>
+  <p class="sub en">Counts are implemented species in Cobblemon 1.7.3; a Pokémon in two groups is counted in both. The snack berry column is how to find partners: put that berry into a Poké Snack as seasoning and Pokémon from those groups become 10× more likely to spawn around it.</p>
+  <p class="sub ko">개수는 Cobblemon 1.7.3에 구현된 포켓몬 기준이며, 두 그룹에 속한 포켓몬은 양쪽에 모두 셉니다. 스낵 열매 열은 교배 상대를 찾는 방법입니다. 해당 열매를 포켓스낵 양념으로 넣으면 그 그룹 포켓몬이 주변에 스폰될 확률이 10배가 됩니다.</p>
+  <div class="tbl"><table>
+    <thead><tr><th><span class="en">Group</span><span class="ko">그룹</span></th><th class="num">#</th><th><span class="en">Examples</span><span class="ko">예시</span></th><th><span class="en">Snack berry (×10)</span><span class="ko">스낵 열매 (×10)</span></th></tr></thead>
+    <tbody id="groupRows"></tbody>
+  </table></div>
+  <div class="note"><p class="en">Other useful seasonings when hunting parents: <b>Kee Berry</b> 25% female, <b>Maranga Berry</b> 25% male, <b>Enigma Berry</b> 5% hidden ability, <b>Starf Berry</b> extra shiny rolls. The PokéSnacks quest chapter lists every effect.</p><p class="ko">부모 사냥에 쓸 만한 다른 양념: <b>악키열매</b> 암컷 25%, <b>타라프열매</b> 수컷 25%, <b>의문열매</b> 숨겨진 특성 5%, <b>스타열매</b> 이로치 추가 판정. 모든 효과는 PokéSnacks 퀘스트 챕터에 정리돼 있습니다.</p></div>
+</section>
+
+<section id="inherit">
+  <h2><span class="en">What the egg inherits</span><span class="ko">알이 물려받는 것</span></h2>
+  <p class="sub"><span class="en">"Mother" means the female parent, or the non-Ditto parent in a Ditto pairing.</span><span class="ko">"어미"는 암컷 부모, 메타몽 교배라면 메타몽이 아닌 쪽 부모를 뜻합니다.</span></p>
+  <div class="tbl"><table>
+    <thead><tr><th><span class="en">Trait</span><span class="ko">항목</span></th><th><span class="en">Rule</span><span class="ko">규칙</span></th><th><span class="en">How to control it</span><span class="ko">조절 방법</span></th></tr></thead>
+    <tbody>
+      <tr><td class="grp"><span class="en">Species</span><span class="ko">종</span></td>
+        <td><span class="en">The lowest evolution stage of the mother's line.</span><span class="ko">어미 진화 계열의 가장 첫 단계.</span></td>
+        <td><span class="en">Use the species you want as the mother, or pair it with Ditto.</span><span class="ko">원하는 종을 어미로 쓰거나 메타몽과 교배.</span></td></tr>
+      <tr><td class="grp"><span class="en">Regional form &amp; features</span><span class="ko">지역 폼·특징</span></td>
+        <td><span class="en">Passed down from the parents instead of depending on the biome. Covers Alolan, Galarian, Hisuian and Paldean forms plus features such as Basculin stripes, Tauros breeds, Wooper hearts and Tatsugiri colours.</span><span class="ko">바이옴이 아니라 부모에게서 물려받습니다. 알로라·가라르·히스이·팔데아 폼과 배쓰나이 줄무늬, 켄타로스 품종, 우파 하트, 싸리용 색 같은 특징이 포함됩니다.</span></td>
+        <td><span class="en">Breed from a parent that already has the form.</span><span class="ko">해당 폼을 가진 부모로 교배.</span></td></tr>
+      <tr><td class="grp">IV</td>
+        <td><span class="en">3 random stats copied from either parent; the rest are random.</span><span class="ko">양쪽 부모 중에서 무작위 3개 능력치를 물려받고, 나머지는 랜덤.</span></td>
+        <td><span class="en">Destiny Knot raises it to 5. A Power item locks one specific stat from its holder.</span><span class="ko">빨간실이면 5개로 늘어납니다. 파워 아이템은 지닌 부모의 특정 능력치 하나를 확정합니다.</span></td></tr>
+      <tr><td class="grp"><span class="en">Nature</span><span class="ko">성격</span></td>
+        <td><span class="en">Random.</span><span class="ko">랜덤.</span></td>
+        <td><span class="en">A parent holding an Everstone passes its nature.</span><span class="ko">변함없는돌을 지닌 부모의 성격을 그대로 물려줍니다.</span></td></tr>
+      <tr><td class="grp"><span class="en">Ability</span><span class="ko">특성</span></td>
+        <td><span class="en">A parent with its hidden ability can pass it on. Even without one, there is a small chance of a random hidden ability (on in this pack).</span><span class="ko">숨겨진 특성을 가진 부모는 그것을 물려줄 수 있습니다. 없어도 작은 확률로 숨겨진 특성이 나옵니다 (이 모드팩에서 켜져 있음).</span></td>
+        <td><span class="en">Breed from a hidden-ability parent. Abilities the species can't normally have are never forced.</span><span class="ko">숨겨진 특성 부모로 교배. 원래 가질 수 없는 특성은 강제로 붙지 않습니다.</span></td></tr>
+      <tr><td class="grp"><span class="en">Egg moves</span><span class="ko">알 기술</span></td>
+        <td><span class="en">Every move either parent has ever learned counts, not only the four it knows now.</span><span class="ko">부모가 지금 가진 4개뿐 아니라 지금까지 배운 적 있는 모든 기술이 대상입니다.</span></td>
+        <td><span class="en">Mirror Herb lets the holder pick up egg moves from its pasture partner.</span><span class="ko">흉내허브를 지니면 같은 목장 상대에게서 알 기술을 배웁니다.</span></td></tr>
+      <tr><td class="grp"><span class="en">Poké Ball</span><span class="ko">몬스터볼</span></td>
+        <td><span class="en">Inherited from the parents.</span><span class="ko">부모에게서 물려받습니다.</span></td>
+        <td><span class="en">Keep your favourite ball on the mother.</span><span class="ko">원하는 볼에 든 포켓몬을 어미로.</span></td></tr>
+      <tr><td class="grp"><span class="en">Size</span><span class="ko">크기</span></td>
+        <td><span class="en">Cobblemon Size Variation compatibility is on, so size is handled through breeding too.</span><span class="ko">Cobblemon Size Variation 호환이 켜져 있어 크기도 교배에 반영됩니다.</span></td>
+        <td class="dim">—</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="items">
+  <h2><span class="en">Breeding items</span><span class="ko">교배 아이템</span></h2>
+  <p class="sub"><span class="en">Give the item to a parent as its held item before it goes into the pasture. All of these are obtainable in this pack.</span><span class="ko">목장에 넣기 전에 부모에게 지니게 하세요. 모두 이 모드팩에서 구할 수 있습니다.</span></p>
+  <div class="tbl"><table>
+    <thead><tr><th><span class="en">Item</span><span class="ko">아이템</span></th><th><span class="en">Effect</span><span class="ko">효과</span></th><th><span class="en">How to get</span><span class="ko">얻는 법</span></th></tr></thead>
+    <tbody>
+      <tr><td class="grp"><span class="en">Destiny Knot</span><span class="ko">빨간실</span><small>cobblemon:destiny_knot</small></td>
+        <td><span class="en">5 IVs inherited instead of 3.</span><span class="ko">물려받는 IV 3개 → 5개.</span></td>
+        <td><span class="en">Crafting: 3 Wool, 3 String, 1 Ghast Tear.</span><span class="ko">제작: 양털 3, 실 3, 가스트의 눈물 1.</span>
+          <div class="recipe" aria-hidden="true"><span>W</span><span>W</span><span></span><span>W</span><span>G</span><span>S</span><span></span><span>S</span><span>S</span></div></td></tr>
+      <tr><td class="grp"><span class="en">Everstone</span><span class="ko">변함없는돌</span><small>cobblemon:everstone</small></td>
+        <td><span class="en">Holder's nature is passed down.</span><span class="ko">지닌 포켓몬의 성격을 물려줍니다.</span></td>
+        <td><span class="en">Pack recipe: 4 Normal Gems around 1 Stone (plus shape). Also in fossil loot.</span><span class="ko">모드팩 추가 레시피: 돌 1개를 노말주얼 4개로 십자 모양 둘러싸기. 화석 전리품에서도 나옵니다.</span>
+          <div class="recipe" aria-hidden="true"><span></span><span>N</span><span></span><span>N</span><span>S</span><span>N</span><span></span><span>N</span><span></span></div></td></tr>
+      <tr><td class="grp"><span class="en">Power items</span><span class="ko">파워 아이템</span><small>power_*</small></td>
+        <td><span class="en">Holder's IV for one stat is always inherited.</span><span class="ko">지닌 포켓몬의 특정 능력치 IV를 반드시 물려줍니다.</span>
+          <div class="dim" style="margin-top:6px;font-size:13px">
+            <span class="en">Weight HP · Bracer Atk · Belt Def · Lens SpA · Band SpD · Anklet Spe</span>
+            <span class="ko">웨이트 HP · 리스트 공격 · 벨트 방어 · 렌즈 특공 · 밴드 특방 · 앵클릿 스피드</span></div></td>
+        <td><span class="en">Crafting: 4 Concrete, 2 Diamonds, 2 Mint Leaves. Leaf colour picks the item: white Weight, red Bracer, blue Belt, cyan Lens, pink Band, green Anklet.</span><span class="ko">제작: 콘크리트 4, 다이아몬드 2, 민트 잎 2. 잎 색이 종류를 정합니다: 하얀색 웨이트, 빨간색 리스트, 파란색 벨트, 하늘색 렌즈, 분홍색 밴드, 초록색 앵클릿.</span>
+          <div class="recipe" aria-hidden="true"><span>M</span><span>C</span><span>D</span><span>C</span><span></span><span>C</span><span>D</span><span>C</span><span>M</span></div></td></tr>
+      <tr><td class="grp"><span class="en">Mirror Herb</span><span class="ko">흉내허브</span><small>cobblemon:mirror_herb</small></td>
+        <td><span class="en">Holder learns egg moves from its pasture partner. Checked every 30 seconds.</span><span class="ko">지닌 포켓몬이 목장 상대에게서 알 기술을 배웁니다. 30초마다 확인.</span></td>
+        <td><span class="en">Use Surprise Mulch on a fully grown Revival Herb; it can mutate into a Mirror, Mental, Power or White Herb.</span><span class="ko">다 자란 부활초에 깜놀비료를 쓰면 흉내·멘탈·파워·하양허브 중 하나로 변이할 수 있습니다.</span></td></tr>
+    </tbody>
+  </table></div>
+  <div class="note"><p class="en">A parent holds only one item, so plan the pair: for example Destiny Knot on one parent and a Power item or Everstone on the other.</p><p class="ko">부모 한 마리는 아이템을 하나만 지닐 수 있으니 조합을 나누세요. 예: 한쪽은 빨간실, 다른 쪽은 파워 아이템이나 변함없는돌.</p></div>
+</section>
+
+<section id="shiny">
+  <h2><span class="en">Shiny breeding</span><span class="ko">이로치 교배</span></h2>
+  <p class="sub en">The world's base shiny rate is 1/8192. Cobbreeding divides it by a multiplier, and multipliers stack by multiplying (4 × 4 = 16, not 8). This pack sets all three methods to ×4.</p>
+  <p class="sub ko">월드의 기본 이로치 확률은 1/8192입니다. Cobbreeding은 여기에 배수를 나누며, 배수끼리는 더하지 않고 곱합니다 (4 × 4 = 16, 8이 아님). 이 모드팩은 세 방식 모두 ×4로 설정되어 있습니다.</p>
+  <div class="tbl" style="margin-bottom:18px"><table>
+    <thead><tr><th><span class="en">Method</span><span class="ko">방식</span></th><th><span class="en">When it applies</span><span class="ko">적용 조건</span></th><th class="num">×</th></tr></thead>
+    <tbody>
+      <tr><td class="grp"><span class="en">Always</span><span class="ko">기본</span></td><td><span class="en">Every egg.</span><span class="ko">모든 알.</span></td><td class="num">4</td></tr>
+      <tr><td class="grp"><span class="en">Masuda</span><span class="ko">국제 교배</span></td><td><span class="en">The two parents have different original trainers. Trade or borrow a friend's Pokémon.</span><span class="ko">두 부모의 최초 트레이너가 다를 때. 친구의 포켓몬을 교환하거나 함께 목장에 넣으세요.</span></td><td class="num">4</td></tr>
+      <tr><td class="grp"><span class="en">Crystal</span><span class="ko">크리스탈</span></td><td><span class="en">Applied once per shiny parent, so up to twice. A shiny Ditto counts.</span><span class="ko">이로치 부모 한 마리마다 한 번씩, 최대 두 번. 이로치 메타몽도 해당.</span></td><td class="num">4</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="calc" id="calc">
+    <div class="calc-in">
+      <div class="field">
+        <label class="toggle" for="masuda"><input type="checkbox" id="masuda">
+          <span><b><span class="en">Parents have different trainers</span><span class="ko">부모의 트레이너가 다름</span></b><small><span class="en">Masuda ×4</span><span class="ko">국제 교배 ×4</span></small></span></label>
+      </div>
+      <div class="field">
+        <span class="l" style="display:block;font-weight:600;margin-bottom:6px"><span class="en">Shiny parents</span><span class="ko">이로치 부모 수</span></span>
+        <div class="pick" role="group" aria-label="Shiny parents">
+          <button type="button" id="sp0" data-n="0" aria-pressed="true">0</button>
+          <button type="button" id="sp1" data-n="1" aria-pressed="false">1</button>
+          <button type="button" id="sp2" data-n="2" aria-pressed="false">2</button>
+        </div>
+      </div>
+    </div>
+    <div class="calc-out" aria-live="polite">
+      <div class="eyebrow" style="color:var(--shiny)"><span class="en">Chance per egg</span><span class="ko">알 1개당 확률</span></div>
+      <div class="odds" id="odds">1 / 2048</div>
+      <div class="meter"><i id="meter"></i></div>
+      <div class="chain" id="chain"></div>
+    </div>
+  </div>
+</section>
+
+<section id="hatch">
+  <h2><span class="en">Timing &amp; hatching</span><span class="ko">시간과 부화</span></h2>
+  <div class="tbl"><table>
+    <tbody>
+      <tr><td class="grp"><span class="en">Time between eggs</span><span class="ko">알 생성 간격</span></td><td class="num">8,000 – 14,000 ticks</td><td><span class="en">Random, about 6 min 40 s to 11 min 40 s per pasture.</span><span class="ko">목장마다 약 6분 40초 ~ 11분 40초 사이 랜덤.</span></td></tr>
+      <tr><td class="grp"><span class="en">Nest capacity</span><span class="ko">둥지 용량</span></td><td class="num">5</td><td><span class="en">Empty it or run a hopper so breeding doesn't stall on a full nest.</span><span class="ko">가득 차서 멈추지 않도록 비우거나 호퍼로 빼내세요.</span></td></tr>
+      <tr><td class="grp"><span class="en">Hatch time</span><span class="ko">부화 시간</span></td><td class="num">×0.3</td><td><span class="en">Based on the species' egg cycles, then cut to 30%. Slow hatchers like Dratini take longer than Magikarp. The egg tooltip shows the countdown.</span><span class="ko">종의 알 사이클 기준에서 30%로 줄인 시간. 미뇽처럼 원래 느린 종은 잉어킹보다 오래 걸립니다. 알 툴팁에 남은 시간이 나옵니다.</span></td></tr>
+      <tr><td class="grp"><span class="en">Incubator abilities</span><span class="ko">부화 가속 특성</span></td><td class="num">party</td><td><span class="en">Keep a Pokémon with Flame Body, Magma Armor or Steam Engine in your party to hatch faster.</span><span class="ko">불꽃몸, 마그마의무장, 증기기관 특성 포켓몬을 파티에 두면 더 빨리 부화합니다.</span></td></tr>
+      <tr><td class="grp"><span class="en">Egg contents</span><span class="ko">알 내용</span></td><td class="num">hidden</td><td><span class="en">Egg data is encrypted, so you can't read the species, IVs or shininess before it hatches.</span><span class="ko">알 데이터가 암호화되어 있어 부화 전에는 종·IV·이로치 여부를 알 수 없습니다.</span></td></tr>
+    </tbody>
+  </table></div>
+  <div class="note"><p class="en">Eggs can also be cooked: Cobbreeding adds recipes that use Pokémon eggs as regular eggs (fried egg, cake, pumpkin pie). Don't throw a keeper into the smoker.</p><p class="ko">알은 요리 재료로도 쓰입니다. Cobbreeding이 포켓몬 알을 일반 달걀처럼 쓰는 레시피(계란 프라이, 케이크, 호박 파이)를 추가합니다. 소중한 알을 훈연기에 넣지 않도록 주의하세요.</p></div>
+</section>
+
+<section id="special">
+  <h2><span class="en">Special species</span><span class="ko">특수 포켓몬</span></h2>
+  <p class="sub en">Evolutions that only exist in one region hatch into that region's pre-evolution, even without the regional form feature on the parent.</p>
+  <p class="sub ko">특정 지역에만 있는 진화형을 부모로 쓰면, 그 지역 폼의 진화 전 포켓몬이 태어납니다.</p>
+  <div class="cases" id="cases"></div>
+  <h3><span class="en">Other exceptions</span><span class="ko">그 외 예외</span></h3>
+  <div class="cases">
+    <div class="case"><div class="from"><span class="en">Nidoran♀ line</span><span class="ko">니드런♀ 계열</span></div><div class="to"><span class="en">Hatches Nidoran♀ or Nidoran♂. Nidorina and Nidoqueen can't breed; use Nidoran♀.</span><span class="ko">니드런♀ 또는 니드런♂. 니드리나·니드퀸은 교배 불가라 니드런♀로 교배.</span></div></div>
+    <div class="case"><div class="from"><span class="en">Illumise</span><span class="ko">네오비트</span></div><div class="to"><span class="en">Hatches Illumise or Volbeat.</span><span class="ko">네오비트 또는 볼비트.</span></div></div>
+    <div class="case"><div class="from"><span class="en">Manaphy + Ditto</span><span class="ko">마나피 + 메타몽</span></div><div class="to"><span class="en">Hatches Phione, never Manaphy.</span><span class="ko">마나피가 아닌 피오네가 태어납니다.</span></div></div>
+    <div class="case"><div class="from"><span class="en">Pichu line</span><span class="ko">피츄 계열</span></div><div class="to"><span class="en">Has dedicated Volt Tackle egg-move handling, as in the main games.</span><span class="ko">본가처럼 볼트태클 알 기술 전용 처리가 있습니다.</span></div></div>
+  </div>
+</section>
+
+<section id="config">
+  <h2><span class="en">Pack settings</span><span class="ko">모드팩 설정값</span></h2>
+  <p class="sub"><span class="en">From <code>config/cobbreeding/main.json</code>. Useful if a friend's server behaves differently.</span><span class="ko"><code>config/cobbreeding/main.json</code> 기준. 다른 서버와 동작이 다를 때 비교용.</span></p>
+  <div class="tbl"><table>
+    <thead><tr><th>Key</th><th class="num">Value</th><th><span class="en">Meaning</span><span class="ko">의미</span></th></tr></thead>
+    <tbody>
+      <tr><td><code>minBreedingTimeInTicks</code> / <code>max…</code></td><td class="num">8000 / 14000</td><td><span class="en">Egg interval range</span><span class="ko">알 생성 간격 범위</span></td></tr>
+      <tr><td><code>eggHatchMultiplier</code></td><td class="num">0.3</td><td><span class="en">Hatch time multiplier</span><span class="ko">부화 시간 배수</span></td></tr>
+      <tr><td><code>mirrorHerbTimeInTicks</code></td><td class="num">600</td><td><span class="en">Mirror Herb check (30 s)</span><span class="ko">흉내허브 확인 주기 (30초)</span></td></tr>
+      <tr><td><code>shinyMethod</code></td><td class="num">4 / 4 / 4</td><td><span class="en">Masuda / Crystal / Always</span><span class="ko">국제 교배 / 크리스탈 / 기본</span></td></tr>
+      <tr><td><code>hiddenAbilitiesEnabled</code></td><td class="num">true</td><td><span class="en">Random hidden ability chance</span><span class="ko">랜덤 숨겨진 특성 확률</span></td></tr>
+      <tr><td><code>forcedAbilitiesEnabled</code></td><td class="num">false</td><td><span class="en">Illegal abilities not forced</span><span class="ko">불가능한 특성 강제 없음</span></td></tr>
+      <tr><td><code>dittoAndDittoRandomEgg</code></td><td class="num">false</td><td><span class="en">Ditto + Ditto gives nothing</span><span class="ko">메타몽끼리 교배 불가</span></td></tr>
+      <tr><td><code>pastureInventorySize</code></td><td class="num">5</td><td><span class="en">Eggs per nest</span><span class="ko">둥지당 알 수</span></td></tr>
+      <tr><td><code>maxNumberOfActivatedPasturePerPlayer</code></td><td class="num">-1</td><td><span class="en">Unlimited breeding pastures</span><span class="ko">교배 목장 개수 무제한</span></td></tr>
+      <tr><td><code>allowHoppersToPullFromPastureBlock</code></td><td class="num">true</td><td><span class="en">Hopper extraction on</span><span class="ko">호퍼 추출 가능</span></td></tr>
+      <tr><td><code>eggEncryptionEnabled</code></td><td class="num">true</td><td><span class="en">Egg contents hidden</span><span class="ko">알 내용 숨김</span></td></tr>
+      <tr><td><code>shinyRate</code> <span class="dim">(Cobblemon)</span></td><td class="num">8192</td><td><span class="en">World base shiny rate</span><span class="ko">월드 기본 이로치 확률</span></td></tr>
+    </tbody>
+  </table></div>
+
+  <h3><span class="en">Admin commands</span><span class="ko">관리자 명령어</span></h3>
+  <div class="cmd">
+    <div><code>/givepokemonegg &lt;player&gt; &lt;species&gt; form=…</code><span><span class="en">Give an egg of a species</span><span class="ko">특정 종의 알 지급</span></span></div>
+    <div><code>/hatchpokemonegg</code><span><span class="en">Hatch the egg held in the main hand</span><span class="ko">주 손에 든 알 즉시 부화</span></span></div>
+    <div><code>/cobbreeding egg decrypt</code><span><span class="en">Reveal the held egg's contents</span><span class="ko">손에 든 알 내용 공개</span></span></div>
+    <div><code>/cobbreeding reload</code><span><span class="en">Reload the config</span><span class="ko">설정 다시 불러오기</span></span></div>
+  </div>
+
+  <footer>
+    <p class="en">Sources: Cobbreeding 2.2.1 jar and config, Cobblemon 1.7.3 species and bait data, this pack's KubeJS scripts and FTB quests. Korean names follow Cobblemon's ko_kr translation.</p>
+    <p class="ko">출처: Cobbreeding 2.2.1 jar와 설정, Cobblemon 1.7.3 종·미끼 데이터, 이 모드팩의 KubeJS 스크립트와 FTB 퀘스트. 한국어 명칭은 Cobblemon ko_kr 번역을 따릅니다.</p>
+  </footer>
+</section>
+</main>
+</div>
+
+<script>
+(function(){
+  var groups=[
+    ["field","Field","육상",261,[["Eevee","이브이"],["Growlithe","가디"],["Meowth","나옹"]],[["Rawst Berry","복분열매","#6FA7D8"]]],
+    ["water_1","Water 1","수중 1",109,[["Squirtle","꼬부기"],["Psyduck","고라파덕"],["Dratini","미뇽"]],[["Aspear Berry","배리열매","#E9D44C"]]],
+    ["grass","Grass","식물",80,[["Bulbasaur","이상해씨"],["Oddish","뚜벅쵸"]],[["Cheri Berry","버치열매","#D8434A"]]],
+    ["monster","Monster","괴수",77,[["Charmander","파이리"],["Larvitar","애버라스"]],[["Lum Berry","리샘열매","#6BBF59"]]],
+    ["mineral","Mineral","광물",74,[["Geodude","꼬마돌"],["Magnemite","코일"]],[["Persim Berry","시몬열매","#E88A3A"]]],
+    ["bug","Bug","벌레",73,[["Caterpie","캐터피"],["Scyther","스라크"]],[["Pecha Berry","복슝열매","#F2A3C0"]]],
+    ["flying","Flying","비행",69,[["Pidgey","구구"],["Swablu","파비코"]],[["Chesto Berry","유루열매","#6A55A8"]]],
+    ["human_like","Human-Like","인간형",65,[["Machop","알통몬"],["Abra","캐이시"]],[["Chesto Berry","유루열매","#6A55A8"]]],
+    ["dragon","Dragon","드래곤",59,[["Bagon","아공이"],["Dratini","미뇽"],["Charmander","파이리"]],[["Lum Berry","리샘열매","#6BBF59"]]],
+    ["amorphous","Amorphous","부정형",59,[["Gastly","고오스"],["Grimer","질퍽이"]],[["Persim Berry","시몬열매","#E88A3A"]]],
+    ["fairy","Fairy","요정",57,[["Clefairy","삐삐"],["Pikachu","피카츄"]],[["Cheri Berry","버치열매","#D8434A"]]],
+    ["water_3","Water 3","수중 3",37,[["Krabby","크랩"],["Omanyte","암나이트"]],[["Pecha Berry","복슝열매","#F2A3C0"]]],
+    ["water_2","Water 2","수중 2",34,[["Magikarp","잉어킹"],["Wailmer","고래왕자"]],[["Aspear Berry","배리열매","#E9D44C"]]],
+    ["ditto","Ditto","메타몽",1,[["Ditto","메타몽"]],null,["Breeds with every group except Undiscovered","알미발견을 제외한 모든 그룹과 교배"]],
+    ["undiscovered","Undiscovered","알미발견",50,[["Mewtwo","뮤츠"],["Pichu","피츄"],["Togepi","토게피"]],null,["Cannot breed","교배 불가"]]
+  ];
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+  function bi(en,ko){return '<span class="en">'+esc(en)+'</span><span class="ko">'+esc(ko)+'</span>'}
+  var rows=groups.map(function(g){
+    var ex=g[4].map(function(p){return bi(p[0],p[1])}).join('<span class="dim">, </span>');
+    var berry=g[5]?g[5].map(function(b){return '<span class="berry" style="--c:'+b[2]+'"><i></i>'+bi(b[0],b[1])+'</span>'}).join(' '):'<span class="dim">'+bi(g[6][0],g[6][1])+'</span>';
+    return '<tr><td class="grp">'+bi(g[1],g[2])+'<small>'+g[0]+'</small></td><td class="num">'+g[3]+'</td><td>'+ex+'</td><td>'+berry+'</td></tr>';
+  }).join('');
+  document.getElementById('groupRows').innerHTML=rows;
+
+  var regional=[
+    ["Obstagoon","가라르 지그제구리","Galarian Zigzagoon","가로막구리"],
+    ["Perrserker","가라르 나옹","Galarian Meowth","나이킹"],
+    ["Sirfetch'd","가라르 파오리","Galarian Farfetch'd","창파나이트"],
+    ["Runerigus","가라르 데스마스","Galarian Yamask","데스판"],
+    ["Cursola","가라르 코산호","Galarian Corsola","산호르곤"],
+    ["Clodsire","팔데아 우파","Paldean Wooper","토오"],
+    ["Overqwil","히스이 침바루","Hisuian Qwilfish","장침바루"],
+    ["Sneasler","히스이 포푸니","Hisuian Sneasel","포푸니크"],
+    ["Basculegion","흰줄무늬 배쓰나이","White-Striped Basculin","대쓰여너"]
+  ];
+  document.getElementById('cases').innerHTML=regional.map(function(r){
+    return '<div class="case"><div class="from">'+bi(r[0],r[3])+'</div><div class="to">→ '+bi(r[2],r[1])+'</div></div>';
+  }).join('');
+
+  var root=document.documentElement;
+  function setLang(l){
+    root.setAttribute('data-lang',l);
+    root.setAttribute('lang',l==='ko'?'ko':'en');
+    document.querySelectorAll('.seg button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.lang===l))});
+    try{localStorage.setItem('mv-lang',l)}catch(e){}
+    calc();
+  }
+  document.querySelectorAll('.seg button').forEach(function(b){b.addEventListener('click',function(){setLang(b.dataset.lang)})});
+
+  var shinyParents=0;
+  var masuda=document.getElementById('masuda');
+  function calc(){
+    var ko=root.getAttribute('data-lang')==='ko';
+    var mult=4*(masuda.checked?4:1)*Math.pow(4,shinyParents);
+    var n=8192/mult;
+    document.getElementById('odds').textContent='1 / '+n.toLocaleString('en-US');
+    document.getElementById('meter').style.width=(Math.log2(mult)/Math.log2(256)*100)+'%';
+    var parts=[ko?'기본 ×4':'Always ×4'];
+    if(masuda.checked)parts.push(ko?'국제 ×4':'Masuda ×4');
+    for(var i=0;i<shinyParents;i++)parts.push(ko?'이로치 부모 ×4':'Shiny parent ×4');
+    document.getElementById('chain').textContent='8192 ÷ ('+parts.join(' · ')+' = ×'+mult+') ≈ '+(100/n).toFixed(n>=1000?3:2)+'%';
+  }
+  masuda.addEventListener('change',calc);
+  document.querySelectorAll('.pick button').forEach(function(b){b.addEventListener('click',function(){
+    shinyParents=+b.dataset.n;
+    document.querySelectorAll('.pick button').forEach(function(x){x.setAttribute('aria-pressed',String(x===b))});
+    calc();
+  })});
+
+  var saved='en';
+  try{saved=localStorage.getItem('mv-lang')||'en'}catch(e){}
+  setLang(saved==='ko'?'ko':'en');
+})();
+</script>

@@ -1,0 +1,5 @@
+# third-party addon downloads and render leftovers
+_tools/addons/
+_tools/*.png
+__pycache__/
+desktop.ini

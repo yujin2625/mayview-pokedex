@@ -1,0 +1,24 @@
+# Mayview Guides
+
+Static guide pages for the **Mayview (with Cobblemon)** Minecraft modpack (Cobblemon 1.7.3, NeoForge 1.21.1).
+
+- **Pokédex:** `pokedex/index.html`. 1,025 Pokémon, bilingual (EN/KO), with in-game model renders, wild spawns, raid dens, evolutions, breeding partners, shiny odds, stars and custom lists (saved in the browser).
+- **Breeding guide:** `breeding.html`. How Cobbreeding is configured in this pack.
+
+Published with GitHub Pages from the `main` branch root.
+
+## Rebuilding the Pokédex
+
+`pokedex/index.html` is generated. Edit `pokedex/template.html`, then run:
+
+```
+python _tools/build_page.py
+```
+
+This inlines `pokedex/data/*.json` and the Galmuri font into `pokedex/index.html`. The data and sprite atlases come from the scripts in `_tools/` (`build_data.py`, `build_jobs.py`, `render.html` + `server.py`, `build_atlas.py`). They read game files extracted from the modpack, and their paths point at the original workspace, so adjust them before running.
+
+## Credits
+
+- Pokémon and Pokémon names © Nintendo / Creatures Inc. / GAME FREAK inc. This is an unofficial fan project.
+- Models, textures and data come from Cobblemon and the mods and resource packs bundled in the Mayview modpack, rendered for reference.
+- Font: [Galmuri](https://github.com/quiple/galmuri) by Lee Minseo, SIL Open Font License 1.1 (`pokedex/fonts/OFL.md`). DotGothic16 and Silkscreen are loaded from Google Fonts.
