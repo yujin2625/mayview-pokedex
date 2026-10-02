@@ -17,6 +17,8 @@ python _tools/build_page.py
 
 This inlines `pokedex/data/*.json` and the Galmuri font into `pokedex/index.html`. The data and sprite atlases come from the scripts in `_tools/` (`build_data.py`, `build_jobs.py`, `render.html` + `server.py`, `build_atlas.py`). They read game files extracted from the modpack, and their paths point at the original workspace, so adjust them before running.
 
+Form-change notes (the "How to get each form" list on the Forms tab) come from `_tools/form_changes.py`. It reads the Mega Showdown, Cobblemon and ATM x MSD files straight from the instance and rewrites `pokedex/data/pokedex.json`. Run it after `build_data.py` and before `build_page.py`.
+
 ## Credits
 
 - Pokémon and Pokémon names © Nintendo / Creatures Inc. / GAME FREAK inc. This is an unofficial fan project.

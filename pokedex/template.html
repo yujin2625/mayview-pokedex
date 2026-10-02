@@ -258,6 +258,19 @@ aside.side{border-right:var(--px) solid var(--line);background:var(--raise)}
 .abil span.h{border-style:dashed;background:var(--gold-soft)}
 .spawn,.raid,.odds,.evo-mon,.formgrid button,.note{border:2px solid var(--line);border-radius:0;background:var(--surface);box-shadow:3px 3px 0 var(--soft-line)}
 .note{border-left-width:6px;border-left-color:var(--gold)}
+.fck{display:inline-block;font:600 10.5px/1.5 var(--mono);letter-spacing:.03em;padding:0 6px;border:2px solid var(--line);background:var(--gold-soft);color:var(--ink);white-space:nowrap;vertical-align:1px}
+.fck.k-none{background:var(--sunk);color:var(--muted);border-color:var(--muted)}
+.fck.k-mega,.fck.k-fusion{background:var(--accent-soft)}
+.fck.k-battle{background:var(--sky)}
+.fck.k-regional,.fck.k-fixed,.fck.k-gender,.fck.k-evo{background:var(--surface)}
+.fcnote{margin-top:10px;font-size:13px;line-height:1.5}
+.fcnote .fck{margin-right:6px}
+.fclist{display:grid;gap:6px}
+.fclist div{display:grid;grid-template-columns:minmax(110px,170px) 1fr;gap:4px 10px;align-items:start;padding:8px 10px;border:2px solid var(--soft-line);background:var(--surface);font-size:13px;line-height:1.5}
+.fclist div[aria-current="true"]{border-color:var(--line);box-shadow:3px 3px 0 var(--soft-line)}
+.fclist b{font-size:13px}
+.fclist .fck{margin-top:3px;justify-self:start}
+@media (max-width:560px){.fclist div{grid-template-columns:1fr}}
 .rar{border-radius:0;font-family:var(--display);border:2px solid currentColor}
 .pill{border:2px solid var(--soft-line)}
 details.bt summary{border:2px solid var(--line)}
@@ -369,7 +382,7 @@ const S={
     tierLabel:'Tier',denAny:'Any raid den',feature:{default:'Standard',mega:'Mega',dynamax:'Dynamax / G-Max',tera:'Tera'},bossLv:'Boss Lv.',raidShiny:'Shiny',
     evoNone:'Does not evolve.',egg:'Egg',eggGroups:'Egg groups',eggCycles:'Egg cycles',hatchesInto:'Eggs hatch into',partners:'Compatible partners',partnersShow:'Show all in grid',ditto:'Can breed with Ditto',undiscovered:'Cannot breed (Undiscovered egg group).',genderlessBreed:'Genderless: breeds only with Ditto.',dittoOnly:'Ditto breeds with any Pokémon outside the Undiscovered group.',guide:'Breeding guide',
     shinyOdds:'Shiny odds',wildOdds:'Wild spawn',eggBase:'Bred egg',eggMax:'Egg, all bonuses',raidOdds:'Raid Tier',shinyNote:'Egg odds: ×4 always, ×4 if parents have different trainers, ×4 per shiny parent.',
-    formsNone:'No alternate forms.',battleOnly:'Battle-only',variants:'Cosmetic variants',
+    formsNone:'No alternate forms.',battleOnly:'Battle-only',variants:'Cosmetic variants',formChange:'How to get each form',
     listsTitle:'Add to list',noLists:'Create a list in the sidebar first.',saved:'Saved',local:'Saved on this device',
     niNote:'Cobblemon 1.7.3 marks this Pokémon as not yet implemented, but this pack still lists it as a raid boss. It may use a placeholder model in game.',niModel:'No 3D model in this pack',modelCredit:'The image uses a model from a separate addon that is not installed in this pack:',
     storeHint:'Stars and lists are saved to your account on this page.',storeLocal:'Stars and lists are saved in this browser only.'},
@@ -383,7 +396,7 @@ const S={
     tierLabel:'티어',denAny:'모든 레이드 굴',feature:{default:'일반',mega:'메가진화',dynamax:'다이맥스 / 거다이맥스',tera:'테라스탈'},bossLv:'보스 Lv.',raidShiny:'이로치',
     evoNone:'진화하지 않습니다.',egg:'알',eggGroups:'알 그룹',eggCycles:'알 사이클',hatchesInto:'알에서 태어나는 포켓몬',partners:'교배 가능한 상대',partnersShow:'그리드에서 전부 보기',ditto:'메타몽과 교배 가능',undiscovered:'교배할 수 없습니다 (알미발견 그룹).',genderlessBreed:'무성: 메타몽과만 교배할 수 있습니다.',dittoOnly:'메타몽은 알미발견 그룹을 제외한 모든 포켓몬과 교배합니다.',guide:'교배 가이드',
     shinyOdds:'이로치 확률',wildOdds:'야생 출현',eggBase:'교배 알',eggMax:'알, 모든 보너스',raidOdds:'레이드 티어',shinyNote:'알 확률: 항상 ×4, 부모 트레이너가 다르면 ×4, 이로치 부모 한 마리당 ×4.',
-    formsNone:'다른 폼이 없습니다.',battleOnly:'배틀 전용',variants:'외형 변형',
+    formsNone:'다른 폼이 없습니다.',battleOnly:'배틀 전용',variants:'외형 변형',formChange:'폼별 변경·획득 방법',
     listsTitle:'리스트에 추가',noLists:'먼저 사이드바에서 리스트를 만드세요.',saved:'저장됨',local:'이 기기에 저장됨',
     niNote:'Cobblemon 1.7.3에서는 아직 미구현으로 표시된 포켓몬이지만, 이 모드팩은 레이드 보스로 넣어 두었습니다. 게임 안에서는 임시 모델로 보일 수 있습니다.',niModel:'이 모드팩에 3D 모델 없음',modelCredit:'이미지는 이 모드팩에 설치되지 않은 별도 애드온의 모델로 만들었습니다:',
     storeHint:'별표와 리스트는 이 페이지의 내 계정에 저장됩니다.',storeLocal:'별표와 리스트는 이 브라우저에만 저장됩니다.'}
@@ -442,6 +455,7 @@ function sprId(p,form,shiny){
 }
 const spr=(p,form,shiny,cls,thumb)=>{const st=sprStyle(sprId(p,form,shiny),thumb);return `<div class="spr${cls?' '+cls:''}${st?'':' nospr'}"><i style="${st}"></i></div>`;};
 const typeChip=ty=>`<span class="type" style="--tc:${TYPE_C[ty]||'#888'}">${esc(L(META.types[ty]))}</span>`;
+const fcChip=fc=>fc?`<span class="fck k-${fc.k}">${esc(L((META.fcKinds||{})[fc.k]||[fc.k,fc.k]))}</span>`:'';
 const nameOf=id=>{const p=BY[id];if(p)return L(p.n);const n=META.names[id];return n?L(n):id;};
 
 // ---------- storage: per-user db doc, localStorage fallback
@@ -763,6 +777,7 @@ function renderDetail(){
         </div>
         <div id="listMenu" hidden></div>
         ${formsBtns}
+        ${fo&&fo.fc?`<div class="fcnote">${fcChip(fo.fc)}${esc(L(fo.fc.h))}</div>`:''}
       </div>
     </div>
     <div class="tabs" role="tablist">${tabs.map(k=>`<button type="button" role="tab" data-tab="${k}" aria-selected="${state.tab===k}">${esc(S[LANG].tabs[k])}</button>`).join('')}</div>
@@ -845,7 +860,8 @@ function tabBody(p,fo){
   if(state.tab==='forms'){
     const fs=p.forms||[];
     const feats=(p.feat||[]);
-    return `<section>${fs.length?`<div class="formgrid">${[{slug:'',n:[K?'기본':'Base','기본'],t:p.t}].concat(fs).map(f=>`<button type="button" data-form="${f.slug}" aria-pressed="${state.form===f.slug}">${spr(p,f.slug,state.shiny)}<b>${esc(L(f.n))}</b><div class="types">${(f.t||p.t).map(typeChip).join(' ')}</div>${f.bo?`<small class="dim">${esc(t('battleOnly'))}</small>`:''}</button>`).join('')}</div>`:`<p class="dim">${esc(t('formsNone'))}</p>`}</section>
+    return `<section>${fs.length?`<div class="formgrid">${[{slug:'',n:[K?'기본':'Base','기본'],t:p.t}].concat(fs).map(f=>`<button type="button" data-form="${f.slug}" aria-pressed="${state.form===f.slug}">${spr(p,f.slug,state.shiny)}<b>${esc(L(f.n))}</b><div class="types">${(f.t||p.t).map(typeChip).join(' ')}</div>${f.fc?fcChip(f.fc):f.bo?`<small class="dim">${esc(t('battleOnly'))}</small>`:''}</button>`).join('')}</div>`:`<p class="dim">${esc(t('formsNone'))}</p>`}</section>
+      ${fs.some(f=>f.fc)?`<section><h4>${esc(t('formChange'))}</h4><div class="fclist">${fs.filter(f=>f.fc).map(f=>`<div aria-current="${state.form===f.slug}"><span><b>${esc(L(f.n))}</b><br>${fcChip(f.fc)}</span><span>${esc(L(f.fc.h))}</span></div>`).join('')}</div></section>`:''}
       ${feats.length?`<section><h4>${esc(t('variants'))}</h4>${feats.map(f=>`<div style="margin-bottom:8px"><b style="font-size:13px">${esc(pretty(f.k))}</b><div class="abil" style="margin-top:4px">${f.c.map(c=>`<span>${esc(pretty(c))}</span>`).join('')}</div></div>`).join('')}</section>`:''}`;
   }
   return '';
