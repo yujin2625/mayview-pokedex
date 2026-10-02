@@ -1,0 +1,260 @@
+<title>Mayview Raid Dens</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Silkscreen:wght@400;700&display=swap">
+<style>
+@font-face{font-family:"Galmuri11";src:url("pokedex/fonts/Galmuri11.woff2") format("woff2");font-display:swap}
+/* Single warm "handheld menu" theme shared with the Pokédex and breeding guide.
+   Layout: hero + tier table, then a two-tab browser (raid bosses / legendaries) with a filter rail and a card grid. */
+:root{
+  color-scheme:light;
+  --ground:#FCEFD6; --surface:#FFFBF0; --sunk:#F6E3BF; --raise:#FFF6E2; --ink:#4A2E1E; --muted:#8A6A52; --line:#4A2E1E; --soft-line:#E4C9A0;
+  --accent:#E4513B; --accent-ink:#FFFBF0; --spot:#FFD23F; --spot-soft:#FFE89A; --shiny:#C2408F;
+  --good:#2E8B3E; --warn:#B26A00; --bad:#C23A2B;
+  --display:"Silkscreen","Galmuri11","DotGothic16",monospace;
+  --body:"Galmuri11","DotGothic16","Malgun Gothic",monospace;
+  --mono:"Galmuri11","DotGothic16",monospace;
+  --px:3px;
+}
+:root:not([data-lang="ko"]) .ko{display:none!important}
+:root[data-lang="ko"] .en{display:none!important}
+*{box-sizing:border-box}
+body{background:var(--ground);color:var(--ink);font:15px/1.65 var(--body);margin:0;background-image:radial-gradient(rgba(74,46,30,.07) 1px,transparent 1.2px);background-size:12px 12px;-webkit-font-smoothing:none}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+b{font-weight:700}
+p{margin:0;max-width:72ch}
+
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--accent);border-bottom:var(--px) solid var(--line);box-shadow:0 var(--px) 0 #B8392A}
+.bar-in{max-width:1180px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:16px}
+.brand{font:700 17px/1 var(--display);display:flex;align-items:center;gap:10px;margin-right:auto;color:var(--accent-ink);text-shadow:2px 2px 0 #B8392A}
+.brand .full{opacity:.85;font-weight:400}
+.gem{width:16px;height:20px;flex:none;background:var(--spot);border:2px solid var(--line);box-shadow:2px 2px 0 var(--line);clip-path:polygon(50% 0,100% 30%,100% 70%,50% 100%,0 70%,0 30%)}
+.homebtn{font:700 12px/1 var(--display);color:var(--ink);background:var(--surface);border:var(--px) solid var(--line);box-shadow:2px 2px 0 var(--line);padding:8px 10px;text-decoration:none;white-space:nowrap}
+.homebtn:hover{background:var(--spot)}
+.seg{display:inline-flex;border:var(--px) solid var(--line);padding:2px;background:var(--surface)}
+.seg button{font:700 13px/1 var(--display);border:0;background:transparent;color:var(--muted);padding:7px 11px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--surface)}
+
+.wrap{max-width:1180px;margin:0 auto;padding-inline:16px;padding-block:0 80px}
+header.hero{padding-block:40px 26px;border-bottom:var(--px) solid var(--line);display:flex;flex-direction:column;gap:12px}
+.eyebrow{font:700 12px/1 var(--display);letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+h1{font:700 clamp(32px,5.4vw,54px)/1.05 var(--display);margin:0;text-wrap:balance;text-shadow:3px 3px 0 var(--spot)}
+h2{font:700 24px/1.2 var(--display);margin:0;text-wrap:balance;text-shadow:2px 2px 0 var(--spot)}
+h2::before{content:"▶ ";color:var(--accent);text-shadow:none}
+.lede{color:var(--muted);font-size:16px}
+.note{font-size:13px;color:var(--muted)}
+section{padding-block:34px 4px;display:flex;flex-direction:column;gap:14px}
+
+.specs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:3px;background:var(--line);border:var(--px) solid var(--line);box-shadow:4px 4px 0 var(--line);margin-top:8px}
+.spec{background:var(--surface);padding:12px 14px;min-width:0}
+.spec b{display:block;font:700 22px/1.15 var(--display);color:var(--accent);font-variant-numeric:tabular-nums}
+.spec span{font-size:12.5px;color:var(--muted)}
+
+.tbl{overflow-x:auto;border:var(--px) solid var(--line);background:var(--surface);box-shadow:4px 4px 0 var(--line)}
+.tbl table{border-collapse:collapse;width:100%;font-size:14px;font-variant-numeric:tabular-nums}
+.tbl th,.tbl td{padding:8px 12px;border-bottom:1px solid var(--soft-line);text-align:left;white-space:nowrap}
+.tbl thead th{font:700 12px/1.2 var(--display);color:var(--accent);background:var(--raise);border-bottom:var(--px) solid var(--line)}
+.tbl tr:last-child td{border-bottom:0}
+.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.rule{border:var(--px) solid var(--line);background:var(--surface);box-shadow:4px 4px 0 var(--line);padding:12px 14px;min-width:0}
+
+.tabs{display:flex;gap:8px;flex-wrap:wrap}
+.tabs button{font:700 15px/1 var(--body);padding:10px 14px;border:var(--px) solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;box-shadow:2px 2px 0 var(--line)}
+.tabs button[aria-selected="true"]{background:var(--spot)}
+.browser{display:grid;grid-template-columns:240px minmax(0,1fr);gap:22px;align-items:start}
+.rail{position:sticky;top:calc(env(safe-area-inset-top,0px) + 66px);display:flex;flex-direction:column;gap:14px;border:var(--px) solid var(--line);background:var(--surface);box-shadow:4px 4px 0 var(--line);padding:14px;max-height:calc(100vh - 90px);overflow:auto}
+.rail h4{margin:0 0 6px;font:700 12px/1 var(--display);color:var(--accent);letter-spacing:.04em}
+.rail input[type=search]{width:100%;font:inherit;padding:8px 10px;border:var(--px) solid var(--line);background:var(--raise);color:var(--ink)}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chip{font:700 12.5px/1 var(--body);padding:6px 8px;border:2px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--surface)}
+.chip.t{display:inline-flex;align-items:center;gap:5px}
+.chip.t i{width:9px;height:9px;background:var(--tc);border:1px solid var(--line)}
+.chip:hover{background:var(--spot-soft)} .chip[aria-pressed="true"]:hover{background:var(--ink)}
+.clear{font:700 12px/1 var(--body);background:none;border:0;color:var(--accent);cursor:pointer;padding:0;align-self:flex-start;text-decoration:underline}
+.count{font:700 13px/1.4 var(--body);color:var(--muted)}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin-top:10px}
+.card{border:var(--px) solid var(--line);background:var(--surface);box-shadow:4px 4px 0 var(--line);padding:12px;display:flex;flex-direction:column;gap:9px;min-width:0}
+.card .head{display:grid;grid-template-columns:64px minmax(0,1fr);gap:10px;align-items:center}
+.spr{aspect-ratio:1;width:64px;background:var(--raise);border:2px solid var(--soft-line);position:relative;overflow:hidden}
+.spr i{position:absolute;inset:0;background-repeat:no-repeat}
+.nospr::after{content:"?";position:absolute;inset:0;display:grid;place-items:center;font:700 30px/1 var(--display);color:var(--soft-line)}
+.nm{font:700 16px/1.2 var(--body);overflow-wrap:anywhere}
+.no{font:400 12px/1 var(--mono);color:var(--muted)}
+.badges{display:flex;flex-wrap:wrap;gap:4px;margin-top:5px;align-items:center}
+.tier{font:700 11.5px/1 var(--mono);padding:3px 6px;background:var(--spot);border:1px solid var(--line);white-space:nowrap}
+.feat{font:700 11px/1 var(--body);padding:3px 6px;border:2px solid var(--shiny);color:var(--shiny);white-space:nowrap}
+.leg{font:700 11px/1 var(--body);padding:3px 6px;border:2px solid var(--accent);color:var(--accent);white-space:nowrap}
+.type{display:inline-block;font:400 11px/1 var(--body);padding:3px 6px 2px;background:var(--tc);color:#fff;border:2px solid rgba(0,0,0,.28);text-shadow:1px 1px 0 rgba(0,0,0,.35);white-space:nowrap}
+.mvs{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+.mv{background:var(--sunk);border:1px solid var(--soft-line);padding:4px 7px;font-size:12.5px;line-height:1.3;min-width:0;display:flex;gap:6px;align-items:baseline}
+.mv i{width:8px;height:8px;flex:none;background:var(--tc,var(--muted));border:1px solid var(--line);align-self:center}
+.mv span{min-width:0;overflow-wrap:anywhere;flex:1}
+.mv small{color:var(--muted);font-size:10.5px;white-space:nowrap}
+.weak{display:flex;flex-wrap:wrap;gap:4px;align-items:center;font-size:12px;color:var(--muted)}
+.weak .x4{font:700 10.5px/1 var(--mono);color:var(--bad)}
+.foot{display:flex;justify-content:space-between;gap:8px;font-size:12.5px;border-top:2px dashed var(--soft-line);padding-top:7px}
+.foot a{text-decoration:none;font-weight:700}
+.raids{display:flex;flex-wrap:wrap;gap:4px}
+.raids button{font:700 11.5px/1 var(--body);padding:4px 7px;border:2px solid var(--line);background:var(--spot-soft);color:var(--ink);cursor:pointer}
+.raids button:hover{background:var(--spot)}
+.none{color:var(--bad);font-size:12.5px}
+.more{font:700 14px/1 var(--body);display:block;margin:18px auto 0;padding:10px 18px;border:var(--px) solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;box-shadow:2px 2px 0 var(--line)}
+.more:hover{background:var(--spot-soft)}
+.empty{border:var(--px) dashed var(--soft-line);padding:24px;text-align:center;color:var(--muted);margin-top:10px}
+
+@media (max-width:900px){.browser{grid-template-columns:1fr}.rail{position:static;max-height:none}.specs{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.brand .full{display:none}.homebtn{padding:7px 8px}.grid{grid-template-columns:1fr}}
+</style>
+
+<div class="bar"><div class="bar-in">
+  <a class="homebtn" id="homeBtn" href="./" aria-label="Home"><span class="en">◀ Home</span><span class="ko">◀ 메인</span></a>
+  <div class="brand"><span class="gem" aria-hidden="true"></span><span><span class="en">Mayview Raids</span><span class="ko">메이뷰 레이드</span><span class="full"> · Raid Dens 0.10.1</span></span></div>
+  <div class="seg" role="group" aria-label="Language">
+    <button id="lang-en" type="button" data-lang="en" aria-pressed="true">EN</button>
+    <button id="lang-ko" type="button" data-lang="ko" aria-pressed="false">KO</button>
+  </div>
+</div></div>
+
+<div class="wrap">
+<header class="hero">
+  <span class="eyebrow">Mayview · Cobblemon 1.7.3</span>
+  <h1><span class="en">Raid Dens</span><span class="ko">레이드 굴</span></h1>
+  <p class="lede"><span class="en">Every raid boss in this pack with its moves and weaknesses, plus every legendary, mythical, Ultra Beast and Paradox Pokémon and the raid tiers it appears in. The pack removes legendaries from wild spawns, so raids are the main way to get them.</span><span class="ko">이 팩의 모든 레이드 보스와 기술·약점, 그리고 전설·환상·울트라비스트·패러독스 포켓몬이 어느 티어 레이드에 나오는지 정리했어요. 이 팩은 전설을 야생에서 나오지 않게 해둬서 레이드가 주 획득처예요.</span></p>
+  <div class="specs">
+    <div class="spec"><b id="sBoss"></b><span class="en">raid bosses</span><span class="ko">레이드 보스</span></div>
+    <div class="spec"><b id="sLeg"></b><span class="en">legendary-class species</span><span class="ko">전설급 포켓몬</span></div>
+    <div class="spec"><b>1/25</b><span class="en">shiny odds, ★2–★6 (★7: 1/15)</span><span class="ko">색이 다를 확률, ★2~★6 (★7은 1/15)</span></div>
+    <div class="spec"><b>1 + 1</b><span class="en">Pokémon and life per player</span><span class="ko">1인당 포켓몬·목숨</span></div>
+  </div>
+</header>
+
+<section>
+  <h2><span class="en">Tiers</span><span class="ko">티어</span></h2>
+  <div class="tbl"><table>
+    <thead><tr><th><span class="en">Tier</span><span class="ko">티어</span></th><th><span class="en">Boss level</span><span class="ko">보스 레벨</span></th><th><span class="en">Boss HP</span><span class="ko">보스 HP</span></th><th><span class="en">Den chance</span><span class="ko">굴 출현 비중</span></th><th><span class="en">Reward</span><span class="ko">보상 포켓몬</span></th><th><span class="en">Shiny</span><span class="ko">색이 다를 확률</span></th><th><span class="en">Bosses</span><span class="ko">보스 수</span></th></tr></thead>
+    <tbody id="tierTable"></tbody>
+  </table></div>
+  <div class="rules">
+    <div class="rule"><span class="en"><b>One Pokémon, one life.</b> Each player brings a single Pokémon and is out when it faints. Up to 8 players can join; each extra player adds 1.3× boss HP.</span><span class="ko"><b>1마리, 목숨 1개.</b> 한 사람당 포켓몬 1마리만 들고 들어가고, 쓰러지면 끝이에요. 최대 8명까지 같이 할 수 있고, 한 명이 늘 때마다 보스 HP가 1.3배가 돼요.</span></div>
+    <div class="rule"><span class="en"><b>Fixed moves, random AI.</b> The boss only uses the four moves listed on its card and picks one at random each turn. Hidden ability chance is 20%.</span><span class="ko"><b>기술 4개 고정, 무작위 AI.</b> 보스는 카드에 적힌 기술 4개만 쓰고 매 턴 무작위로 골라요. 숨겨진 특성일 확률은 20%예요.</span></div>
+    <div class="rule"><span class="en"><b>Resets.</b> A den resets every 30 minutes and can be cleared 3 times. The boss changes on reset but the tier stays the same.</span><span class="ko"><b>초기화.</b> 레이드 굴은 30분마다 초기화되고 3번까지 깰 수 있어요. 초기화되면 보스는 바뀌지만 티어는 그대로예요.</span></div>
+    <div class="rule"><span class="en"><b>Cheers.</b> 3 per raid: Attack (+50% Atk/Sp. Atk), Defense (+50% Def/Sp. Def) or Heal (50% HP). No shields or stat resets are scripted on this pack's bosses.</span><span class="ko"><b>응원.</b> 레이드마다 3번: 공격(+50%), 방어(+50%), 회복(HP 50%) 중에서 골라요. 이 팩의 보스에는 쉴드나 능력치 초기화가 없어요.</span></div>
+  </div>
+</section>
+
+<section>
+  <div class="tabs" role="tablist" aria-label="View">
+    <button role="tab" id="tab-b" aria-selected="true"><span class="en">Raid bosses</span><span class="ko">레이드 보스</span></button>
+    <button role="tab" id="tab-l" aria-selected="false"><span class="en">Legendaries</span><span class="ko">전설·환상</span></button>
+  </div>
+  <div class="browser">
+    <aside class="rail" aria-label="Filters">
+      <div><h4><span class="en">SEARCH</span><span class="ko">검색</span></h4><input id="q" type="search" autocomplete="off" aria-label="Search"></div>
+      <div id="fTierBox"><h4><span class="en">TIER</span><span class="ko">티어</span></h4><div class="chips" id="fTier"></div></div>
+      <div id="fFeatBox"><h4><span class="en">KIND</span><span class="ko">종류</span></h4><div class="chips" id="fFeat"></div></div>
+      <div><h4><span class="en">CLASS</span><span class="ko">분류</span></h4><div class="chips" id="fLeg"></div></div>
+      <div><h4><span class="en">TYPE</span><span class="ko">타입</span></h4><div class="chips" id="fType"></div></div>
+      <button class="clear" id="clear" type="button"><span class="en">Clear filters</span><span class="ko">필터 초기화</span></button>
+    </aside>
+    <div>
+      <div class="count" id="count" aria-live="polite"></div>
+      <div class="grid" id="grid"></div>
+      <div class="empty" id="empty" hidden><span class="en">Nothing matches these filters.</span><span class="ko">조건에 맞는 포켓몬이 없어요.</span></div>
+      <button class="more" id="more" type="button" hidden><span class="en">Show more</span><span class="ko">더 보기</span></button>
+    </div>
+  </div>
+</section>
+</div>
+
+<script>
+const DATA=__DATA__;
+const $=id=>document.getElementById(id);
+const ON_CLAUDE=/claude\.ai|claudeusercontent/.test(location.hostname);
+if(ON_CLAUDE){const hb=$("homeBtn");if(hb)hb.hidden=true}
+const DEX_URL=ON_CLAUDE?"https://claude.ai/artifact/NdPjtKoDrqp6FxhvPTwEuC#":"pokedex/#";
+let LANG="en";try{LANG=localStorage.getItem("mv-lang")==="ko"?"ko":"en"}catch(e){}
+const L=a=>Array.isArray(a)?a[LANG==="ko"?1:0]:a;
+const TN={normal:["Normal","노말"],fire:["Fire","불꽃"],water:["Water","물"],grass:["Grass","풀"],electric:["Electric","전기"],ice:["Ice","얼음"],fighting:["Fighting","격투"],poison:["Poison","독"],ground:["Ground","땅"],flying:["Flying","비행"],psychic:["Psychic","에스퍼"],bug:["Bug","벌레"],rock:["Rock","바위"],ghost:["Ghost","고스트"],dragon:["Dragon","드래곤"],dark:["Dark","악"],steel:["Steel","강철"],fairy:["Fairy","페어리"]};
+const TC={normal:'#9FA19F',fire:'#E62829',water:'#2980EF',grass:'#3FA129',electric:'#E0AE00',ice:'#3DC7EB',fighting:'#FF8000',poison:'#9141CB',ground:'#915121',flying:'#6FA8E0',psychic:'#EF4179',bug:'#91A119',rock:'#AFA981',ghost:'#704170',dragon:'#5060E1',dark:'#624D4E',steel:'#60A1B8',fairy:'#E26BE2'};
+const CH={normal:{rock:.5,ghost:0,steel:.5},fire:{fire:.5,water:.5,grass:2,ice:2,bug:2,rock:.5,dragon:.5,steel:2},water:{fire:2,water:.5,grass:.5,ground:2,rock:2,dragon:.5},electric:{water:2,electric:.5,grass:.5,ground:0,flying:2,dragon:.5},grass:{fire:.5,water:2,grass:.5,poison:.5,ground:2,flying:.5,bug:.5,rock:2,dragon:.5,steel:.5},ice:{fire:.5,water:.5,grass:2,ice:.5,ground:2,flying:2,dragon:2,steel:.5},fighting:{normal:2,ice:2,poison:.5,flying:.5,psychic:.5,bug:.5,rock:2,ghost:0,dark:2,steel:2,fairy:.5},poison:{grass:2,poison:.5,ground:.5,rock:.5,ghost:.5,steel:0,fairy:2},ground:{fire:2,electric:2,grass:.5,poison:2,flying:0,bug:.5,rock:2,steel:2},flying:{electric:.5,grass:2,fighting:2,bug:2,rock:.5,steel:.5},psychic:{fighting:2,poison:2,psychic:.5,dark:0,steel:.5},bug:{fire:.5,grass:2,fighting:.5,poison:.5,flying:.5,psychic:2,ghost:.5,dark:2,steel:.5,fairy:.5},rock:{fire:2,ice:2,fighting:.5,ground:.5,flying:2,bug:2,steel:.5},ghost:{normal:0,psychic:2,ghost:2,dark:.5},dragon:{dragon:2,steel:.5,fairy:0},dark:{fighting:.5,psychic:2,ghost:2,dark:.5,fairy:.5},steel:{fire:.5,water:.5,electric:.5,ice:2,rock:2,steel:.5,fairy:2},fairy:{fire:.5,fighting:2,poison:.5,dragon:2,dark:2,steel:.5}};
+const TYPES=Object.keys(TN);
+const FEAT={default:["Regular","일반"],mega:["Mega","메가"],dynamax:["Dynamax","다이맥스"]};
+const LEG={legendary:["Legendary","전설"],mythical:["Mythical","환상"],ultra_beast:["Ultra Beast","울트라비스트"],paradox:["Paradox","패러독스"]};
+const CAT={P:["Phys","물리"],S:["Spec","특수"],X:["Status","변화"]};
+const TIER=[[12,3,9,"Lv 12",0],[20,4,15,"Lv 20",3],[40,6,25,"Lv 40",4],[50,10,25,"Lv 50",4],[65,11,20,"Lv 65",5],[80,13,5,"Lv 80",5],[100,15,1,"Lv 100",5]];
+const SHINY=["—","1/25","1/25","1/25","1/25","1/25","1/15"];
+const SH=DATA.spr.sheets.map(s=>{const [f,c,r]=s.split("|");return {f:"pokedex/sprites/"+f,cols:+c,rows:+r}});
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const CHO=['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
+const chosung=s=>{let o='';for(const ch of s){const c=ch.charCodeAt(0)-0xAC00;o+=(c>=0&&c<11172)?CHO[Math.floor(c/588)]:ch}return o};
+const norm=s=>String(s||'').toLowerCase().replace(/[\s\-_.'’:♀♂()]/g,'');
+function hay(x){const ko=norm(x.n[1]);return [norm(x.n[0]),ko,chosung(ko),norm(x.sp),String(x.no)].join("|")}
+DATA.b.forEach(b=>b.h=hay(b));DATA.l.forEach(l=>l.h=hay(l));
+
+function sprite(k){const e=k&&DATA.spr.map[k];if(!e)return `<div class="spr nospr"><i></i></div>`;
+ const sh=SH[e[0]],x=e[1]%sh.cols,y=Math.floor(e[1]/sh.cols);
+ return `<div class="spr"><i style="background-image:url('${sh.f}');background-size:${sh.cols*100}% ${sh.rows*100}%;background-position:${sh.cols>1?x/(sh.cols-1)*100:0}% ${sh.rows>1?y/(sh.rows-1)*100:0}%"></i></div>`}
+const tchip=t=>`<span class="type" style="--tc:${TC[t]}">${L(TN[t])}</span>`;
+const stars=n=>"★"+n;
+function weak(ts){const out=[];for(const a of TYPES){let m=1;for(const t of ts){const v=CH[a][t];m*=v===undefined?1:v}if(m>1)out.push([a,m])}return out.sort((x,y)=>y[1]-x[1])}
+
+function tierTable(){$("tierTable").innerHTML=TIER.map((t,i)=>`<tr><td><span class="tier">${stars(i+1)}</span></td><td class="num">Lv ${t[0]}</td><td class="num">×${t[1]}</td><td class="num">${t[2]}%</td><td>${L(["Lv ","Lv "])}${t[0]}${t[4]?` · ${t[4]} ${L(["perfect IVs","개체값 최대"])}`:""}</td><td class="num">${i?SHINY[i]:L(["Default","기본"])}</td><td class="num">${DATA.tc[i+1]||0}</td></tr>`).join("")}
+
+const st={view:"b",q:"",sp:"",tiers:new Set(),feat:new Set(),leg:new Set(),types:new Set(),shown:36};
+const PAGE=36;
+function chipRow(el,items,set,cls){el.innerHTML=items.map(([v,label,extra])=>`<button type="button" class="chip${cls||""}" data-v="${v}" aria-pressed="${set.has(v)}"${extra||""}>${label}</button>`).join("")}
+function renderChips(){
+ chipRow($("fTier"),[1,2,3,4,5,6,7].map(n=>[String(n),stars(n)]),st.tiers);
+ chipRow($("fFeat"),Object.keys(FEAT).map(k=>[k,L(FEAT[k])]),st.feat);
+ chipRow($("fLeg"),[["any",L(["Any legendary-class","전설급 전체"])],...Object.keys(LEG).map(k=>[k,L(LEG[k])])],st.leg);
+ chipRow($("fType"),TYPES.map(t=>[t,`<i></i>${L(TN[t])}`,` style="--tc:${TC[t]}"`]),st.types," t");
+ $("fTierBox").hidden=st.view==="l";$("fFeatBox").hidden=st.view==="l";
+ $("q").placeholder=L(["Name, ㄱㄴ initials or #no","이름, 초성, 도감 번호"]);
+}
+[["fTier","tiers"],["fFeat","feat"],["fLeg","leg"],["fType","types"]].forEach(([id,key])=>$(id).addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;const s=st[key],v=b.dataset.v;s.has(v)?s.delete(v):s.add(v);b.setAttribute("aria-pressed",s.has(v));st.shown=PAGE;render()}));
+$("q").addEventListener("input",e=>{st.q=e.target.value;st.sp="";st.shown=PAGE;render()});
+$("clear").addEventListener("click",()=>{st.q="";st.sp="";$("q").value="";["tiers","feat","leg","types"].forEach(k=>st[k].clear());st.shown=PAGE;renderChips();render()});
+$("more").addEventListener("click",()=>{st.shown+=PAGE;render()});
+
+function match(x){
+ if(st.sp&&x.sp!==st.sp)return false;
+ if(st.q){const q=norm(st.q);const qq=/^[ㄱ-ㅎ]+$/.test(q)?q:q.replace(/^#/,"");if(!x.h.includes(qq))return false}
+ if(st.types.size&&!x.t.some(t=>st.types.has(t)))return false;
+ if(st.leg.size){const any=st.leg.has("any")&&x.leg.length;const some=x.leg.some(l=>st.leg.has(l));if(!any&&!some)return false}
+ if(st.view==="b"){if(st.tiers.size&&!st.tiers.has(String(x.tier)))return false;if(st.feat.size&&!st.feat.has(x.f))return false}
+ return true}
+function bossCard(b){
+ const w=weak(b.t);
+ return `<article class="card"><div class="head">${sprite(b.k)}<div><div class="nm">${esc(L(b.n))}</div><div class="no">#${String(b.no).padStart(4,"0")}</div>
+  <div class="badges"><span class="tier">${stars(b.tier)}</span>${b.f!=="default"?`<span class="feat">${L(FEAT[b.f])}</span>`:""}${b.leg.map(l=>`<span class="leg">${L(LEG[l])}</span>`).join("")}${b.t.map(tchip).join("")}</div></div></div>
+  <div class="mvs">${b.mv.map(m=>`<div class="mv" style="--tc:${TC[m[2]]||"var(--muted)"}"><i></i><span>${esc(L([m[0],m[1]]))}</span><small>${CAT[m[3]]?L(CAT[m[3]]):""}${m[4]?" "+m[4]:""}</small></div>`).join("")}</div>
+  <div class="weak">${L(["Weak to","약점"])}: ${w.map(([t,m])=>`${tchip(t)}${m>=4?'<span class="x4">×4</span>':""}`).join("")||"—"}</div>
+  <div class="foot"><span class="note">${L(["Lv","Lv"])} ${TIER[b.tier-1][0]} · HP ×${TIER[b.tier-1][1]}</span><a href="${DEX_URL}${b.sp}" target="${ON_CLAUDE?"_blank":"_self"}" rel="noopener">${L(["Pokédex ▸","도감 ▸"])}</a></div></article>`}
+function legCard(l){
+ return `<article class="card"><div class="head">${sprite(l.k)}<div><div class="nm">${esc(L(l.n))}</div><div class="no">#${String(l.no).padStart(4,"0")}</div>
+  <div class="badges">${l.leg.map(x=>`<span class="leg">${L(LEG[x])}</span>`).join("")}${l.t.map(tchip).join("")}</div></div></div>
+  <div><div class="note" style="margin-bottom:5px">${L(["Raid tiers (tap to see the boss)","나오는 레이드 (누르면 보스 보기)"])}</div>
+  ${l.r.length?`<div class="raids">${l.r.map(([t,f])=>`<button type="button" data-sp="${l.sp}" data-t="${t}">${stars(t)}${f!=="default"?" "+L(FEAT[f]):""}</button>`).join("")}</div>`:`<span class="none">${L(["Not in any raid","레이드에 나오지 않음"])}</span>`}</div>
+  <div class="foot"><span class="note">${l.wild?L(["Also spawns in the wild","야생에서도 나옴"]):L(["No wild spawns","야생 출현 없음"])}${l.ni?" · "+L(["Not implemented by Cobblemon","코블몬 미구현"]):""}</span><a href="${DEX_URL}${l.sp}" target="${ON_CLAUDE?"_blank":"_self"}" rel="noopener">${L(["Pokédex ▸","도감 ▸"])}</a></div></article>`}
+$("grid").addEventListener("click",e=>{const b=e.target.closest(".raids button");if(!b)return;const l=DATA.l.find(x=>x.sp===b.dataset.sp);
+ setView("b");st.q="";st.sp=l.sp;$("q").value="";st.tiers=new Set([b.dataset.t]);st.feat.clear();st.leg.clear();st.types.clear();renderChips();render();$("tab-b").scrollIntoView({block:"start"})});
+function render(){
+ const list=(st.view==="b"?DATA.b:DATA.l).filter(match);
+ const spn=st.sp&&st.view==="b"?DATA.l.find(x=>x.sp===st.sp):null;
+ $("count").textContent=L([`${list.length.toLocaleString()} ${st.view==="b"?"bosses":"species"}`,`${list.length.toLocaleString()}${st.view==="b"?"종의 보스":"종"}`])+(spn?" · "+L(spn.n):"");
+ $("grid").innerHTML=list.slice(0,st.shown).map(st.view==="b"?bossCard:legCard).join("");
+ $("empty").hidden=list.length>0;$("more").hidden=list.length<=st.shown}
+function setView(v){st.view=v;["b","l"].forEach(k=>{$("tab-"+k).setAttribute("aria-selected",k===v)});st.shown=PAGE;renderChips()}
+$("tab-b").addEventListener("click",()=>{setView("b");render()});
+$("tab-l").addEventListener("click",()=>{setView("l");render()});
+
+function setLang(l){LANG=l;const r=document.documentElement;r.setAttribute("data-lang",l);r.setAttribute("lang",l==="ko"?"ko":"en");
+ document.querySelectorAll(".seg button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.lang===l)));
+ try{localStorage.setItem("mv-lang",l)}catch(e){}
+ tierTable();renderChips();render()}
+document.querySelectorAll(".seg button").forEach(b=>b.addEventListener("click",()=>setLang(b.dataset.lang)));
+$("sBoss").textContent=DATA.b.length.toLocaleString();$("sLeg").textContent=DATA.l.length;
+if(location.hash==="#legendaries")setView("l");
+setLang(LANG);
+</script>
