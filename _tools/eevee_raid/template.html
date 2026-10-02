@@ -194,6 +194,7 @@ details summary{cursor:pointer}
   <h2><span class="en">Recommended teams</span><span class="ko">추천 조합</span></h2>
   <p class="note"><span class="en">Switching tabs also changes which team the boss finder below picks from.</span><span class="ko">탭을 바꾸면 아래 보스 검색의 추천 멤버도 그 조합 기준으로 바뀌어요.</span></p>
   <div class="legend"><span><span class="src lv">Lv 30</span> <span class="en">level-up move</span><span class="ko">레벨업으로 배움</span></span><span><span class="src tm">TM</span> <span class="en">needs a TM</span><span class="ko">기술머신 필요</span></span><span><span class="src egg"><span class="en">TM·Egg</span><span class="ko">TM·교배</span></span> <span class="en">egg move (TM or breeding)</span><span class="ko">알 기술(TM이나 교배로)</span></span><a href="#tm"><span class="en">Where to get TMs ↓</span><span class="ko">TM 구하는 법 ↓</span></a></div>
+  <p class="note"><span class="en">IVs: 31 = max, 0 = lowest, – = doesn't matter. Speed never matters in raids. Special attackers and Umbreon want 0 Attack, which shrinks confusion self-hits and the boss's Foul Play damage.</span><span class="ko">개체값: 31 = 최대, 0 = 최소, – = 상관없음. 레이드에선 스피드가 중요하지 않아요. 특수 딜러와 블래키는 공격 0이 좋아요. 혼란 자해 데미지와 보스 속임수 데미지가 줄어들어요.</span></p>
   <div class="tabs" role="tablist" aria-label="Teams" id="tabs"></div>
   <div id="panels"></div>
 </section>
@@ -277,6 +278,9 @@ const SRC=__SRC__;
 const DONORS=__DONORS__;
 const ST={hp:["HP","HP"],atk:["Atk","공격"],def:["Def","방어"],spa:["SpA","특공"],spd:["SpD","특방"],spe:["Spe","스피드"]};
 const HA=["HA","숨특"];
+const IVS={spec:[31,0,31,31,31,-1],phys:[31,31,31,-1,31,-1],foul:[31,0,31,-1,31,-1]};
+const IVK=["hp","atk","def","spa","spd","spe"];
+const IVSET={sylveon:"spec",glaceon:"spec",vaporeon:"spec",espeon:"spec",jolteon:"spec",umbreon:"foul"};
 
 // t: defending types, at: attack types, imm: ability immunity, apt: raid aptitude
 const P={
@@ -390,6 +394,7 @@ function card(id){const p=P[id];
    <dt>${L(["Ability","특성"])}</dt><dd>${ab}</dd>
    <dt>${L(["Item","도구"])}</dt><dd>${dual(p.it)}</dd>
    <dt>${L(["EVs","노력치"])}</dt><dd class="stat">${p.ev.map(([s,v])=>`${L(ST[s])} ${v}`).join(" / ")}</dd>
+   <dt>${L(["IVs","개체값"])}</dt><dd class="stat">${IVS[IVSET[id]||"phys"].map((v,i)=>`${L(ST[IVK[i]])} ${v<0?"–":v}`).join(" / ")}</dd>
   </dl>
   <div class="moves">${p.mv.map(m=>`<span>${LANG==="ko"?`${m[0]}<small>${m[1]}</small>`:m[1]}${srcTag(SRC[id]&&SRC[id][m[1]])}</span>`).join("")}</div>
   <p class="note">${L(p.note)}</p>

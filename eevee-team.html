@@ -194,6 +194,7 @@ details summary{cursor:pointer}
   <h2><span class="en">Recommended teams</span><span class="ko">추천 조합</span></h2>
   <p class="note"><span class="en">Switching tabs also changes which team the boss finder below picks from.</span><span class="ko">탭을 바꾸면 아래 보스 검색의 추천 멤버도 그 조합 기준으로 바뀌어요.</span></p>
   <div class="legend"><span><span class="src lv">Lv 30</span> <span class="en">level-up move</span><span class="ko">레벨업으로 배움</span></span><span><span class="src tm">TM</span> <span class="en">needs a TM</span><span class="ko">기술머신 필요</span></span><span><span class="src egg"><span class="en">TM·Egg</span><span class="ko">TM·교배</span></span> <span class="en">egg move (TM or breeding)</span><span class="ko">알 기술(TM이나 교배로)</span></span><a href="#tm"><span class="en">Where to get TMs ↓</span><span class="ko">TM 구하는 법 ↓</span></a></div>
+  <p class="note"><span class="en">IVs: 31 = max, 0 = lowest, – = doesn't matter. Speed never matters in raids. Special attackers and Umbreon want 0 Attack, which shrinks confusion self-hits and the boss's Foul Play damage.</span><span class="ko">개체값: 31 = 최대, 0 = 최소, – = 상관없음. 레이드에선 스피드가 중요하지 않아요. 특수 딜러와 블래키는 공격 0이 좋아요. 혼란 자해 데미지와 보스 속임수 데미지가 줄어들어요.</span></p>
   <div class="tabs" role="tablist" aria-label="Teams" id="tabs"></div>
   <div id="panels"></div>
 </section>
@@ -277,6 +278,9 @@ const SRC={"sylveon": {"Calm Mind": "T", "Hyper Voice": "T", "Draining Kiss": "L
 const DONORS={"Belly Drum": [[["Poliwrath", "강챙이"], 1], [["Politoed", "왕구리"], 1], [["Makuhita", "마크탕"], 25]], "Body Press": [], "Brick Break": [[["Clobbopus", "때때무노"], 20], [["Grapploct", "케오퍼스"], 20], [["Crabrawler", "오기지게"], 22]], "Bulk Up": [[["Grimmsnarl", "오롱털"], 1], [["Conkeldurr", "노보청"], 16], [["Gurdurr", "토쇠골"], 16]], "Calm Mind": [[["Gallade", "엘레이드"], 1], [["Musharna", "몽얌나"], 1], [["Medicham", "요가램"], 23]], "Curse": [[["Slowbro", "야도란"], 1], [["Slowpoke", "야돈"], 1], [["Slowking", "야도킹"], 1]], "Dazzling Gleam": [[["Gardevoir", "가디안"], 1], [["Hatenna", "몸지브림"], 30], [["Hatterene", "브리무음"], 30]], "Drain Punch": [[["Hitmonchan", "홍수몬"], 1], [["Mienfoo", "비조푸"], 35], [["Mienshao", "비조도"], 35]], "Earthquake": [[["Gogoat", "고고트"], 1], [["Geodude", "꼬마돌"], 34], [["Barboach", "미꾸리"], 36]], "Foul Play": [[["Sandile", "깜눈크"], 33], [["Inkay", "오케이징"], 33], [["Krokorok", "악비르"], 35]], "Hyper Voice": [[["Wigglytuff", "푸크린"], 1], [["Politoed", "왕구리"], 1], [["Chatot", "페라페"], 1]], "Ice Beam": [[["Cloyster", "파르셀"], 1], [["Remoraid", "총어"], 32], [["Octillery", "대포무노"], 36]], "Knock Off": [[["Victreebel", "우츠보트"], 1], [["Banette", "다크펫"], 1], [["Lombre", "로토스"], 1]], "Liquidation": [[["Mareanie", "시마사리"], 35], [["Toxapex", "더시마사리"], 35], [["Carvanha", "샤프니아"], 40]], "Protect": [[["Cloyster", "파르셀"], 1], [["Forretress", "쏘콘"], 1], [["Pineco", "피콘"], 1]], "Scald": [[["Simipour", "앗차키"], 1], [["Panpour", "앗차프"], 22]], "Stone Edge": [[["Lunatone", "루나톤"], 35], [["Solrock", "솔록"], 35], [["Roggenrola", "단굴"], 40]], "Substitute": [[["Shroodle", "땃쭈르"], 36], [["Grafaiai", "태깅구르"], 40], [["Rotom", "로토무"], 40]], "Swords Dance": [[["Raticate", "레트라"], 1], [["Ariados", "아리아도스"], 1], [["Doduo", "두두"], 33]], "Thunderbolt": [[["Eelektrik", "저리릴"], 44], [["Raichu", "라이츄"], 5], [["Pikachu", "피카츄"], 36]], "Wish": [[["Florges", "플라제스"], 1], [["Luvdisc", "사랑동이"], 13], [["Flabébé", "플라베베"], 20]]};
 const ST={hp:["HP","HP"],atk:["Atk","공격"],def:["Def","방어"],spa:["SpA","특공"],spd:["SpD","특방"],spe:["Spe","스피드"]};
 const HA=["HA","숨특"];
+const IVS={spec:[31,0,31,31,31,-1],phys:[31,31,31,-1,31,-1],foul:[31,0,31,-1,31,-1]};
+const IVK=["hp","atk","def","spa","spd","spe"];
+const IVSET={sylveon:"spec",glaceon:"spec",vaporeon:"spec",espeon:"spec",jolteon:"spec",umbreon:"foul"};
 
 // t: defending types, at: attack types, imm: ability immunity, apt: raid aptitude
 const P={
@@ -390,6 +394,7 @@ function card(id){const p=P[id];
    <dt>${L(["Ability","특성"])}</dt><dd>${ab}</dd>
    <dt>${L(["Item","도구"])}</dt><dd>${dual(p.it)}</dd>
    <dt>${L(["EVs","노력치"])}</dt><dd class="stat">${p.ev.map(([s,v])=>`${L(ST[s])} ${v}`).join(" / ")}</dd>
+   <dt>${L(["IVs","개체값"])}</dt><dd class="stat">${IVS[IVSET[id]||"phys"].map((v,i)=>`${L(ST[IVK[i]])} ${v<0?"–":v}`).join(" / ")}</dd>
   </dl>
   <div class="moves">${p.mv.map(m=>`<span>${LANG==="ko"?`${m[0]}<small>${m[1]}</small>`:m[1]}${srcTag(SRC[id]&&SRC[id][m[1]])}</span>`).join("")}</div>
   <p class="note">${L(p.note)}</p>
