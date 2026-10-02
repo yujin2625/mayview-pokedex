@@ -1,0 +1,424 @@
+<title>이브이 진화형 파티</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Silkscreen:wght@400;700&display=swap">
+<style>
+@font-face{font-family:"Galmuri11";src:url("pokedex/fonts/Galmuri11.woff2") format("woff2");font-display:swap}
+/* Single warm "handheld menu" theme shared with the Pokédex and breeding guide */
+:root{
+  color-scheme:light;
+  --ground:#FCEFD6; --surface:#FFFBF0; --sunk:#F6E3BF; --raise:#FFF6E2; --ink:#4A2E1E; --muted:#8A6A52; --line:#4A2E1E; --soft-line:#E4C9A0;
+  --accent:#E4513B; --accent-ink:#FFFBF0; --spot:#FFD23F; --spot-soft:#FFE89A; --shiny:#C2408F;
+  --good:#2E8B3E; --warn:#B26A00; --bad:#C23A2B; --info:#2F6FB5;
+  --display:"Silkscreen","Galmuri11","DotGothic16",monospace;
+  --body:"Galmuri11","DotGothic16","Malgun Gothic",monospace;
+  --mono:"Galmuri11","DotGothic16",monospace;
+  --px:3px;
+}
+*{box-sizing:border-box}
+body{background:var(--ground);color:var(--ink);font:15px/1.7 var(--body);margin:0;background-image:radial-gradient(rgba(74,46,30,.07) 1px,transparent 1.2px);background-size:12px 12px;-webkit-font-smoothing:none}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+b{font-weight:700}
+
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--accent);border-bottom:var(--px) solid var(--line);box-shadow:0 var(--px) 0 #B8392A}
+.bar-in{max-width:1080px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:16px}
+.brand{font:700 17px/1 var(--display);display:flex;align-items:center;gap:10px;margin-right:auto;color:var(--accent-ink);text-shadow:2px 2px 0 #B8392A}
+.brand .full{opacity:.85;font-weight:400}
+.ear{width:20px;height:20px;flex:none;position:relative;background:var(--surface);border:2px solid var(--line);box-shadow:2px 2px 0 var(--line)}
+.ear::before{content:"";position:absolute;inset:3px 3px auto auto;width:6px;height:6px;background:#A86B3C}
+.ear::after{content:"";position:absolute;left:3px;bottom:3px;width:8px;height:4px;background:var(--spot)}
+.homebtn{font:700 12px/1 var(--display);color:var(--ink);background:var(--surface);border:var(--px) solid var(--line);box-shadow:2px 2px 0 var(--line);padding:8px 10px;text-decoration:none;white-space:nowrap}
+.homebtn:hover{background:var(--spot)}
+
+.wrap{max-width:1080px;margin:0 auto;padding-inline:16px;padding-block:0 80px;display:flex;flex-direction:column;gap:8px}
+header.hero{padding-block:40px 26px;border-bottom:var(--px) solid var(--line);display:flex;flex-direction:column;gap:12px}
+.eyebrow{font:700 12px/1 var(--display);letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+h1{font:700 clamp(32px,5.4vw,52px)/1.05 var(--display);margin:0;text-wrap:balance;text-shadow:3px 3px 0 var(--spot)}
+h2{font:700 24px/1.2 var(--display);margin:0;text-wrap:balance;text-shadow:2px 2px 0 var(--spot)}
+h2::before{content:"▶ ";color:var(--accent);text-shadow:none}
+h3{font:700 17px/1.3 var(--body);margin:6px 0 0}
+p{margin:0;max-width:72ch}
+.lede{color:var(--muted);font-size:16px}
+.eng{color:var(--muted);font-size:.86em}
+.note{font-size:13px;color:var(--muted)}
+section{padding-block:36px 4px;display:flex;flex-direction:column;gap:14px;scroll-margin-top:70px}
+ul{margin:0;padding-left:1.1em;display:flex;flex-direction:column;gap:4px}
+
+/* boxes share the pixel frame */
+.rule,.verdict,.tierrow,.card,.boss,.tips>div,.tbl,.why{border:var(--px) solid var(--line);border-radius:0;background:var(--surface);box-shadow:4px 4px 0 var(--line)}
+
+.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.rule{padding:12px 14px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.rule .k{font:700 18px/1.2 var(--body);color:var(--accent)}
+.tbl{overflow-x:auto}
+.tbl table{border-collapse:collapse;width:100%;font-size:14px;font-variant-numeric:tabular-nums}
+.tbl th,.tbl td{padding:8px 12px;border-bottom:1px solid var(--soft-line);text-align:left;vertical-align:top;white-space:nowrap}
+.tbl td.wrapc{white-space:normal}
+.tbl thead th{font:700 12px/1.2 var(--body);color:var(--accent);background:var(--raise);border-bottom:var(--px) solid var(--line)}
+.tbl tr:last-child td{border-bottom:0}
+.num{font-family:var(--mono)}
+
+.verdict{padding:20px;display:flex;flex-direction:column;gap:14px;margin-top:36px}
+.verdict .answer{font:700 22px/1.3 var(--body);color:var(--accent)}
+.bars{display:flex;flex-direction:column;gap:8px}
+.barrow{display:grid;grid-template-columns:minmax(110px,170px) 1fr 40px;gap:10px;align-items:center;font-size:13.5px}
+.barrow .lab{min-width:0}
+.track{height:14px;background:var(--surface);border:2px solid var(--line)}
+.fillb{height:100%;background:var(--accent)}
+.barrow.me .fillb{background:var(--muted)}
+.barrow .v{font-family:var(--mono);text-align:right}
+
+.tiers{display:flex;flex-direction:column;gap:12px}
+.tierrow{display:grid;grid-template-columns:44px 1fr;gap:12px;align-items:start;padding:10px 12px}
+.tierrow .g{font:700 24px/1 var(--display);text-align:center;background:var(--spot);border:2px solid var(--line);padding:6px 0}
+.tierrow div{min-width:0}
+
+.tabs{display:flex;gap:8px;flex-wrap:wrap;position:sticky;top:calc(env(safe-area-inset-top,0px) + 58px);background:var(--ground);padding-block:8px;z-index:5}
+.tabs button{font:700 14px/1 var(--body);padding:9px 13px;border:var(--px) solid var(--line);border-radius:0;background:var(--surface);color:var(--ink);cursor:pointer;box-shadow:2px 2px 0 var(--line)}
+.tabs button[aria-selected="true"]{background:var(--spot)}
+.panel{display:flex;flex-direction:column;gap:18px}
+.why{padding:14px 16px;display:flex;flex-direction:column;gap:6px;border-left-width:8px;border-left-color:var(--spot)}
+
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px}
+.card{padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.card.fill{border-style:dashed}
+.card .top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.card .name{font:700 20px/1.15 var(--body)}
+.card .role{font-size:13px;color:var(--muted)}
+.tag{font:700 11px/1 var(--body);padding:4px 7px;border:2px solid currentColor;color:var(--accent);white-space:nowrap}
+.types{display:flex;gap:4px;flex-wrap:wrap}
+.type{display:inline-flex;align-items:center;gap:5px;font-size:12px;padding:1px 7px 1px 5px;background:var(--raise);border:1px solid var(--soft-line);white-space:nowrap}
+.type i{width:9px;height:9px;background:var(--c);border:1px solid var(--line);display:inline-block}
+dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:14px}
+dt{color:var(--muted);font-size:12.5px;padding-top:2px}
+dd{margin:0;min-width:0}
+.stat{font-family:var(--mono);font-size:13px}
+.moves{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+.moves span{background:var(--sunk);border:1px solid var(--soft-line);padding:3px 8px;font-size:13px;line-height:1.35}
+.moves span small{display:block;color:var(--muted);font-size:11px}
+.moves span{position:relative;padding-right:52px}
+.src{position:absolute;right:4px;top:4px;font:700 10.5px/1 var(--body);padding:3px 4px;border:1.5px solid currentColor;white-space:nowrap}
+.src.lv{color:var(--muted)} .src.tm{color:var(--accent);background:var(--surface)} .src.egg{color:var(--shiny);background:var(--surface)}
+.legend{display:flex;gap:14px;flex-wrap:wrap;align-items:center;font-size:13px;color:var(--muted)}
+.legend .src{position:static}
+.ways{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.way{border:var(--px) solid var(--line);background:var(--surface);box-shadow:4px 4px 0 var(--line);padding:14px 16px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.way h4{margin:0;font:700 15px/1.3 var(--body);color:var(--accent)}
+.way .rk{font:700 11px/1 var(--body);color:var(--ink);background:var(--spot);border:2px solid var(--line);padding:3px 6px;align-self:flex-start}
+.recipe{font-size:13px;background:var(--sunk);border:1px solid var(--soft-line);padding:6px 9px}
+details summary{cursor:pointer}
+
+.finder{display:flex;flex-direction:column;gap:12px}
+.controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.controls input{font:inherit;padding:8px 12px;border:var(--px) solid var(--line);border-radius:0;background:var(--surface);color:var(--ink);min-width:0;flex:1 1 200px}
+.chip{font:700 13px/1 var(--body);padding:7px 11px;border:2px solid var(--line);border-radius:0;background:var(--surface);color:var(--ink);cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--surface)}
+.blist{display:flex;flex-direction:column;gap:12px}
+.boss{padding:12px 14px;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:10px 16px}
+.boss .bn{font:700 17px/1.2 var(--body)}
+.boss .meta{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:4px}
+.tier{font:700 12px/1 var(--mono);padding:3px 6px;background:var(--spot);border:1px solid var(--line)}
+.feat{font-size:11.5px;padding:1px 7px;border:1px solid var(--shiny);color:var(--shiny)}
+.bmv{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.bmv span{font-size:12px;padding:1px 7px;background:var(--sunk);border:1px solid var(--soft-line);display:inline-flex;gap:4px;align-items:center}
+.bmv span i{width:7px;height:7px;background:var(--c);border:1px solid var(--line)}
+.picks{display:flex;flex-direction:column;gap:4px;font-size:13.5px}
+.pk{display:flex;gap:8px;align-items:center}
+.mk{font:700 11.5px/1 var(--body);padding:3px 6px;border:2px solid currentColor;white-space:nowrap}
+.mk.best{color:var(--good)} .mk.good{color:var(--info)} .mk.ok{color:var(--warn)} .mk.bad{color:var(--bad)}
+.more{font:700 14px/1 var(--body);align-self:center;padding:10px 18px;border:var(--px) solid var(--line);border-radius:0;background:var(--surface);color:var(--ink);cursor:pointer;box-shadow:2px 2px 0 var(--line)}
+.more:hover,.tabs button:hover,.chip:hover{background:var(--spot-soft)}
+.chip[aria-pressed="true"]:hover{background:var(--ink)}
+
+.tips{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.tips>div{padding:14px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.tips h4{margin:0;font:700 14px/1.3 var(--body);color:var(--accent)}
+@media (max-width:560px){.boss{grid-template-columns:1fr}.moves{grid-template-columns:1fr}.brand .full{display:none}.homebtn{padding:7px 8px}}
+</style>
+
+<div class="bar"><div class="bar-in">
+  <a class="homebtn" id="homeBtn" href="./" aria-label="메인">◀ 메인</a>
+  <div class="brand"><span class="ear" aria-hidden="true"></span><span>이브이 파티<span class="full"> · Raid</span></span></div>
+</div></div>
+
+<div class="wrap">
+<header class="hero">
+  <span class="eyebrow">Mayview · Cobblemon 1.7.3 · 레이드 기준</span>
+  <h1>이브이 진화형 파티</h1>
+  <p class="lede">레이드에 데려갈 이브이 진화형 조합을 정리했어요. 이브이즈 2~6마리 조합별로 나머지 자리에 넣을 포켓몬, 레이드용 성격·특성·도구·기술을 적었고, 이 팩의 레이드 보스 __N__종을 검색해서 누구를 내보낼지 바로 볼 수 있어요.</p>
+</header>
+
+
+<section>
+  <h2>이 팩의 레이드 규칙</h2>
+  <div class="rules">
+    <div class="rule"><span class="k">1인 1마리</span><span>레이드에는 한 사람당 포켓몬 <b>1마리</b>만 들고 들어가고, 목숨도 1개예요. 그래서 파티 시너지보다는 <b>보스마다 맞는 1마리를 골라 내보내는 것</b>이 핵심입니다.</span></div>
+    <div class="rule"><span class="k">기술 4개 고정</span><span>보스는 정해진 기술 4개만 쓰고, AI는 <b>무작위</b>로 기술을 골라요. 보스 기술 중에 효과가 굉장한 기술이 없으면 아주 안정적으로 싸울 수 있어요.</span></div>
+    <div class="rule"><span class="k">버프 쌓기 유효</span><span>이 팩의 보스 데이터에는 쉴드나 능력치 초기화 스크립트가 없어요. <b>명상·칼춤·배북</b>으로 능력치를 쌓아두면 끝까지 유지됩니다.</span></div>
+    <div class="rule"><span class="k">응원 3회</span><span>레이드마다 응원을 3번 쓸 수 있어요. 공격 응원(공격·특공 +50%), 방어 응원(방어·특방 +50%), 회복 응원(HP 50% 회복) 중에서 골라 씁니다.</span></div>
+  </div>
+  <div class="tbl"><table>
+    <thead><tr><th>티어</th><th>보스 레벨</th><th>보스 HP 배율</th><th>레이드 굴 비중</th><th>보스 종류 수</th></tr></thead>
+    <tbody id="tierTable"></tbody>
+  </table></div>
+  <p class="note">HP 배율은 1인 기준이고, 한 명이 더 들어올 때마다 1.3배씩 늘어나요. 지원 기술(리플렉터·순풍·필드 등)은 최대 8명까지 공유됩니다.</p>
+</section>
+
+<div class="verdict">
+  <span class="eyebrow">질문한 6마리, 레이드에선?</span>
+  <p class="answer">쓸 만하지만, 쥬피썬더 대신 글레이시아를 추천해요.</p>
+  <p>레이드는 보스 HP가 수 배라서 오래 버티는 힘이 중요해요. 쥬피썬더는 빠른 대신 HP·방어가 낮아 1목숨 레이드에선 쓰러지기 쉬워요. 글레이시아는 얼음 기술로 드래곤·비행·땅 보스를 잡는데, 고티어 전설·드래곤 보스가 많은 이 팩에서는 이쪽이 더 많이 쓰입니다. 그리고 이브이즈 비중을 줄이고 <b>마릴리·한카리아스·루카리오</b> 같은 포켓몬을 섞으면 대응할 수 있는 보스가 확 늘어나요.</p>
+  <div class="bars" id="bars"></div>
+  <p class="note">대응 점수: 이 페이지의 보스 데이터로 계산했어요. 보스마다 파티에서 가장 잘 맞는 1마리를 골라 점수를 매기고(유리 1 · 안전 0.7 · 무난 0.35 · 불리 0), 레이드 적성으로 보정한 뒤 레이드 굴 출현 비중으로 가중 평균을 냈어요. 레벨·능력치·보스 특성은 반영하지 않은 타입 상성 기준 수치입니다.</p>
+</div>
+
+<section>
+  <h2>이브이 진화형 레이드 적성</h2>
+  <div class="tiers">
+    <div class="tierrow"><span class="g">S</span><div><b>님피아</b>: 명상으로 방어와 특공을 같이 쌓고, 드레인키스로 회복하면서 페어리스킨 하이퍼보이스로 때려요. 드래곤 기술은 무효예요. 레이드에서 가장 믿을 만한 이브이.</div></div>
+    <div class="tierrow"><span class="g">A</span><div><b>리피아</b>: 칼춤과 광합성을 같이 써요. 방어가 130이라 물리 보스에 강하고, 풀 기술로 땅·물·바위 보스를 잡아요. 조합 계산에서 거의 모든 상위 조합에 들어갔어요.<br><b>글레이시아</b>: 설경을 쓰면 눈 날씨에서 방어가 1.5배가 되고 아이스바디로 매 턴 회복해요. 그 상태에서 명상을 쌓아요. 드래곤·비행 보스 담당.<br><b>샤미드</b>: 명상과 녹기로 특방·방어를 둘 다 올려서 거의 안 쓰러져요. 대신 화력이 낮아 레이드가 오래 걸려요.</div></div>
+    <div class="tierrow"><span class="g">B</span><div><b>블래키</b>: 속임수는 보스의 공격력으로 때리는 기술이라 공격이 높은 물리 보스에게 강해요. 특수 보스나 페어리·격투 보스에게는 약해요.<br><b>에브이</b>: 명상과 아침햇살 조합은 좋지만 방어가 60이라 물리 보스에게 약해요.</div></div>
+    <div class="tierrow"><span class="g">C</span><div><b>부스터 · 쥬피썬더</b>: 공격 상성으로는 유리한 보스가 많아도 HP·방어가 낮고 자체 회복기가 희망사항뿐이에요. 1목숨인 레이드에서는 쓰러질 위험이 커요. 부스터의 근성 + 맹독구슬 세팅은 긴 레이드에서 독 데미지가 계속 쌓여서 추천하지 않아요.</div></div>
+  </div>
+</section>
+
+<section>
+  <h2>추천 조합</h2>
+  <p class="note">탭을 바꾸면 아래 보스 검색의 추천 멤버도 그 조합 기준으로 바뀌어요.</p>
+  <div class="legend"><span><span class="src lv">Lv 30</span> 레벨업으로 배움</span><span><span class="src tm">TM</span> 기술머신 필요</span><span><span class="src egg">TM·교배</span> 알 기술(TM이나 교배로)</span><a href="#tm">TM 구하는 법 ↓</a></div>
+  <div class="tabs" role="tablist" aria-label="이브이 진화형 수" id="tabs"></div>
+  <div id="panels"></div>
+</section>
+
+<section class="finder" id="finder">
+  <h2>보스별 누구를 내보낼까</h2>
+  <p class="note">선택한 조합 안에서 보스 기술과 타입 상성을 비교해 추천해요. <span class="mk best">유리</span> 약점을 찌르고 보스 기술에 약점 없음 · <span class="mk good">안전</span> 보스 기술을 모두 반감 · <span class="mk ok">무난</span> 둘 다 보통 · <span class="mk bad">불리</span> 보스 기술 중 약점이 있음</p>
+  <div class="controls">
+    <input id="q" type="search" placeholder="보스 이름 검색 (예: 한카리아스, 메가, 레쿠쟈)" aria-label="보스 이름 검색">
+  </div>
+  <div class="controls" id="tierChips" role="group" aria-label="티어 필터"></div>
+  <p class="note" id="count"></p>
+  <div class="blist" id="blist"></div>
+  <button class="more" id="more" hidden>더 보기</button>
+</section>
+
+<section id="tm">
+  <h2>TM 구하는 법</h2>
+  <p>이 팩의 기술머신은 SimpleTMs 모드예요. <b>TM</b>은 8번 쓸 수 있고 수리도 돼요. <b>TR</b>은 한 번 쓰면 사라져요. 레벨업 기술은 TM이 필요 없어요. 포켓몬 정보 화면의 기술 목록에서 지금 레벨까지 배운 기술로 언제든 바꿀 수 있어요.</p>
+  <div class="ways">
+    <div class="way"><span class="rk">추천</span><h4>빈 TM으로 복사하기</h4>
+      <p>빈 TM이나 빈 TR을 그 기술을 <b>지금 알고 있는</b> 포켓몬에게 쓰면, 그 기술의 TM/TR이 만들어져요. 아래 표의 복사용 포켓몬을 잡아서 기술을 바꿔 넣은 뒤 복사하면 원하는 TM을 확실하게 얻을 수 있어요.</p>
+      <div class="recipe"><b>빈 TR</b>: 철 주괴 8 + 유물 금화 1 (가운데) · 또는 석영 4 + 철 주괴 4 + 다이아몬드 1</div>
+      <div class="recipe"><b>빈 TM</b>: 철 주괴 4 + 유물 금화 4 + 철 블록 1 (가운데) · 또는 대장장이 작업대에서 업그레이드 + 빈 TR + 메아리 조각(또는 네더라이트 블록)</div>
+      <p class="note">유물 금화는 고고학(수상한 모래·자갈)에서 나와요. 다 쓴 TM 4개를 합치면 빈 TM 1개, TR 4개를 합치면 빈 TR 1개가 돼요.</p></div>
+    <div class="way"><h4>배틀 드롭</h4>
+      <p>야생 포켓몬을 배틀로 쓰러뜨리면 <b>10%</b> 확률로 기술 아이템이 떨어져요. 그 포켓몬이 배울 수 있는 기술 4개가 나오고, 그중 하나를 골라서 받아요. 대부분은 1회용 TR이고 TM은 약 10%예요.</p>
+      <p class="note">원하는 기술을 배울 수 있는 포켓몬을 골라서 잡으면 확률이 올라가요. 대신 운이 따라야 해요.</p></div>
+    <div class="way"><h4>상자 루트</h4>
+      <p>던전, 폐광, 사막·정글 신전, 난파선, 유적, 고대 도시, 마을 집과 포켓몬센터 상자에 TM/TR이 들어 있어요. 상자마다 나오는 타입과 확률이 달라요. 예를 들어 던전 상자는 고스트·벌레 타입이 TR 25%, TM 6% 확률로 나와요.</p></div>
+    <div class="way"><h4>데일리 상점</h4>
+      <p>금화 12개 거래에 빈 TR이, 금화 27개 거래에 빈 TM이 매물로 뜰 때가 있어요. 매물은 매일 무작위로 바뀌어요.</p>
+      <p class="note">TM 케이스 + TR 케이스 + PC로 <b>TM 머신</b>을 만들면 모은 TM/TR을 한곳에 보관하고 포켓몬별로 검색할 수 있어요.</p></div>
+  </div>
+  <h3>이 페이지 세팅에 필요한 TM</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>기술</th><th>쓰는 멤버</th><th>복사용 포켓몬 (배우는 레벨)</th></tr></thead>
+    <tbody id="tmTable"></tbody>
+  </table></div>
+  <p class="note">복사용 포켓몬은 이 팩에서 흔하게(common·uncommon) 나오는 포켓몬 중에 그 기술을 레벨업으로 배우는 포켓몬이에요. Lv 1은 잡자마자 기술 목록에서 고를 수 있어요.</p>
+</section>
+
+<section>
+  <h2>코블몬 진화 방법</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>포켓몬</th><th>방법</th></tr></thead>
+    <tbody>
+      <tr><td>샤미드 · 쥬피썬더 · 부스터 · 리피아 · 글레이시아</td><td class="wrapc">각각 물의돌 · 천둥의돌 · 불꽃의돌 · 리프의돌 · 얼음의돌을 이브이에게 우클릭</td></tr>
+      <tr><td>에브이 / 블래키</td><td class="wrapc">친밀도 160 이상 + 낮 / 밤에 레벨업 (페어리 기술은 잊게 한 상태로)</td></tr>
+      <tr><td>님피아</td><td class="wrapc">친밀도 160 이상 + 페어리 기술(15레벨 초롱초롱눈동자 <span class="eng">Baby-Doll Eyes</span>)을 배운 상태에서 레벨업</td></tr>
+      <tr><td>저승갓숭</td><td class="wrapc">성원숭으로 분노의주먹 <span class="eng">Rage Fist</span>을 20번 사용</td></tr>
+      <tr><td>마릴리 · 한카리아스 · 루카리오 · 메타그로스 · 두드리짱</td><td class="wrapc">모두 이 팩에서 야생으로 나와요(마릴리·한카리아스는 레이드에서도 등장)</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <h2>세팅 팁</h2>
+  <div class="tips">
+    <div><h4>알 기술</h4><p>이 팩의 SimpleTMs 설정은 TM·알·튜터 기술을 모두 기술머신으로 배울 수 있게 해둬서, 희망사항이나 배북 같은 알 기술도 교배 없이 TM/TR로 가르칠 수 있어요. 교배로 물려받는 방법도 있어요.</p></div>
+    <div><h4>레이드 금지 기술</h4><p>이 팩 설정에서 길동무·앙코르·도발·잠재우기·멸망의노래·일격기 같은 기술은 레이드에서 쓸 수 없어요. 위 세팅에는 들어있지 않아요.</p></div>
+    <div><h4>숨겨진 특성</h4><p>님피아 <b>페어리스킨</b>은 숨겨진 특성이라 사실상 필수예요. 이브이가 숨겨진 특성 <b>위험예지</b>면 진화 후에도 숨겨진 특성이 되고, 아니면 특성패치 <span class="eng">Ability Patch</span>를 쓰세요.</p></div>
+    <div><h4>성격·노력치</h4><p>성격 보정은 민트 <span class="eng">Mint</span>로 바꿀 수 있어요. 노력치는 합계 510, 한 능력치 최대 252예요. 교배로 성격과 개체값을 물려주려면 <a href="https://claude.ai/artifact/MPUHUtkLQkQhSm8XW73xjH" target="_blank" rel="noopener">교배 가이드</a>를 참고하세요.</p></div>
+  </div>
+</section>
+</div>
+
+<script>
+if(/claude\.ai|claudeusercontent/.test(location.hostname)){const hb=document.getElementById("homeBtn");if(hb)hb.hidden=true}
+const TK=["normal","fire","water","electric","grass","ice","fighting","poison","ground","flying","psychic","bug","rock","ghost","dragon","dark","steel","fairy"];
+const TYPES={normal:["노말","#9fa19f"],fire:["불꽃","#e8743b"],water:["물","#3f8fe0"],electric:["전기","#e9c01f"],grass:["풀","#4ea84a"],ice:["얼음","#4fc3d6"],fighting:["격투","#d0702a"],poison:["독","#9a52c4"],ground:["땅","#a4733c"],flying:["비행","#7fa9e6"],psychic:["에스퍼","#e65a85"],bug:["벌레","#93a12a"],rock:["바위","#aea476"],ghost:["고스트","#715aa6"],dragon:["드래곤","#5a62d6"],dark:["악","#5c4b44"],steel:["강철","#6aa0b4"],fairy:["페어리","#e188d8"]};
+const CH={normal:{rock:.5,ghost:0,steel:.5},fire:{fire:.5,water:.5,grass:2,ice:2,bug:2,rock:.5,dragon:.5,steel:2},water:{fire:2,water:.5,grass:.5,ground:2,rock:2,dragon:.5},electric:{water:2,electric:.5,grass:.5,ground:0,flying:2,dragon:.5},grass:{fire:.5,water:2,grass:.5,poison:.5,ground:2,flying:.5,bug:.5,rock:2,dragon:.5,steel:.5},ice:{fire:.5,water:.5,grass:2,ice:.5,ground:2,flying:2,dragon:2,steel:.5},fighting:{normal:2,ice:2,poison:.5,flying:.5,psychic:.5,bug:.5,rock:2,ghost:0,dark:2,steel:2,fairy:.5},poison:{grass:2,poison:.5,ground:.5,rock:.5,ghost:.5,steel:0,fairy:2},ground:{fire:2,electric:2,grass:.5,poison:2,flying:0,bug:.5,rock:2,steel:2},flying:{electric:.5,grass:2,fighting:2,bug:2,rock:.5,steel:.5},psychic:{fighting:2,poison:2,psychic:.5,dark:0,steel:.5},bug:{fire:.5,grass:2,fighting:.5,poison:.5,flying:.5,psychic:2,ghost:.5,dark:2,steel:.5,fairy:.5},rock:{fire:2,ice:2,fighting:.5,ground:.5,flying:2,bug:2,steel:.5},ghost:{normal:0,psychic:2,ghost:2,dark:.5},dragon:{dragon:2,steel:.5,fairy:0},dark:{fighting:.5,psychic:2,ghost:2,dark:.5,fairy:.5},steel:{fire:.5,water:.5,electric:.5,ice:2,rock:2,steel:.5,fairy:2},fairy:{fire:.5,fighting:2,poison:.5,dragon:2,dark:2,steel:.5}};
+const TIERS=[[1,12,3,9],[2,20,4,15],[3,40,6,25],[4,50,10,25],[5,65,11,20],[6,80,13,5],[7,100,15,1]];
+// boss: [name, tier, feature(0 일반/1 메가/2 다이맥스), [typeIdx], [[move, typeIdx|-1, cat 0물리/1특수/2변화]]]
+const B=__BOSSES__;
+const SRC=__SRC__;
+const DONORS=__DONORS__;
+
+// t: defending types, at: attack types, imm: ability immunity, apt: raid aptitude
+const P={
+ sylveon:{ko:"님피아",en:"Sylveon",t:["fairy"],at:["fairy"],apt:1,role:"명상 탱커 · 메인 딜러",tag:"S",
+  nat:["대담","Bold","방어","공격"],ab:["페어리스킨 (숨특)","Pixilate"],it:["먹다남은음식","Leftovers"],ev:"HP 252 / 방어 252 / 특방 4",
+  mv:[["명상","Calm Mind"],["하이퍼보이스","Hyper Voice"],["드레인키스","Draining Kiss"],["희망사항","Wish"]],
+  note:"명상을 2~3번 쌓고 시작하세요. 방어는 노력치로, 특방은 명상으로 올려서 양쪽을 다 막아요. 드레인키스는 준 데미지의 75%를 회복해요."},
+ leafeon:{ko:"리피아",en:"Leafeon",t:["grass"],at:["grass","dark"],apt:.85,role:"칼춤 물리 딜러",tag:"A",
+  nat:["고집","Adamant","공격","특공"],ab:["리프가드","Leaf Guard"],it:["먹다남은음식","Leftovers"],ev:"HP 252 / 공격 252 / 방어 4",
+  mv:[["칼춤","Swords Dance"],["리프블레이드","Leaf Blade"],["광합성","Synthesis"],["탁쳐서떨구기","Knock Off"]],
+  note:"칼춤을 2번 쌓은 뒤 리프블레이드로 때려요. 탁쳐서떨구기는 에스퍼·고스트 보스용이에요. 레이드에선 상대보다 빠를 필요가 없어서 스피드 대신 HP에 노력치를 줬어요."},
+ glaceon:{ko:"글레이시아",en:"Glaceon",t:["ice"],at:["ice"],apt:.75,role:"설경 명상 딜러",tag:"A",
+  nat:["대담","Bold","방어","공격"],ab:["아이스바디","Ice Body"],it:["먹다남은음식","Leftovers"],ev:"HP 252 / 방어 252 / 특방 4",
+  mv:[["설경","Snowscape"],["명상","Calm Mind"],["냉동빔","Ice Beam"],["희망사항","Wish"]],
+  note:"설경을 켜면 눈 날씨 동안 얼음 타입의 방어가 1.5배가 되고, 아이스바디로 매 턴 HP 1/16을 회복해요. 불꽃·격투·바위·강철 기술을 가진 보스는 피하세요."},
+ vaporeon:{ko:"샤미드",en:"Vaporeon",t:["water"],at:["water"],imm:"water",apt:.95,role:"양방어 철벽 탱커",tag:"A",
+  nat:["대담","Bold","방어","공격"],ab:["저수","Water Absorb"],it:["먹다남은음식","Leftovers"],ev:"HP 252 / 방어 252 / 특방 4",
+  mv:[["명상","Calm Mind"],["녹기","Acid Armor"],["열탕","Scald"],["희망사항","Wish"]],
+  note:"녹기로 방어 +2, 명상으로 특방·특공을 올려요. 열탕의 화상은 물리 보스의 공격을 반으로 깎아요. 물 기술은 저수로 무효예요."},
+ umbreon:{ko:"블래키",en:"Umbreon",t:["dark"],at:["dark"],apt:.85,role:"물리 보스 카운터",tag:"B",
+  nat:["장난꾸러기","Impish","방어","특공"],ab:["정신력","Inner Focus"],it:["먹다남은음식","Leftovers"],ev:"HP 252 / 방어 252 / 특방 4",
+  mv:[["속임수","Foul Play"],["달빛","Moonlight"],["싫은소리","Screech"],["저주","Curse"]],
+  note:"속임수는 보스의 공격력으로 데미지를 계산해요. 싫은소리로 보스 방어를 낮추면 더 세지고, 저주로 내 방어를 올려요. 에스퍼 기술은 무효예요."},
+ espeon:{ko:"에브이",en:"Espeon",t:["psychic"],at:["psychic","fairy"],apt:.7,role:"명상 특수 딜러",tag:"B",
+  nat:["대담","Bold","방어","공격"],ab:["매직미러 (숨특)","Magic Bounce"],it:["먹다남은음식","Leftovers"],ev:"HP 252 / 방어 252 / 특방 4",
+  mv:[["명상","Calm Mind"],["사이코키네시스","Psychic"],["매지컬샤인","Dazzling Gleam"],["아침햇살","Morning Sun"]],
+  note:"매직미러는 보스의 변화기(독·마비·하품 등)를 되돌려줘요. 독·격투 보스 전용으로 쓰세요."},
+ flareon:{ko:"부스터",en:"Flareon",t:["fire"],at:["fire"],imm:"fire",apt:.55,role:"저주 물리 딜러",tag:"C",
+  nat:["용감","Brave","공격","스피드"],ab:["타오르는불꽃","Flash Fire"],it:["먹다남은음식","Leftovers"],ev:"HP 252 / 공격 252 / 특방 4",
+  mv:[["저주","Curse"],["플레어드라이브","Flare Blitz"],["희망사항","Wish"],["방어","Protect"]],
+  note:"저주는 스피드를 내리고 공격·방어를 올려요. 레이드에선 스피드가 중요하지 않아서 용감 성격이 맞아요. 강철·벌레·풀·얼음 보스용으로 쓰세요."},
+ jolteon:{ko:"쥬피썬더",en:"Jolteon",t:["electric"],at:["electric"],imm:"electric",apt:.55,role:"대타 명상 딜러",tag:"C",
+  nat:["조심","Modest","특공","공격"],ab:["축전","Volt Absorb"],it:["먹다남은음식","Leftovers"],ev:"HP 252 / 특공 252 / 특방 4",
+  mv:[["명상","Calm Mind"],["10만볼트","Thunderbolt"],["대타출동","Substitute"],["희망사항","Wish"]],
+  note:"물·비행 보스 중에 땅 기술이 없는 보스 상대로만 쓰세요. 맞으면 버티기 어려워서 대타출동으로 공격을 받아내요."},
+ azumarill:{ko:"마릴리",en:"Azumarill",t:["water","fairy"],at:["water","fairy","fighting"],apt:1,fill:1,role:"배북 물리 딜러",tag:"보충",
+  nat:["고집","Adamant","공격","특공"],ab:["천하장사","Huge Power"],it:["자뭉열매","Sitrus Berry"],ev:"HP 252 / 공격 252 / 방어 4",
+  mv:[["배북","Belly Drum"],["아쿠아브레이크","Liquidation"],["치근거리기","Play Rough"],["깨트리기","Brick Break"]],
+  note:"배북으로 HP를 절반 쓰고 공격을 최대로 올린 뒤, 자뭉열매로 회복해요. 천하장사(공격 2배)가 있어서 레이드에서 최상위 딜러예요."},
+ garchomp:{ko:"한카리아스",en:"Garchomp",t:["dragon","ground"],at:["ground","dragon"],apt:.75,fill:1,role:"칼춤 물리 딜러",tag:"보충",
+  nat:["고집","Adamant","공격","특공"],ab:["까칠한피부 (숨특)","Rough Skin"],it:["먹다남은음식","Leftovers"],ev:"HP 252 / 공격 252 / 방어 4",
+  mv:[["칼춤","Swords Dance"],["지진","Earthquake"],["드래곤클로","Dragon Claw"],["스톤에지","Stone Edge"]],
+  note:"강철·불꽃·바위·전기·독 보스를 지진으로 잡아요. 비행 보스에게는 스톤에지를 써요. 얼음·페어리·드래곤 기술을 가진 보스는 피하세요."},
+ lucario:{ko:"루카리오",en:"Lucario",t:["fighting","steel"],at:["fighting","steel"],apt:.8,fill:1,role:"칼춤 물리 딜러",tag:"보충",
+  nat:["고집","Adamant","공격","특공"],ab:["정의의마음 (숨특)","Justified"],it:["먹다남은음식","Leftovers"],ev:"HP 252 / 공격 252 / 방어 4",
+  mv:[["칼춤","Swords Dance"],["드레인펀치","Drain Punch"],["코멧펀치","Meteor Mash"],["신속","Extreme Speed"]],
+  note:"이브이즈에는 없는 격투·강철 타입 공격을 맡아요. 노말·바위·얼음·악·강철 보스 상대용이에요. 드레인펀치로 회복하면서 싸워요."},
+ metagross:{ko:"메타그로스",en:"Metagross",t:["steel","psychic"],at:["steel","ground"],apt:.8,fill:1,role:"철벽 바디프레스",tag:"보충",
+  nat:["장난꾸러기","Impish","방어","특공"],ab:["클리어바디","Clear Body"],it:["먹다남은음식","Leftovers"],ev:"HP 252 / 방어 252 / 특방 4",
+  mv:[["철벽","Iron Defense"],["바디프레스","Body Press"],["코멧펀치","Meteor Mash"],["지진","Earthquake"]],
+  note:"바디프레스는 내 방어 수치로 데미지를 계산해서, 철벽을 쌓을수록 공격도 같이 세져요. 클리어바디라 능력치가 떨어지지 않아요."},
+ annihilape:{ko:"저승갓숭",en:"Annihilape",t:["fighting","ghost"],at:["fighting","ghost"],apt:.9,fill:1,role:"벌크업 물리 딜러",tag:"보충",
+  nat:["고집","Adamant","공격","특공"],ab:["의기양양","Vital Spirit"],it:["먹다남은음식","Leftovers"],ev:"HP 252 / 공격 252 / 방어 4",
+  mv:[["벌크업","Bulk Up"],["드레인펀치","Drain Punch"],["분노의주먹","Rage Fist"],["방어","Protect"]],
+  note:"분노의주먹은 맞은 횟수만큼 위력이 올라가서 레이드처럼 긴 싸움에 강해요. 노말·격투 기술은 무효예요. 의기양양이라 잠듦에도 안 걸려요."},
+ tinkaton:{ko:"두드리짱",en:"Tinkaton",t:["fairy","steel"],at:["fairy","steel"],apt:.75,fill:1,role:"칼춤 물리 딜러",tag:"보충",
+  nat:["고집","Adamant","공격","특공"],ab:["틀깨기","Mold Breaker"],it:["먹다남은음식","Leftovers"],ev:"HP 252 / 공격 252 / 방어 4",
+  mv:[["칼춤","Swords Dance"],["거대해머","Gigaton Hammer"],["치근거리기","Play Rough"],["탁쳐서떨구기","Knock Off"]],
+  note:"거대해머는 두 턴 연속으로 쓸 수 없어서 치근거리기와 번갈아 써요. 드래곤·독 기술은 무효거나 반감이에요."}
+};
+
+const TEAMS=[
+ {key:"6",label:"이브이즈 6",members:["sylveon","leafeon","glaceon","vaporeon","umbreon","flareon"],
+  why:["질문한 6마리에서 <b>쥬피썬더만 글레이시아로</b> 바꾼 구성이에요. 고티어에 많은 드래곤·비행 보스를 글레이시아가 맡아요.",
+       "보스를 보고 이렇게 고르면 돼요: 대부분은 님피아, 땅·물·바위는 리피아, 드래곤·비행은 글레이시아, 불꽃은 샤미드, 물리 에스퍼·고스트는 블래키, 강철·벌레는 부스터."]},
+ {key:"5",label:"이브이즈 5 + 1",members:["sylveon","leafeon","glaceon","vaporeon","flareon"],fill:["azumarill"],
+  alt:[["루카리오","격투/강철. 노말·바위·강철 보스를 맡아요","lucario"],["저승갓숭","격투/고스트. 오래 싸울수록 강해요","annihilape"]],
+  why:["블래키를 빼고 <b>마릴리</b>를 넣어요. 배북 한 번이면 웬만한 보스는 몇 방에 쓰러져요.",
+       "남는 1자리 후보를 계산해보면 마릴리 > 저승갓숭 ≈ 루카리오 > 메타그로스 순이었어요. 이브이즈에 없는 격투 타입 공격을 원하면 루카리오를 넣으세요."]},
+ {key:"4",label:"이브이즈 4 + 2",members:["sylveon","leafeon","glaceon","vaporeon"],fill:["azumarill","metagross"],
+  alt:[["마릴리 + 한카리아스","땅 공격으로 강철·불꽃 보스까지 커버","garchomp"],["마릴리 + 루카리오","격투 공격으로 노말·바위·악 보스 담당","lucario"]],
+  why:["이브이즈 핵심 4마리는 <b>님피아 · 리피아 · 글레이시아 · 샤미드</b>예요. 탱킹과 화력을 고루 갖춘 4마리입니다.",
+       "남는 두 자리는 <b>마릴리 + 메타그로스</b>. 메타그로스가 강철 타입이라 이브이즈에게 위협적인 독·드래곤·페어리·얼음 기술을 반감하고, 철벽 바디프레스로 오래 버텨요."]},
+ {key:"3",label:"이브이즈 3 + 3",members:["sylveon","leafeon","glaceon"],fill:["azumarill","lucario","garchomp"],
+  alt:[["샤미드 · 블래키","님피아 대신 넣어도 점수 차이가 거의 없어요","vaporeon"]],
+  why:["<b>님피아 · 리피아 · 글레이시아</b>에 <b>마릴리 · 루카리오 · 한카리아스</b>를 더해요. 풀·얼음·페어리·물·격투·강철·땅·드래곤까지 공격 타입 8개를 갖춰요.",
+       "계산상으로는 3+3과 2+4가 가장 많은 보스에 대응했어요. 여기서부터는 멤버를 더 바꿔도 점수가 거의 오르지 않아요."]},
+ {key:"2",label:"이브이즈 2 + 4",members:["leafeon","glaceon"],fill:["azumarill","garchomp","annihilape","tinkaton"],
+  alt:[["님피아 + 리피아","님피아를 꼭 쓰고 싶다면 이 조합으로. 글레이시아 자리를 대신해요","sylveon"]],
+  why:["이브이 진화형을 2마리만 쓴다면 <b>리피아 + 글레이시아</b>예요. 어떤 조합으로 계산해도 이 둘이 빠지지 않았어요. 풀과 얼음이 다른 포켓몬으로 채우기 어려운 공격 타입이라서예요.",
+       "나머지는 마릴리 · 한카리아스 · 저승갓숭 · 두드리짱. 저승갓숭 대신 루카리오나 메타그로스를 넣어도 점수 차이는 1%포인트 이내예요."]},
+];
+const ME={label:"질문한 6마리",members:["vaporeon","umbreon","jolteon","sylveon","flareon","leafeon"]};
+
+const chip=t=>{const [n,c]=TYPES[t];return `<span class="type" style="--c:${c}"><i></i>${n}</span>`};
+function eff(a,ts){let m=1;for(const t of ts){const v=CH[a][t];m*=v===undefined?1:v}return m}
+function judge(b,id){const p=P[id];const bt=b[3].map(i=>TK[i]);
+ const off=Math.max(...p.at.map(a=>eff(a,bt)));
+ const dm=b[4].filter(m=>m[2]<2&&m[1]>=0);
+ const thr=dm.length?Math.max(...dm.map(m=>TK[m[1]]===p.imm?0:eff(TK[m[1]],p.t))):.5;
+ const mark=off>=2&&thr<=1?"best":off>=1&&thr<=.5?"good":off>=1&&thr<=1?"ok":"bad";
+ const v={best:1,good:.7,ok:.35,bad:0}[mark]*p.apt;
+ return {mark,v,off,thr}}
+const tc=[0,0,0,0,0,0,0];B.forEach(b=>tc[b[1]-1]++);
+function coverage(ids){let s=0,tot=0;for(const b of B){const w=TIERS[b[1]-1][3]/tc[b[1]-1];tot+=w;s+=w*Math.max(...ids.map(i=>judge(b,i).v))}return s/tot}
+
+document.getElementById("tierTable").innerHTML=TIERS.map(([t,l,h,w],i)=>`<tr><td>${"★".repeat(t)}</td><td class="num">Lv ${l}</td><td class="num">×${h}</td><td class="num">${w}%</td><td class="num">${tc[i]}종</td></tr>`).join("");
+
+const rows=[{...ME,me:1},...TEAMS.map(t=>({label:t.label,members:[...t.members,...(t.fill||[])]}))].map(r=>({...r,c:coverage(r.members)}));
+const max=Math.max(...rows.map(r=>r.c));
+document.getElementById("bars").innerHTML=rows.map(r=>`<div class="barrow${r.me?' me':''}"><span class="lab">${r.label}</span><div class="track"><div class="fillb" style="width:${(r.c/max*100).toFixed(1)}%"></div></div><span class="v">${Math.round(r.c*100)}</span></div>`).join("");
+
+function srcTag(s){if(!s)return "";if(s[0]==="L")return `<span class="src lv">Lv ${s.slice(1)}</span>`;if(s==="E")return `<span class="src egg">TM·교배</span>`;return `<span class="src tm">TM</span>`}
+function card(id){const p=P[id];
+ return `<article class="card${p.fill?' fill':''}">
+  <div class="top"><div><div class="name">${p.ko} <span class="eng">${p.en}</span></div><div class="role">${p.role}</div></div><span class="tag">${p.fill?"보충":"적성 "+p.tag}</span></div>
+  <div class="types">${p.t.map(chip).join("")}</div>
+  <dl>
+   <dt>성격</dt><dd><b>${p.nat[0]}</b> <span class="eng">${p.nat[1]}</span> <span class="note">(+${p.nat[2]} −${p.nat[3]})</span></dd>
+   <dt>특성</dt><dd>${p.ab[0]} <span class="eng">${p.ab[1]}</span></dd>
+   <dt>도구</dt><dd>${p.it[0]} <span class="eng">${p.it[1]}</span></dd>
+   <dt>노력치</dt><dd class="stat">${p.ev}</dd>
+  </dl>
+  <div class="moves">${p.mv.map(m=>`<span>${m[0]}<small>${m[1]}</small>${srcTag(SRC[id]&&SRC[id][m[1]])}</span>`).join("")}</div>
+  <p class="note">${p.note}</p>
+ </article>`}
+
+const tabsEl=document.getElementById("tabs"),panelsEl=document.getElementById("panels");
+tabsEl.innerHTML=TEAMS.map((t,i)=>`<button role="tab" id="tab-${t.key}" aria-controls="p-${t.key}" aria-selected="${i==0}" tabindex="${i==0?0:-1}">${t.label}</button>`).join("");
+panelsEl.innerHTML=TEAMS.map((t,i)=>{const ids=[...t.members,...(t.fill||[])];
+ let h=`<div id="p-${t.key}" class="panel" role="tabpanel" aria-labelledby="tab-${t.key}"${i?" hidden":""}>`;
+ h+=`<div class="why">${t.why.map(s=>`<p>${s}</p>`).join("")}</div><div class="cards">${ids.map(card).join("")}</div>`;
+ if(t.alt){h+=`<h3>대안</h3><div class="tbl"><table><tbody>${t.alt.map(a=>`<tr><td><b>${a[0]}</b></td><td class="wrapc">${a[1]}</td></tr>`).join("")}</tbody></table></div>`;
+  const extra=[...new Set(t.alt.map(a=>a[2]).filter(x=>!ids.includes(x)))];
+  if(extra.length)h+=`<details><summary class="note">대안 멤버 세팅 보기</summary><div class="cards" style="margin-top:10px">${extra.map(card).join("")}</div></details>`}
+ return h+`</div>`}).join("");
+
+{const need={};
+ for(const id in P){for(const m of P[id].mv){const s=SRC[id]&&SRC[id][m[1]];if(!s||s[0]==="L")continue;(need[m[1]]=need[m[1]]||{ko:m[0],who:[],egg:s==="E"}).who.push(P[id].ko)}}
+ document.getElementById("tmTable").innerHTML=Object.entries(need).sort((a,b)=>b[1].who.length-a[1].who.length||a[1].ko.localeCompare(b[1].ko,"ko")).map(([en,o])=>{const d=DONORS[en]||[];
+  return `<tr><td><b>${o.ko}</b> <span class="eng">${en}</span>${o.egg?' <span class="src egg" style="position:static">알 기술</span>':''}</td><td class="wrapc">${o.who.join(", ")}</td><td class="wrapc">${d.length?d.map(x=>`${x[0]} <span class="eng">Lv ${x[1]}</span>`).join(" · "):'<span class="note">흔한 포켓몬 중엔 레벨업으로 배우는 포켓몬이 없어요. 배틀 드롭이나 상자(격투 타입)로 구하세요.</span>'}</td></tr>`}).join("")}
+let cur=TEAMS[0];
+const tabs=[...tabsEl.querySelectorAll('[role=tab]')];
+function select(k){tabs.forEach(b=>{const on=b.id==="tab-"+k;b.setAttribute("aria-selected",on);b.tabIndex=on?0:-1;document.getElementById(b.getAttribute("aria-controls")).hidden=!on});
+ cur=TEAMS.find(t=>t.key===k)||TEAMS[0];shown=PAGE;renderList();try{localStorage.setItem("eeveeRaidTab",k)}catch(e){}}
+tabs.forEach(b=>b.addEventListener("click",()=>select(b.id.slice(4))));
+
+// finder
+const FEAT=["","메가","다이맥스"],MK={best:"유리",good:"안전",ok:"무난",bad:"불리"},CAT=["물리","특수","변화"];
+const tierOn=new Set([5,6,7]);const PAGE=30;let shown=PAGE;
+const chipsEl=document.getElementById("tierChips");
+chipsEl.innerHTML=[1,2,3,4,5,6,7].map(t=>`<button class="chip" data-t="${t}" aria-pressed="${tierOn.has(t)}">${t}성</button>`).join("");
+chipsEl.addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;const t=+b.dataset.t;tierOn.has(t)?tierOn.delete(t):tierOn.add(t);b.setAttribute("aria-pressed",tierOn.has(t));shown=PAGE;renderList()});
+const q=document.getElementById("q");q.addEventListener("input",()=>{shown=PAGE;renderList()});
+document.getElementById("more").addEventListener("click",()=>{shown+=PAGE;renderList()});
+const rank={best:3,good:2,ok:1,bad:0};
+function renderList(){
+ const ids=[...cur.members,...(cur.fill||[])];const s=q.value.trim();
+ const list=B.filter(b=>(s?b[0].includes(s):tierOn.has(b[1]))).sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0],"ko"));
+ document.getElementById("count").textContent=`${s?"검색 결과":"선택한 티어"} ${list.length}종 · 기준 조합: ${cur.label}`;
+ document.getElementById("blist").innerHTML=list.slice(0,shown).map(b=>{
+  const js=ids.map(i=>({i,...judge(b,i)})).sort((x,y)=>rank[y.mark]-rank[x.mark]||y.v-x.v||P[y.i].apt-P[x.i].apt);
+  const top=js.filter(j=>j.mark!=="bad").slice(0,3);const show=top.length?top:js.slice(0,1);
+  return `<article class="boss"><div><div class="bn">${b[0]}</div>
+   <div class="meta"><span class="tier">${b[1]}성</span>${b[2]?`<span class="feat">${FEAT[b[2]]}</span>`:""}${b[3].map(i=>chip(TK[i])).join("")}</div>
+   <div class="bmv">${b[4].map(m=>`<span${m[1]>=0?` style="--c:${TYPES[TK[m[1]]][1]}"`:""}>${m[1]>=0?"<i></i>":""}${m[0]} <small class="eng">${CAT[m[2]]}</small></span>`).join("")}</div></div>
+   <div class="picks">${show.map(j=>`<div class="pk"><span class="mk ${j.mark}">${MK[j.mark]}</span><span>${P[j.i].ko}</span></div>`).join("")}${top.length?"":`<span class="note">이 조합에는 맞는 멤버가 없어요. 다른 탭을 확인해보세요.</span>`}</div></article>`}).join("");
+ document.getElementById("more").hidden=list.length<=shown}
+try{const k=localStorage.getItem("eeveeRaidTab");if(k&&TEAMS.find(t=>t.key===k))select(k);else renderList()}catch(e){renderList()}
+</script>
