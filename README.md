@@ -21,6 +21,6 @@ Form-change notes (the "How to get each form" list on the Forms tab) come from `
 
 ## Credits
 
-- Pokémon and Pokémon names © Nintendo / Creatures Inc. / GAME FREAK inc. This is an unofficial fan project.
-- Models, textures and data come from Cobblemon and the mods and resource packs bundled in the Mayview modpack, rendered for reference.
+- Pokémon and Pokémon names © Nintendo / Creatures Inc. / GAME FREAK inc. This is an unofficial fan project, not affiliated with or endorsed by Nintendo, The Pokémon Company, GAME FREAK or the Cobblemon team.
+- Models, textures and data come from Cobblemon and the mods and resource packs bundled in the Mayview modpack, rendered for reference. All game assets (sprites in `pokedex/sprites`, `pokedex/data/thumbs.json`) remain the property of their respective owners and will be removed on request.
 - Font: [Galmuri](https://github.com/quiple/galmuri) by Lee Minseo, SIL Open Font License 1.1 (`pokedex/fonts/OFL.md`). DotGothic16 and Silkscreen are loaded from Google Fonts.
